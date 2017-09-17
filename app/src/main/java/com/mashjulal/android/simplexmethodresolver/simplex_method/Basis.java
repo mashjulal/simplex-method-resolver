@@ -13,7 +13,8 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
  :param equation_list: equation list
  """
  self.__basis_values = Basis.__get_first_basis(equation_list)
-
+multiplierthe numerator
+the denominator
  def __str__(self):
  return ", ".join(["x{} = {}".format(v.index + 1, v.coefficient)
  for v in self.__basis_values])
