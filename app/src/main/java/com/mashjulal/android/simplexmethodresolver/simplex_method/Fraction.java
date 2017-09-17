@@ -3,86 +3,82 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
 import java.math.BigInteger;
 import java.util.Locale;
 
-/**
- * Created by Master on 17.09.2017.
- */
-
 public class Fraction {
 
     private BigInteger numerator;
     private BigInteger denominator;
 
-    public Fraction(BigInteger numerator, BigInteger denominator) {
+    private Fraction(BigInteger numerator, BigInteger denominator) {
         this.numerator = numerator;
         this.denominator = denominator;
+        this.__reduce();
     }
 
     public Fraction(int numerator, int denominator) {
-        this.numerator = BigInteger.valueOf(numerator);
-        this.denominator = BigInteger.valueOf(denominator);
-    }
-
-    public Fraction(BigInteger numerator) {
-        this.numerator = numerator;
-        this.denominator = BigInteger.ONE;
+        this(BigInteger.valueOf(numerator), BigInteger.valueOf(denominator));
     }
 
     public Fraction(int numerator) {
-        this.numerator = BigInteger.valueOf(numerator);
-        this.denominator = BigInteger.ONE;
+        this(BigInteger.valueOf(numerator), BigInteger.ONE);
     }
 
-    public Fraction add(Fraction otherFraction) {
+    private void __reduce() {
+        BigInteger gcd = this.numerator.gcd(this.denominator);
+        this.numerator = this.numerator.divide(gcd);
+        this.denominator = this.denominator.divide(gcd);
+    }
+
+    public Fraction add(Fraction fractionOther) {
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
-        if (fractionNew.denominator.equals(otherFraction.denominator)) {
-            fractionNew.numerator = fractionNew.numerator.add(otherFraction.numerator);
+        if (fractionNew.denominator.equals(fractionOther.denominator)) {
+            fractionNew.numerator = fractionNew.numerator.add(fractionOther.numerator);
         } else {
-            BigInteger gcd = fractionNew.denominator.gcd(otherFraction.denominator);
+            BigInteger gcd = fractionNew.denominator.gcd(fractionOther.denominator);
             BigInteger lcm = fractionNew.denominator
-                    .multiply(otherFraction.denominator.divide(gcd));
+                    .multiply(fractionOther.denominator.divide(gcd));
             BigInteger newNumeratorThis = fractionNew.numerator
                     .multiply(lcm.divide(fractionNew.denominator));
-            BigInteger newNumeratorOther = otherFraction.numerator
-                    .multiply(lcm.divide(otherFraction.denominator));
+            BigInteger newNumeratorOther = fractionOther.numerator
+                    .multiply(lcm.divide(fractionOther.denominator));
             fractionNew.numerator = newNumeratorThis.add(newNumeratorOther);
             fractionNew.denominator = lcm;
         }
         return fractionNew.reduce();
     }
 
-    public Fraction subtract(Fraction otherFraction) {
+    public Fraction subtract(Fraction fractionOther) {
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
-        if (fractionNew.denominator.equals(otherFraction.denominator)) {
-            fractionNew.numerator = fractionNew.numerator.subtract(otherFraction.numerator);
+        if (fractionNew.denominator.equals(fractionOther.denominator)) {
+            fractionNew.numerator = fractionNew.numerator.subtract(fractionOther.numerator);
         } else {
-            BigInteger gcd = fractionNew.denominator.gcd(otherFraction.denominator);
+            BigInteger gcd = fractionNew.denominator.gcd(fractionOther.denominator);
             BigInteger lcm = fractionNew.denominator
-                    .multiply(otherFraction.denominator.divide(gcd));
+                    .multiply(fractionOther.denominator.divide(gcd));
             BigInteger newNumeratorThis = fractionNew.numerator
                     .multiply(lcm.divide(fractionNew.denominator));
-            BigInteger newNumeratorOther = otherFraction.numerator
-                    .multiply(lcm.divide(otherFraction.denominator));
+            BigInteger newNumeratorOther = fractionOther.numerator
+                    .multiply(lcm.divide(fractionOther.denominator));
             fractionNew.numerator = newNumeratorThis.subtract(newNumeratorOther);
             fractionNew.denominator = lcm;
         }
         return fractionNew.reduce();
     }
 
-    public Fraction multiply(Fraction otherFraction) {
+    public Fraction multiply(Fraction fractionOther) {
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
-        fractionNew.numerator = fractionNew.numerator.multiply(otherFraction.numerator);
-        fractionNew.denominator = fractionNew.denominator.multiply(otherFraction.denominator);
+        fractionNew.numerator = fractionNew.numerator.multiply(fractionOther.numerator);
+        fractionNew.denominator = fractionNew.denominator.multiply(fractionOther.denominator);
 
         return fractionNew.reduce();
     }
 
-    public Fraction divide(Fraction otherFraction) {
-        if (otherFraction.numerator.equals(BigInteger.ZERO))
+    public Fraction divide(Fraction fractionOther) {
+        if (fractionOther.numerator.equals(BigInteger.ZERO))
             throw new IllegalArgumentException("Division by zero!");
 
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
-        fractionNew.numerator = fractionNew.numerator.multiply(otherFraction.denominator);
-        fractionNew.denominator = fractionNew.denominator.multiply(otherFraction.numerator);
+        fractionNew.numerator = fractionNew.numerator.multiply(fractionOther.denominator);
+        fractionNew.denominator = fractionNew.denominator.multiply(fractionOther.numerator);
 
         if (fractionNew.denominator.compareTo(BigInteger.ZERO) < 0) {
             fractionNew.numerator = fractionNew.numerator.negate();

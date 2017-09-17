@@ -5,6 +5,7 @@ import com.mashjulal.android.simplexmethodresolver.simplex_method.Fraction;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 public class FractionClassUnitTest {
@@ -201,5 +202,24 @@ public class FractionClassUnitTest {
 
         fraction = new Fraction(-1, 2);
         assertEquals("-1/2", fraction.toString());
+    }
+
+    @Test
+    public void equals_isCorrect() throws Exception {
+        Fraction fraction1 = new Fraction(1, 2);
+        Fraction fraction2 = new Fraction(1, 2);
+        assertTrue(fraction1.equals(fraction2));
+
+        fraction2 = new Fraction(1);
+        assertFalse(fraction1.equals(fraction2));
+
+        fraction2 = new Fraction(2, 4);
+        assertTrue(fraction1.equals(fraction2));
+
+        assertFalse(fraction1.equals(new Object()));
+
+        fraction1 = new Fraction(0);
+        fraction2 = new Fraction(0);
+        assertTrue(fraction1.equals(fraction2));
     }
 }
