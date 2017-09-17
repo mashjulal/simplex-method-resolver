@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by master on 14.09.17.
@@ -36,6 +35,9 @@ public class EquationItemRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        final Equation equation = mEquations.get(position);
+
+        // Set edit texts for every coefficient in equation
 
     }
 
@@ -55,7 +57,7 @@ public class EquationItemRecyclerViewAdapter
 
             llVariables = (LinearLayout) itemView.findViewById(R.id.ll_iEquation_variables);
             spnrSigns = (Spinner) itemView.findViewById(R.id.spnr_iEquation_signs);
-            etValue = (EditText) itemView.findViewById(R.id.)
+            etValue = (EditText) itemView.findViewById(R.id.et_iEquation_value);
         }
     }
 }
