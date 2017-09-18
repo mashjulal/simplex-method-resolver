@@ -88,11 +88,9 @@ public class Fraction {
     }
 
     public Fraction reduce() {
-        BigInteger gcd = this.numerator.gcd(this.denominator);
-        BigInteger newNumerator = this.numerator.divide(gcd);
-        BigInteger newDenominator = this.denominator.divide(gcd);
-
-        return new Fraction(newNumerator, newDenominator);
+        Fraction fraction = new Fraction(this.numerator, this.denominator);
+        fraction.__reduce();
+        return fraction;
     }
 
     public double toDouble() {

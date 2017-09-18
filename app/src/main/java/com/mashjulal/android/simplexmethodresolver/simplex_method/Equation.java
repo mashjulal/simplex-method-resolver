@@ -1,5 +1,7 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
+import java.util.List;
+
 /**
  * Python Implementation
  *
@@ -141,4 +143,27 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
  */
 
 public class Equation {
+
+    private List<Fraction> coefficients;
+    private Fraction value;
+
+    public List<Fraction> getCoefficients() {
+        return coefficients;
+    }
+
+    public void setCoefficients(List<Fraction> coefficients) {
+        this.coefficients = coefficients;
+    }
+
+    public Fraction getValue() {
+        return value;
+    }
+
+    public void setValue(Fraction value) {
+        this.value = value;
+    }
+
+    public int size() {
+        return coefficients.size();
+    }
 }
