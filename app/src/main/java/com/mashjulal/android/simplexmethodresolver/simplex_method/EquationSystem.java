@@ -1,144 +1,207 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
-/**
- * Python Implementation:
- *
- * from M import M
- from equation import Equation
- from target_function_equation import TargetFunctionEquation
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import lombok.Getter;
 
 
- class EquationSystem:
- """
- Class for storing equations and target function
- and perform operations with them.
- """
+public class EquationSystem implements Iterable<Equation> {
 
- # Static list for storing initial equation list
- INITIAL_EQUATIONS = []
- # Static TargetFunctionEquation for storing initial target function
- INITIAL_TARGET_FUNCTION = TargetFunctionEquation([])
- # Static list for storing initial list of fake variables states
- INITIAL_FAKE_VARIABLES = []
+    /**
+     *  # Static list for storing initial equation list
+     INITIAL_EQUATIONS = []
+     # Static TargetFunctionEquation for storing initial target function
+     INITIAL_TARGET_FUNCTION = TargetFunctionEquation([])
+     # Static list for storing initial list of fake variables states
+     INITIAL_FAKE_VARIABLES = []
+     */
 
- def __init__(self):
- self.is_fake_values = None
- self.equations = None
- self.target_function = None
+    private static List<Equation> sInitialEquations;
+    private static TargetFunctionEquation sInitialTargetFunction;
+    private static List<Boolean> sInitialFakeVariables;
 
- def __str__(self):
- rep = ""
- for equation in self.equations:
- rep += str(equation) + "\n"
- rep += str(self.target_function) + "\n"
- return rep
+    private List<Boolean> isFakeVariableList;
+    private TargetFunctionEquation targetFunction;
+    @Getter private List<Equation> equationList;
 
- def __len__(self):
- return len(self.equations) + 1
+    @Override
+    public String toString() {
+        /**
+         *  def __str__(self):
+         rep = ""
+         for equation in self.equations:
+            rep += str(equation) + "\n"
+         rep += str(self.target_function) + "\n"
+         return rep
+         */
+        StringBuilder sb = new StringBuilder();
+        for (Equation equation : equationList)
+            sb.append(equation.toString()).append("\n");
+        sb.append(targetFunction.toString()).append("\n");
+        return sb.toString();
 
- def __getitem__(self, item):
- if item < len(self.equations):
- return self.equations[item]
- return self.target_function
+    }
 
- def __setitem__(self, key, value):
- if key < len(self.equations):
- self.equations[key] = value
- else:
- self.target_function = value
+    public int size() {
+        /**
+         *  def __len__(self):
+         return len(self.equations) + 1
+         */
+        return equationList.size() + 1;
+    }
 
- def __iter__(self):
- self.i = 0
- return self
+    public Equation get(int i) {
+        /**
+         *  def __getitem__(self, item):
+         if item < len(self.equations):
+            return self.equations[item]
+         return self.target_function
+         */
+        if (i < equationList.size())
+            return equationList.get(i);
+        return targetFunction;
+    }
 
- def __next__(self):
- if self.i == len(self.equations) + len(self.target_function):
- raise StopIteration
- elif self.i < len(self.equations):
- result = self.equations[self.i]
- else:
- result = self.target_function[self.i]
- self.i += 1
- return result
+    public void set(int i, Equation equation) {
+        /**
+         *  def __setitem__(self, key, value):
+         if key < len(self.equations):
+         self.equations[key] = value
+         else:
+         self.target_function = value
+         */
+        if (i < equationList.size())
+            equationList.set(i, equation);
+        else if (equation instanceof TargetFunctionEquation)
+            targetFunction = (TargetFunctionEquation) equation;
+    }
 
- def add(self, equation):
- """
- Adds equation to end of the list.
- :param equation: equation
- :return: None.
- """
- self.equations.append(equation)
+    public void add(Equation equation) {
+        /**
+         *  def add(self, equation):
+         """
+         Adds equation to end of the list.
+         :param equation: equation
+         :return: None.
+         """
+         self.equations.append(equation)
+         */
+        equationList.add(equation);
+    }
 
- def get_equations(self):
- """
- Returns equation list.
- :return: list of equations.
- """
- return self.equations
+    public void reloadTargetFunction(boolean isMax) {
+        /**
+         *  def reload_target_function(self, is_max):
+         """
+         Reloads target function from initial.
+         :param is_max: if is searching max value.
+         :return: None.
+         """
+         self.target_function = TargetFunctionEquation([])
+         for i in range(len(self.is_fake_values)-1):
+         if not isinstance(EquationSystem.INITIAL_TARGET_FUNCTION[i], M) \
+         and is_max:
+            self.target_function.add_coefficient(
+            -EquationSystem.INITIAL_TARGET_FUNCTION[i])
+         else:
+            self.target_function.add_coefficient(
+            EquationSystem.INITIAL_TARGET_FUNCTION[i])
+         self.target_function.add_coefficient(
+         (-1 if is_max else 1) *
+         EquationSystem.INITIAL_TARGET_FUNCTION.get_value())
+         */
 
- def reload_target_function(self, is_max):
- """
- Reloads target function from initial.
- :param is_max: if is searching max value.
- :return: None.
- """
- self.target_function = TargetFunctionEquation([])
- for i in range(len(self.is_fake_values)-1):
- if not isinstance(EquationSystem.INITIAL_TARGET_FUNCTION[i], M) \
- and is_max:
- self.target_function.add_coefficient(
- -EquationSystem.INITIAL_TARGET_FUNCTION[i])
- else:
- self.target_function.add_coefficient(
- EquationSystem.INITIAL_TARGET_FUNCTION[i])
- self.target_function.add_coefficient(
- (-1 if is_max else 1) *
- EquationSystem.INITIAL_TARGET_FUNCTION.get_value())
+        List<Coefficient> cofs = new ArrayList<>();
+        Coefficient initialCof;
+        for (int i = 0; i < sInitialFakeVariables.size() - 1; i++) {
+            initialCof = sInitialTargetFunction.getCoefficient(i);
+            if (initialCof instanceof M && isMax) {
+                targetFunction.addCoefficient(initialCof.negate());
+            } else {
+                targetFunction.addCoefficient(initialCof);
+            }
+        }
+        targetFunction.setValue(sInitialTargetFunction.getValue()
+                .multiply(new Coefficient((isMax) ? -1 : 1)));
+    }
 
- def reload_fake_values(self):
- """
- Reloads fake values from initial.
- :return: None.
- """
- self.is_fake_values = \
- [is_fake for is_fake in EquationSystem.INITIAL_FAKE_VARIABLES]
+    public void reloadFakeValues() {
+        /**
+         *  def reload_fake_values(self):
+         """
+         Reloads fake values from initial.
+         :return: None.
+         """
+         self.is_fake_values = \
+         [is_fake for is_fake in EquationSystem.INITIAL_FAKE_VARIABLES]
+         */
+        Collections.copy(isFakeVariableList, sInitialFakeVariables);
+    }
 
- def reload_equations(self):
- """
- Reloads equation list from initial.
- :return: None
- """
- self.equations = \
- [Equation([value for value in row])
- for row in EquationSystem.INITIAL_EQUATIONS]
+    public void reloadEquations() {
+        /**
+         *  def reload_equations(self):
+         """
+         Reloads equation list from initial.
+         :return: None
+         """
+         self.equations = \
+         [Equation([value for value in row])
+         for row in EquationSystem.INITIAL_EQUATIONS]
+         */
+        Collections.copy(equationList, sInitialEquations);
+    }
 
- @staticmethod
- def set_initial_fake_values(f_v):
- """
- Sets initial fake values state list.
- :param f_v: fake values state list.
- :return: None.
- """
- EquationSystem.INITIAL_FAKE_VARIABLES = f_v
+    public static void setInitialFakeValues(List<Boolean> isFakeVariableList) {
+        /**
+         *  @staticmethod
+        def set_initial_fake_values(f_v):
+        """
+        Sets initial fake values state list.
+        :param f_v: fake values state list.
+        :return: None.
+        """
+        EquationSystem.INITIAL_FAKE_VARIABLES = f_v
+         */
+        sInitialFakeVariables = isFakeVariableList;
+    }
 
- @staticmethod
- def set_initial_equations(eq_lst):
- """
- Sets initial equation list.
- :param eq_lst: equation list.
- :return: None.
- """
- EquationSystem.INITIAL_EQUATIONS = eq_lst
+    public static void setInitialEquations(List<Equation> equations) {
+        /**
+         *  @staticmethod
+        def set_initial_equations(eq_lst):
+        """
+        Sets initial equation list.
+        :param eq_lst: equation list.
+        :return: None.
+        """
+        EquationSystem.INITIAL_EQUATIONS = eq_lst
+         */
+        sInitialEquations = equations;
+    }
 
- @staticmethod
- def set_initial_target_function(t_f):
- """
- Sets initial target function.
- :param t_f: target function.
- :return: None.
- """
- EquationSystem.INITIAL_TARGET_FUNCTION = t_f
- */
+    public static void setInitialTargetFunction(TargetFunctionEquation tfe) {
+        /**
+         *  @staticmethod
+        def set_initial_target_function(t_f):
+        """
+        Sets initial target function.
+        :param t_f: target function.
+        :return: None.
+        """
+        EquationSystem.INITIAL_TARGET_FUNCTION = t_f
+         */
+        sInitialTargetFunction = tfe;
+    }
 
-public class EquationSystem {
+    @Override
+    public Iterator<Equation> iterator() {
+        List<Equation> newEquationList = new ArrayList<>();
+        Collections.copy(newEquationList, equationList);
+        newEquationList.add(targetFunction);
+        return newEquationList.iterator();
+    }
 }

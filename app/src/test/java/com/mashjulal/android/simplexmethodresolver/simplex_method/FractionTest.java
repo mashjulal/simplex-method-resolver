@@ -1,6 +1,4 @@
-package com.mashjulal.android.simplexmethodresolver;
-
-import com.mashjulal.android.simplexmethodresolver.simplex_method.Fraction;
+package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import org.junit.Test;
 
@@ -8,7 +6,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
-public class FractionClassUnitTest {
+public class FractionTest {
 
     @Test
     public void init_isCorrect() throws Exception {
@@ -26,7 +24,7 @@ public class FractionClassUnitTest {
     }
 
     @Test
-    public void add_isCorrect() throws Exception {
+    public void addFraction_isCorrect() throws Exception {
         Fraction fraction1 = new Fraction(1, 2);
         Fraction fraction2 = new Fraction(1, 2);
 
@@ -55,31 +53,24 @@ public class FractionClassUnitTest {
     }
 
     @Test
-    public void reduce_isCorrect() throws Exception {
-        Fraction fraction = new Fraction(1, 1);
-        assertEquals(new Fraction(1, 1), fraction.reduce());
+    public void addInteger_isCorrect() throws Exception {
+        Fraction fraction = new Fraction(1, 2);
+        int number = 1;
 
-        fraction = new Fraction(2, 2);
-        assertEquals(new Fraction(1, 1), fraction.reduce());
+        Fraction result = fraction.add(number);
+        assertEquals(new Fraction(3, 2), result);
 
-        fraction = new Fraction(10, 5);
-        assertEquals(new Fraction(2, 1), fraction.reduce());
+        number = 0;
+        result = fraction.add(number);
+        assertEquals(fraction, result);
 
-        fraction = new Fraction(11, 5);
-        assertEquals(new Fraction(11, 5), fraction.reduce());
-
-        fraction = new Fraction(0);
-        assertEquals(new Fraction(0, 1), fraction.reduce());
-
-        fraction = new Fraction(-10, 5);
-        assertEquals(new Fraction(-2, 1), fraction.reduce());
-
-        fraction = new Fraction(-11, 5);
-        assertEquals(new Fraction(-11, 5), fraction.reduce());
+        number = -1;
+        result = fraction.add(number);
+        assertEquals(new Fraction(-1, 2), result);
     }
 
     @Test
-    public void sub_isCorrect() throws Exception {
+    public void subtractFraction_isCorrect() throws Exception {
         Fraction fraction1 = new Fraction(1, 2);
         Fraction fraction2 = new Fraction(1, 2);
 
@@ -110,7 +101,24 @@ public class FractionClassUnitTest {
     }
 
     @Test
-    public void mul_isCorrect() throws Exception {
+    public void subtractInteger_isCorrect() throws Exception {
+        Fraction fraction = new Fraction(1, 2);
+        int number = 1;
+
+        Fraction result = fraction.subtract(number);
+        assertEquals(new Fraction(-1, 2), result);
+
+        number = 0;
+        result = fraction.subtract(number);
+        assertEquals(fraction, result);
+
+        number = -1;
+        result = fraction.subtract(number);
+        assertEquals(new Fraction(3, 2), result);
+    }
+
+    @Test
+    public void multiplyFraction_isCorrect() throws Exception {
         Fraction fraction1 = new Fraction(1, 2);
         Fraction fraction2 = new Fraction(1, 2);
 
@@ -139,7 +147,24 @@ public class FractionClassUnitTest {
     }
 
     @Test
-    public void div_isCorrect() throws Exception {
+    public void multiplyInteger_isCorrect() throws Exception {
+        Fraction fraction = new Fraction(1, 2);
+        int number = 1;
+
+        Fraction result = fraction.multiply(number);
+        assertEquals(fraction, result);
+
+        number = 0;
+        result = fraction.multiply(number);
+        assertEquals(new Fraction(0), result);
+
+        number = -1;
+        result = fraction.multiply(number);
+        assertEquals(new Fraction(-1, 2), result);
+    }
+
+    @Test
+    public void divideFraction_isCorrect() throws Exception {
         Fraction fraction1 = new Fraction(1, 2);
         Fraction fraction2 = new Fraction(1, 2);
 
@@ -166,6 +191,50 @@ public class FractionClassUnitTest {
         fraction2 = new Fraction(-1, 3);
         result = fraction1.divide(fraction2);
         assertEquals(new Fraction(3, 2), result);
+    }
+
+    @Test
+    public void divideInteger_isCorrect() throws Exception {
+        Fraction fraction = new Fraction(1, 2);
+        int number = 1;
+
+        Fraction result = fraction.divide(number);
+        assertEquals(fraction, result);
+
+        try {
+            number = 0;
+            fraction.divide(number);
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+        }
+
+        number = -1;
+        result = fraction.divide(number);
+        assertEquals(new Fraction(-1, 2), result);
+    }
+
+    @Test
+    public void reduce_isCorrect() throws Exception {
+        Fraction fraction = new Fraction(1, 1);
+        assertEquals(new Fraction(1, 1), fraction.reduce());
+
+        fraction = new Fraction(2, 2);
+        assertEquals(new Fraction(1, 1), fraction.reduce());
+
+        fraction = new Fraction(10, 5);
+        assertEquals(new Fraction(2, 1), fraction.reduce());
+
+        fraction = new Fraction(11, 5);
+        assertEquals(new Fraction(11, 5), fraction.reduce());
+
+        fraction = new Fraction(0);
+        assertEquals(new Fraction(0, 1), fraction.reduce());
+
+        fraction = new Fraction(-10, 5);
+        assertEquals(new Fraction(-2, 1), fraction.reduce());
+
+        fraction = new Fraction(-11, 5);
+        assertEquals(new Fraction(-11, 5), fraction.reduce());
     }
 
     @Test
@@ -222,4 +291,37 @@ public class FractionClassUnitTest {
         fraction2 = new Fraction(0);
         assertTrue(fraction1.equals(fraction2));
     }
+
+    @Test
+    public void negate_isCorrect() throws Exception {
+        Fraction fraction = new Fraction(1, 2);
+
+        fraction = fraction.negate();
+        assertEquals(new Fraction(-1, 2), fraction);
+
+        fraction = fraction.negate();
+        assertEquals(new Fraction(1, 2), fraction);
+
+        fraction = new Fraction(0).negate();
+        assertEquals(new Fraction(0), fraction);
+    }
+
+    @Test
+    public void compareTo_isCorrect() throws Exception {
+        // TODO: add test cases
+    }
+
+    @Test
+    public void abs_isCorrect() throws Exception {
+        Fraction fraction = new Fraction(1, 2);
+
+        assertEquals(new Fraction(1, 2), fraction.abs());
+
+        fraction = new Fraction(-1, 2);
+        assertEquals(new Fraction(1, 2), fraction.abs());
+
+        fraction = new Fraction(0);
+        assertEquals(new Fraction(0), fraction.abs());
+    }
+
 }

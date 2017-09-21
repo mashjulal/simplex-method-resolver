@@ -15,9 +15,9 @@ public class BasisValue {
 
     @Getter @Setter private int index;
 
-    @Getter @Setter private Fraction coefficient;
+    @Getter @Setter private Coefficient coefficient;
 
-    public BasisValue(int index, Fraction coefficient) {
+    public BasisValue(int index, Coefficient coefficient) {
         this.index = index;
         this.coefficient = coefficient;
     }

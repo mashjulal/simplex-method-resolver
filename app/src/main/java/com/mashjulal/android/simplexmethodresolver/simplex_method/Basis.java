@@ -36,7 +36,7 @@ public class Basis {
         for (Equation equation : equationList) {
             coefs = new ArrayList<>();
             for (int coefficientIndex = 0; coefficientIndex < equation.size(); coefficientIndex++) {
-                if (equation.getCoefficients().get(coefficientIndex).equals(new Fraction(0)))
+                if (equation.getCoefficients().get(coefficientIndex).equals(new Coefficient(0)))
                     coefs.add(new BasisValue(coefficientIndex, equation.getValue()));
             }
             bv.add(coefs.get(coefs.size()-1));
@@ -45,7 +45,7 @@ public class Basis {
     }
 
     public void replaceValue(int oldEquationIndex,
-                             int newEquationIndex, Fraction coefficient) {
+                             int newEquationIndex, Coefficient coefficient) {
         /**
          *  def replace_value(self, eq_index, i, value):
          """
@@ -99,7 +99,7 @@ public class Basis {
         return indexes;
     }
 
-    public Fraction getCoefficient(Fraction coefficient) {
+    public Coefficient getCoefficient(int index) {
         /**
          def get_value(self, index):
          """
@@ -112,8 +112,8 @@ public class Basis {
          return v.value
          */
         for (BasisValue bv : basisValues) {
-            if (bv.getCoefficient().equals(coefficient))
-                return coefficient;
+            if (bv.getIndex() == index)
+                return bv.getCoefficient();
         }
         return null;
     }

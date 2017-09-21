@@ -1,9 +1,11 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
+import android.support.annotation.NonNull;
+
 import java.math.BigInteger;
 import java.util.Locale;
 
-public class Fraction {
+public class Fraction implements Comparable<Fraction> {
 
     private BigInteger numerator;
     private BigInteger denominator;
@@ -46,6 +48,10 @@ public class Fraction {
         return fractionNew.reduce();
     }
 
+    public Fraction add(int number) {
+        return add(new Fraction(number));
+    }
+
     public Fraction subtract(Fraction fractionOther) {
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
         if (fractionNew.denominator.equals(fractionOther.denominator)) {
@@ -64,12 +70,20 @@ public class Fraction {
         return fractionNew.reduce();
     }
 
+    public Fraction subtract(int number) {
+        return subtract(new Fraction(number));
+    }
+
     public Fraction multiply(Fraction fractionOther) {
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
         fractionNew.numerator = fractionNew.numerator.multiply(fractionOther.numerator);
         fractionNew.denominator = fractionNew.denominator.multiply(fractionOther.denominator);
 
         return fractionNew.reduce();
+    }
+
+    public Fraction multiply(int number) {
+        return multiply(new Fraction(number));
     }
 
     public Fraction divide(Fraction fractionOther) {
@@ -87,6 +101,10 @@ public class Fraction {
         return fractionNew.reduce();
     }
 
+    public Fraction divide(int number) {
+        return divide(new Fraction(number));
+    }
+
     public Fraction reduce() {
         Fraction fraction = new Fraction(this.numerator, this.denominator);
         fraction.__reduce();
@@ -97,6 +115,9 @@ public class Fraction {
         return numerator.intValue() * 1.0 / denominator.intValue();
     }
 
+    public Fraction negate() {
+        return new Fraction(this.numerator.negate(), this.denominator);
+    }
     @Override
     public String toString() {
         String str = String.format(Locale.getDefault(), "%d", this.numerator);
@@ -109,8 +130,35 @@ public class Fraction {
     public boolean equals(Object obj) {
         if (!(obj instanceof Fraction))
             return false;
-        Fraction other = (Fraction) obj;
-        return this.numerator.equals(other.numerator) &&
-                this.denominator.equals(other.denominator);
+        return compareTo((Fraction) obj) == 0;
+    }
+
+    @Override
+    public int compareTo(@NonNull Fraction o) {
+        int result;
+        int numeratorDelta = numerator.compareTo(o.numerator);
+        int denominatorDelta = denominator.compareTo(o.denominator);
+
+        if (denominatorDelta == 0) {
+            if (numeratorDelta == 0)
+                result = 0;
+            else if (numeratorDelta > 0)
+                result = 1;
+            else
+                result = -1;
+        } else if (denominatorDelta > 0) {
+            result = -1;
+        } else {
+            result = 1;
+        }
+        return result;
+    }
+
+    public int compareTo(int number) {
+        return compareTo(new Fraction(number));
+    }
+
+    public Fraction abs() {
+        return new Fraction(numerator.abs(), denominator);
     }
 }
