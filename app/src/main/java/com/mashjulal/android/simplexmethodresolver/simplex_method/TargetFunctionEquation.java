@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-public class TargetFunctionEquation extends Equation {
+@Getter
+@Setter
+class TargetFunctionEquation extends Equation {
 
-    @Getter @Setter private List<Coefficient> coefficients;
-    @Getter @Setter private Coefficient value;
+    private List<Coefficient> coefficients;
+    private Coefficient value;
 
-    public TargetFunctionEquation(List<Coefficient> coefficients, Coefficient value) {
+    TargetFunctionEquation(List<Coefficient> coefficients, Coefficient value) {
         super(coefficients, value);
         this.coefficients = coefficients;
         this.value = value;
@@ -32,16 +34,16 @@ public class TargetFunctionEquation extends Equation {
         Coefficient c;
         for (int i = 0; i < coefficients.size(); i++) {
             c = coefficients.get(i);
-            if (c.compareTo(0) != 0) {
+            if (c.compareTo(Coefficient.ZERO) != 0) {
                 sb.append(" ").append(String.format("%s %sx%s",
-                        (c.compareTo(0) > 0) ? "+" : "-", c.abs(), i + 1));
+                        (c.compareTo(Coefficient.ZERO) > 0) ? "+" : "-", c.abs(), i + 1));
             }
         }
         sb.append(" =").append(value);
         return sb.toString();
     }
 
-    public int index(Coefficient c) {
+    int index(Coefficient c) {
         /**
          *  def index(self, item):
          """

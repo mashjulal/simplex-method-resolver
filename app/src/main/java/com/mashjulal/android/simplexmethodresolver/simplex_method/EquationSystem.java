@@ -8,7 +8,7 @@ import java.util.List;
 import lombok.Getter;
 
 
-public class EquationSystem implements Iterable<Equation> {
+class EquationSystem implements Iterable<Equation> {
 
     /**
      *  # Static list for storing initial equation list
@@ -45,7 +45,7 @@ public class EquationSystem implements Iterable<Equation> {
 
     }
 
-    public int size() {
+    int size() {
         /**
          *  def __len__(self):
          return len(self.equations) + 1
@@ -53,7 +53,7 @@ public class EquationSystem implements Iterable<Equation> {
         return equationList.size() + 1;
     }
 
-    public Equation get(int i) {
+    Equation get(int i) {
         /**
          *  def __getitem__(self, item):
          if item < len(self.equations):
@@ -65,7 +65,7 @@ public class EquationSystem implements Iterable<Equation> {
         return targetFunction;
     }
 
-    public void set(int i, Equation equation) {
+    void set(int i, Equation equation) {
         /**
          *  def __setitem__(self, key, value):
          if key < len(self.equations):
@@ -79,7 +79,7 @@ public class EquationSystem implements Iterable<Equation> {
             targetFunction = (TargetFunctionEquation) equation;
     }
 
-    public void add(Equation equation) {
+    void add(Equation equation) {
         /**
          *  def add(self, equation):
          """
@@ -92,7 +92,7 @@ public class EquationSystem implements Iterable<Equation> {
         equationList.add(equation);
     }
 
-    public void reloadTargetFunction(boolean isMax) {
+    void reloadTargetFunction(boolean isMax) {
         /**
          *  def reload_target_function(self, is_max):
          """
@@ -128,7 +128,7 @@ public class EquationSystem implements Iterable<Equation> {
                 .multiply(new Coefficient((isMax) ? -1 : 1)));
     }
 
-    public void reloadFakeValues() {
+    void reloadFakeValues() {
         /**
          *  def reload_fake_values(self):
          """
@@ -141,7 +141,7 @@ public class EquationSystem implements Iterable<Equation> {
         Collections.copy(isFakeVariableList, sInitialFakeVariables);
     }
 
-    public void reloadEquations() {
+    void reloadEquations() {
         /**
          *  def reload_equations(self):
          """
@@ -155,7 +155,7 @@ public class EquationSystem implements Iterable<Equation> {
         Collections.copy(equationList, sInitialEquations);
     }
 
-    public static void setInitialFakeValues(List<Boolean> isFakeVariableList) {
+    static void setInitialFakeValues(List<Boolean> isFakeVariableList) {
         /**
          *  @staticmethod
         def set_initial_fake_values(f_v):
@@ -169,7 +169,7 @@ public class EquationSystem implements Iterable<Equation> {
         sInitialFakeVariables = isFakeVariableList;
     }
 
-    public static void setInitialEquations(List<Equation> equations) {
+    static void setInitialEquations(List<Equation> equations) {
         /**
          *  @staticmethod
         def set_initial_equations(eq_lst):
@@ -183,7 +183,7 @@ public class EquationSystem implements Iterable<Equation> {
         sInitialEquations = equations;
     }
 
-    public static void setInitialTargetFunction(TargetFunctionEquation tfe) {
+    static void setInitialTargetFunction(TargetFunctionEquation tfe) {
         /**
          *  @staticmethod
         def set_initial_target_function(t_f):

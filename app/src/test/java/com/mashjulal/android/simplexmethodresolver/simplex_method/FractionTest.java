@@ -308,7 +308,22 @@ public class FractionTest {
 
     @Test
     public void compareTo_isCorrect() throws Exception {
-        // TODO: add test cases
+        Fraction fraction1 = new Fraction(1, 2);
+        Fraction fraction2 = new Fraction(1, 2);
+        assertEquals(0, fraction1.compareTo(fraction2));
+
+        fraction2 = new Fraction(1);
+        assertEquals(-1, fraction1.compareTo(fraction2));
+
+        fraction2 = new Fraction(2, 4);
+        assertEquals(0, fraction1.compareTo(fraction2));
+
+        fraction2 = new Fraction(0);
+        assertEquals(1, fraction1.compareTo(fraction2));
+
+        fraction1 = new Fraction(0);
+        fraction2 = new Fraction(0);
+        assertEquals(0, fraction1.compareTo(fraction2));
     }
 
     @Test

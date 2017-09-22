@@ -3,7 +3,7 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
 import android.support.annotation.NonNull;
 
 
-public class M  extends Coefficient implements Comparable<Coefficient>{
+class M  extends Coefficient implements Comparable<Coefficient>{
 
     /**
      *  # Big number constant
@@ -14,7 +14,7 @@ public class M  extends Coefficient implements Comparable<Coefficient>{
     private Fraction multiplier;
     private Fraction constant;
 
-    public M(Fraction multiplier, Fraction constant) {
+    M(Fraction multiplier, Fraction constant) {
         /**
          *  def __init__(self, c, v):
          """
@@ -32,7 +32,7 @@ public class M  extends Coefficient implements Comparable<Coefficient>{
         this.constant = constant;
     }
 
-    public M add(Fraction fraction) {
+    M add(Fraction fraction) {
         /**
          *  def __add__(self, other):
          if isinstance(other, Fraction) or isinstance(other, int):
@@ -46,16 +46,16 @@ public class M  extends Coefficient implements Comparable<Coefficient>{
         return new M(multiplier, constant.add(fraction));
     }
 
-    public M add(int number) {
+    M add(int number) {
         return new M(multiplier, constant.add(number));
     }
 
-    public M add(M otherM) {
+    M add(M otherM) {
         return new M(multiplier.add(otherM.multiplier), constant.add(otherM.constant));
     }
 
 
-    public M subtract(Fraction fraction) {
+    M subtract(Fraction fraction) {
         /**
          *  def __sub__(self, other):
          if isinstance(other, Fraction):
@@ -69,15 +69,15 @@ public class M  extends Coefficient implements Comparable<Coefficient>{
         return new M(multiplier, constant.subtract(fraction));
     }
 
-    public M subtract(int number) {
+    M subtract(int number) {
         return new M(multiplier, constant.subtract(number));
     }
 
-    public M subtract(M otherM) {
+    M subtract(M otherM) {
         return new M(multiplier.subtract(otherM.multiplier), constant.subtract(otherM.constant));
     }
 
-    public M multiply(Fraction fraction) {
+    M multiply(Fraction fraction) {
         /**
          *  def __mul__(self, other):
          return M(self.coefficient * other, self.value * other)
@@ -85,11 +85,11 @@ public class M  extends Coefficient implements Comparable<Coefficient>{
         return new M(multiplier.multiply(fraction), constant.multiply(fraction));
     }
 
-    public M multiply(int number) {
+    M multiply(int number) {
         return new M(multiplier.multiply(number), constant.multiply(number));
     }
 
-    public M divide(Fraction fraction) {
+    M divide(Fraction fraction) {
         /**
          *  def __truediv__(self, other):
          return M(self.coefficient / other, self.value / other)
@@ -97,7 +97,7 @@ public class M  extends Coefficient implements Comparable<Coefficient>{
         return new M(multiplier.divide(fraction), constant.divide(fraction));
     }
 
-    public M divide(int number) {
+    M divide(int number) {
         return new M(multiplier.divide(number), constant.divide(number));
     }
 
@@ -123,23 +123,23 @@ public class M  extends Coefficient implements Comparable<Coefficient>{
          else:
             return str(format(abs(self.value)))
          */
-        if (multiplier.compareTo(0) != 0) {
-            if (constant.compareTo(0) != 0) {
-                if (multiplier.abs().compareTo(1) == 0) {
+        if (multiplier.compareTo(Fraction.ZERO) != 0) {
+            if (constant.compareTo(Fraction.ZERO) != 0) {
+                if (multiplier.abs().compareTo(Fraction.ONE) == 0) {
                     return String.format(
                             "(%sM %s %s)",
-                            (multiplier.compareTo(0) == 0) ? "" : "-",
-                            (constant.compareTo(0) > 0) ? "-" : "+",
+                            (multiplier.compareTo(Fraction.ZERO) == 0) ? "" : "-",
+                            (constant.compareTo(Fraction.ZERO) > 0) ? "-" : "+",
                             constant.abs().toString());
                 } else {
                     return String.format(
                             "(%sM %s %s)",
                             multiplier.toString(),
-                            (constant.compareTo(0) > 0) ? "-" : "+",
+                            (constant.compareTo(Fraction.ZERO) > 0) ? "-" : "+",
                             constant.abs().toString());
                 }
             } else {
-                return String.format("%sM", (multiplier.compareTo(1) > 0) ? multiplier : "");
+                return String.format("%sM", (multiplier.compareTo(Fraction.ONE) > 0) ? multiplier : "");
             }
         } else {
             return constant.abs().toString();
@@ -185,15 +185,15 @@ public class M  extends Coefficient implements Comparable<Coefficient>{
         return getTotal().compareTo(o.getTotal());
     }
 
-    public M abs() {
+    M abs() {
         /**
          *  def __abs__(self):
          return self if self.coefficient >= 0 else -self
          */
-        return (multiplier.compareTo(0) >= 0) ? this : this.negate();
+        return (multiplier.compareTo(Fraction.ZERO) >= 0) ? this : this.negate();
     }
 
-    public M negate() {
+    M negate() {
         /**
          *  def __neg__(self):
          return M(-self.coefficient, -self.value)
@@ -202,7 +202,7 @@ public class M  extends Coefficient implements Comparable<Coefficient>{
     }
 
     @Override
-    public Fraction getTotal() {
+    Fraction getTotal() {
         /**
          *  def get_total(self):
          """

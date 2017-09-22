@@ -5,7 +5,10 @@ import android.support.annotation.NonNull;
 import java.math.BigInteger;
 import java.util.Locale;
 
-public class Fraction implements Comparable<Fraction> {
+class Fraction implements Comparable<Fraction> {
+
+    static final Fraction ZERO = new Fraction(0);
+    static final Fraction ONE = new Fraction(1);
 
     private BigInteger numerator;
     private BigInteger denominator;
@@ -16,11 +19,11 @@ public class Fraction implements Comparable<Fraction> {
         this.__reduce();
     }
 
-    public Fraction(int numerator, int denominator) {
+    Fraction(int numerator, int denominator) {
         this(BigInteger.valueOf(numerator), BigInteger.valueOf(denominator));
     }
 
-    public Fraction(int numerator) {
+    Fraction(int numerator) {
         this(BigInteger.valueOf(numerator), BigInteger.ONE);
     }
 
@@ -30,7 +33,7 @@ public class Fraction implements Comparable<Fraction> {
         this.denominator = this.denominator.divide(gcd);
     }
 
-    public Fraction add(Fraction fractionOther) {
+    Fraction add(Fraction fractionOther) {
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
         if (fractionNew.denominator.equals(fractionOther.denominator)) {
             fractionNew.numerator = fractionNew.numerator.add(fractionOther.numerator);
@@ -48,11 +51,11 @@ public class Fraction implements Comparable<Fraction> {
         return fractionNew.reduce();
     }
 
-    public Fraction add(int number) {
+    Fraction add(int number) {
         return add(new Fraction(number));
     }
 
-    public Fraction subtract(Fraction fractionOther) {
+    Fraction subtract(Fraction fractionOther) {
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
         if (fractionNew.denominator.equals(fractionOther.denominator)) {
             fractionNew.numerator = fractionNew.numerator.subtract(fractionOther.numerator);
@@ -70,11 +73,11 @@ public class Fraction implements Comparable<Fraction> {
         return fractionNew.reduce();
     }
 
-    public Fraction subtract(int number) {
+    Fraction subtract(int number) {
         return subtract(new Fraction(number));
     }
 
-    public Fraction multiply(Fraction fractionOther) {
+    Fraction multiply(Fraction fractionOther) {
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
         fractionNew.numerator = fractionNew.numerator.multiply(fractionOther.numerator);
         fractionNew.denominator = fractionNew.denominator.multiply(fractionOther.denominator);
@@ -82,11 +85,11 @@ public class Fraction implements Comparable<Fraction> {
         return fractionNew.reduce();
     }
 
-    public Fraction multiply(int number) {
+    Fraction multiply(int number) {
         return multiply(new Fraction(number));
     }
 
-    public Fraction divide(Fraction fractionOther) {
+    Fraction divide(Fraction fractionOther) {
         if (fractionOther.numerator.equals(BigInteger.ZERO))
             throw new IllegalArgumentException("Division by zero!");
 
@@ -101,23 +104,24 @@ public class Fraction implements Comparable<Fraction> {
         return fractionNew.reduce();
     }
 
-    public Fraction divide(int number) {
+    Fraction divide(int number) {
         return divide(new Fraction(number));
     }
 
-    public Fraction reduce() {
+    Fraction reduce() {
         Fraction fraction = new Fraction(this.numerator, this.denominator);
         fraction.__reduce();
         return fraction;
     }
 
-    public double toDouble() {
+    double toDouble() {
         return numerator.intValue() * 1.0 / denominator.intValue();
     }
 
-    public Fraction negate() {
+    Fraction negate() {
         return new Fraction(this.numerator.negate(), this.denominator);
     }
+
     @Override
     public String toString() {
         String str = String.format(Locale.getDefault(), "%d", this.numerator);
@@ -128,37 +132,19 @@ public class Fraction implements Comparable<Fraction> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Fraction))
-            return false;
-        return compareTo((Fraction) obj) == 0;
+        return obj instanceof Fraction && compareTo((Fraction) obj) == 0;
     }
 
     @Override
     public int compareTo(@NonNull Fraction o) {
-        int result;
-        int numeratorDelta = numerator.compareTo(o.numerator);
-        int denominatorDelta = denominator.compareTo(o.denominator);
-
-        if (denominatorDelta == 0) {
-            if (numeratorDelta == 0)
-                result = 0;
-            else if (numeratorDelta > 0)
-                result = 1;
-            else
-                result = -1;
-        } else if (denominatorDelta > 0) {
-            result = -1;
-        } else {
-            result = 1;
-        }
-        return result;
+        BigInteger gcd = denominator.gcd(o.denominator);
+        BigInteger lcm = denominator.multiply(o.denominator.divide(gcd));
+        BigInteger nt = numerator.multiply(lcm.divide(denominator));
+        BigInteger no = o.numerator.multiply(lcm.divide(o.denominator));
+        return nt.compareTo(no);
     }
 
-    public int compareTo(int number) {
-        return compareTo(new Fraction(number));
-    }
-
-    public Fraction abs() {
+    Fraction abs() {
         return new Fraction(numerator.abs(), denominator);
     }
 }

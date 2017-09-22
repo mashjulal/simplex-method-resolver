@@ -10,21 +10,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-public class Equation implements Iterable<Coefficient> {
+@Getter
+@Setter
+class Equation implements Iterable<Coefficient> {
 
-    @Getter @Setter private List<Coefficient> coefficients;
-    @Getter @Setter private Coefficient value;
+    private List<Coefficient> coefficients;
+    private Coefficient value;
 
-    public Equation(List<Coefficient> coefficients, Coefficient value) {
+    Equation(List<Coefficient> coefficients, Coefficient value) {
         this.coefficients = coefficients;
         this.value = value;
     }
 
-    public int size() {
-        return coefficients.size() + 1;
+    int size() {
+        return coefficients.size();
     }
 
-    public Equation add(Coefficient coefficient) {
+    Equation add(Coefficient coefficient) {
         /**
          *  if isinstance(other, Coefficient):
          return Equation(
@@ -33,7 +35,7 @@ public class Equation implements Iterable<Coefficient> {
         return new Equation(coefficients, value.add(coefficient));
     }
 
-    public Equation add(Equation equationOther) {
+    Equation add(Equation equationOther) {
         /**
          *          elif isinstance(other, Equation):
          return Equation(
@@ -50,7 +52,7 @@ public class Equation implements Iterable<Coefficient> {
         return new Equation(cofTotalList, valueTotal);
     }
 
-    public Equation subtract(Coefficient coefficient) {
+    Equation subtract(Coefficient coefficient) {
         /**
          *  def __sub__(self, other):
            if isinstance(other, Coefficient):
@@ -60,7 +62,7 @@ public class Equation implements Iterable<Coefficient> {
         return new Equation(coefficients, value.subtract(coefficient));
     }
 
-    public Equation subtract(Equation equationOther) {
+    Equation subtract(Equation equationOther) {
         /**
          *  elif isinstance(other, Equation):
          return Equation(
@@ -77,7 +79,7 @@ public class Equation implements Iterable<Coefficient> {
         return new Equation(cofTotalList, valueTotal);
     }
 
-    public Equation multiply(Coefficient coefficient) {
+    Equation multiply(Coefficient coefficient) {
         /**
          *  def __mul__(self, other):
          if isinstance(other, Coefficient):
@@ -94,7 +96,7 @@ public class Equation implements Iterable<Coefficient> {
         return new Equation(cofTotalList, valueTotal);
     }
 
-    public Equation divide(Coefficient coefficient) {
+    Equation divide(Coefficient coefficient) {
         /**
          * def __truediv__(self, other):
          if isinstance(other, Coefficient):
@@ -111,7 +113,7 @@ public class Equation implements Iterable<Coefficient> {
         return new Equation(cofTotalList, valueTotal);
     }
 
-    public Equation negate() {
+    Equation negate() {
         /**
          *  def __neg__(self):
          return Equation([-c for c in self.coefficients])
@@ -124,7 +126,7 @@ public class Equation implements Iterable<Coefficient> {
         return new Equation(cofTotalList, valueTotal);
     }
 
-    public Coefficient getCoefficient(int i) {
+    Coefficient getCoefficient(int i) {
         /**
          *  def __getitem__(self, item):
          return self.coefficients[item]
@@ -132,7 +134,7 @@ public class Equation implements Iterable<Coefficient> {
         return coefficients.get(i);
     }
 
-    public void remove(int i) {
+    void remove(int i) {
         /**
          *  def __delitem__(self, key):
          del self.coefficients[key]
@@ -140,7 +142,7 @@ public class Equation implements Iterable<Coefficient> {
         coefficients.remove(i);
     }
 
-    public void setCoefficient(int i, Coefficient value) {
+    void setCoefficient(int i, Coefficient value) {
         /**
          *  def __setitem__(self, key, value):
          self.coefficients[key] = value
@@ -148,7 +150,7 @@ public class Equation implements Iterable<Coefficient> {
         coefficients.set(i, value);
     }
 
-    public void addCoefficient(Coefficient coefficient) {
+    void addCoefficient(Coefficient coefficient) {
         /**
          *  def add_coefficient(self, c):
          """
@@ -161,7 +163,7 @@ public class Equation implements Iterable<Coefficient> {
         coefficients.add(coefficient);
     }
 
-    public Equation express(int cofIndex) {
+    Equation express(int cofIndex) {
         /**
          *  def express(self, indx):
          """
@@ -205,8 +207,8 @@ public class Equation implements Iterable<Coefficient> {
         for (int i = 0; i < coefficients.size(); i++) {
             cof = coefficients.get(i);
             if (!cof.equals(new Coefficient(0))) {
-                sb.append((cof.compareTo(0) > 0) ? "+" : "-");
-                if (cof.abs().compareTo(1) != 0)
+                sb.append((cof.compareTo(Coefficient.ZERO) > 0) ? "+" : "-");
+                if (cof.abs().compareTo(Coefficient.ONE) != 0)
                     sb.append(cof.abs().toString());
                 sb.append(String.format(Locale.getDefault(), "x%d ", i + 1));
             }

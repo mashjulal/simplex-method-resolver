@@ -281,5 +281,5 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
  self.equation_system.target_function[-1])
  */
 
-public class SimplexMethod {
+class SimplexMethod {
 }
