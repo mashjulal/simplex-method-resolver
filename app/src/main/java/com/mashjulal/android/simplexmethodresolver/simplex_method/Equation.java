@@ -1,5 +1,7 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -12,7 +14,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-class Equation implements Iterable<Coefficient> {
+class Equation implements Iterable<Coefficient>, Comparable<Equation> {
 
     private List<Coefficient> coefficients;
     private Coefficient value;
@@ -27,25 +29,15 @@ class Equation implements Iterable<Coefficient> {
     }
 
     Equation add(Coefficient coefficient) {
-        /**
-         *  if isinstance(other, Coefficient):
-         return Equation(
-         self.get_coefficients() + [self.get_value() + other])
-         */
         return new Equation(coefficients, value.add(coefficient));
     }
 
     Equation add(Equation equationOther) {
-        /**
-         *          elif isinstance(other, Equation):
-         return Equation(
-         [c + other[i] for i, c in enumerate(self.coefficients)])
-         */
         List<Coefficient> cofTotalList = new ArrayList<>();
         Coefficient cofThis, cofOther;
-        for (int i = 0; i < size(); i++) {
-            cofThis = coefficients.get(i);
-            cofOther = equationOther.getCoefficient(i);
+        for (int i = 0; i < Math.max(size(), equationOther.size()); i++) {
+            cofThis = (i < size()) ? coefficients.get(i) : new Coefficient(0);
+            cofOther = (i < equationOther.size()) ? equationOther.getCoefficient(i) : new Coefficient(0);
             cofTotalList.add(cofThis.add(cofOther));
         }
         Coefficient valueTotal = value.add(equationOther.getValue());
@@ -53,26 +45,15 @@ class Equation implements Iterable<Coefficient> {
     }
 
     Equation subtract(Coefficient coefficient) {
-        /**
-         *  def __sub__(self, other):
-           if isinstance(other, Coefficient):
-     return Equation(
-         self.get_coefficients() + [self.get_value() - other])
-         */
         return new Equation(coefficients, value.subtract(coefficient));
     }
 
     Equation subtract(Equation equationOther) {
-        /**
-         *  elif isinstance(other, Equation):
-         return Equation(
-         [c - other[i] for i, c in enumerate(self.coefficients)])
-         */
         List<Coefficient> cofTotalList = new ArrayList<>();
         Coefficient cofThis, cofOther;
-        for (int i = 0; i < size(); i++) {
-            cofThis = coefficients.get(i);
-            cofOther = equationOther.getCoefficient(i);
+        for (int i = 0; i < Math.max(size(), equationOther.size()); i++) {
+            cofThis = (i < size()) ? coefficients.get(i) : new Coefficient(0);
+            cofOther = (i < equationOther.size()) ? equationOther.getCoefficient(i) : new Coefficient(0);
             cofTotalList.add(cofThis.subtract(cofOther));
         }
         Coefficient valueTotal = value.subtract(equationOther.getValue());
@@ -80,14 +61,6 @@ class Equation implements Iterable<Coefficient> {
     }
 
     Equation multiply(Coefficient coefficient) {
-        /**
-         *  def __mul__(self, other):
-         if isinstance(other, Coefficient):
-         return Equation(
-         [other * c for c in self.coefficients])
-         else:
-         raise RuntimeError("Unsupported operation.")
-         */
         List<Coefficient> cofTotalList = new ArrayList<>();
         for (Coefficient cof : coefficients) {
             cofTotalList.add(cof.multiply(coefficient));
@@ -97,27 +70,18 @@ class Equation implements Iterable<Coefficient> {
     }
 
     Equation divide(Coefficient coefficient) {
-        /**
-         * def __truediv__(self, other):
-         if isinstance(other, Coefficient):
-         return Equation(
-         [c / other for c in self.coefficients])
-         else:
-         raise RuntimeError("Unsupported operation.")
-         */
+        if (coefficient.equals(Coefficient.ZERO))
+            throw new IllegalArgumentException("Division by zero!");
+
         List<Coefficient> cofTotalList = new ArrayList<>();
         for (Coefficient cof : coefficients) {
-            cofTotalList.add(cof.multiply(coefficient));
+            cofTotalList.add(cof.divide(coefficient));
         }
         Coefficient valueTotal = value.divide(coefficient);
         return new Equation(cofTotalList, valueTotal);
     }
 
     Equation negate() {
-        /**
-         *  def __neg__(self):
-         return Equation([-c for c in self.coefficients])
-         */
         List<Coefficient> cofTotalList = new ArrayList<>();
         for (Coefficient cof : coefficients) {
             cofTotalList.add(cof.negate());
@@ -127,81 +91,48 @@ class Equation implements Iterable<Coefficient> {
     }
 
     Coefficient getCoefficient(int i) {
-        /**
-         *  def __getitem__(self, item):
-         return self.coefficients[item]
-         */
         return coefficients.get(i);
     }
 
-    void remove(int i) {
-        /**
-         *  def __delitem__(self, key):
-         del self.coefficients[key]
-         */
-        coefficients.remove(i);
+    void remove(int index) {
+        if (index >= size())
+            return;
+
+        List<Coefficient> cofs = new ArrayList<>();
+        for (int i = 0; i < size(); i++)
+            if (i != index)
+                cofs.add(coefficients.get(i));
+        coefficients = cofs;
     }
 
     void setCoefficient(int i, Coefficient value) {
-        /**
-         *  def __setitem__(self, key, value):
-         self.coefficients[key] = value
-         */
         coefficients.set(i, value);
     }
 
     void addCoefficient(Coefficient coefficient) {
-        /**
-         *  def add_coefficient(self, c):
-         """
-         Adds coefficient to end of coefficient list.
-         :param c: variable coefficient.
-         :return: None.
-         """
-         self.coefficients.append(c)
-         */
         coefficients.add(coefficient);
     }
 
     Equation express(int cofIndex) {
-        /**
-         *  def express(self, indx):
-         """
-         Returns expressed equation where each coefficient
-         is divided by coefficient with index indx.
-         :param indx: index of coefficient.
-         :return: expressed equation.
-         """
-         r_c = self.coefficients[indx]
-         return Equation([-c / r_c if i != indx else 0
-         for i, c in enumerate(self.coefficients)])
-         */
-        List<Coefficient> cofTotalList = new ArrayList<>();
         Coefficient cof = coefficients.get(cofIndex);
+        if (cof.equals(Coefficient.ZERO))
+            throw new IllegalArgumentException("Division by zero!");
+
+        List<Coefficient> cofTotalList = new ArrayList<>();
         for (int i = 0; i < coefficients.size(); i++) {
-            if (i != cofIndex) {
+            if (i == cofIndex) {
+                cofTotalList.add(Coefficient.ZERO);
+            } else {
                 cofTotalList.add(coefficients.get(i).negate().divide(cof));
             }
         }
-        Coefficient valueTotal = value.negate().divide(cof);
+        Coefficient valueTotal = (!cof.equals(Coefficient.ZERO)) ? value.negate().divide(cof) :
+                Coefficient.ZERO;
         return new Equation(cofTotalList, valueTotal);
     }
 
     @Override
     public String toString() {
-        /**
-         *  def __str__(self):
-         rep = ""
-         for i, c in enumerate(self.get_coefficients()):
-            if c != 0:
-                rep += "{} ".format("+" if c > 0 else "-")
-                if abs(c) != 1:
-                    rep += "{}".format(abs(c))
-                rep += "x{} ".format(i + 1)
-         if rep[0] == "+":
-            rep = rep[2:]
-         return rep + "= {}".format(self.get_value())
-         */
         StringBuilder sb = new StringBuilder();
         Coefficient cof;
         for (int i = 0; i < coefficients.size(); i++) {
@@ -210,11 +141,12 @@ class Equation implements Iterable<Coefficient> {
                 sb.append((cof.compareTo(Coefficient.ZERO) > 0) ? "+" : "-");
                 if (cof.abs().compareTo(Coefficient.ONE) != 0)
                     sb.append(cof.abs().toString());
-                sb.append(String.format(Locale.getDefault(), "x%d ", i + 1));
+                sb.append(String.format(Locale.getDefault(), "x%d", i + 1));
             }
         }
-        if (sb.substring(0, 1).equals("+"))
-            sb.delete(0, 2);
+        if (sb.length() != 0 && sb.substring(0, 1).equals("+"))
+            sb.delete(0, 1);
+        sb.append(String.format(Locale.getDefault(), "=%s", value.toString()));
         return sb.toString();
     }
 
@@ -224,5 +156,24 @@ class Equation implements Iterable<Coefficient> {
         Collections.copy(cofs, coefficients);
         cofs.add(value);
         return cofs.iterator();
+    }
+
+    @Override
+    public int compareTo(@NonNull Equation o) {
+        if (size() != o.size())
+            return Integer.compare(size(), o.size());
+
+        for (int i = 0; i < size(); i++) {
+            if (getCoefficient(i).compareTo(o.getCoefficient(i)) != 0)
+                return -1;
+        }
+        if (value != o.value)
+            return value.compareTo(o.value);
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Equation && compareTo((Equation) o) == 0;
     }
 }
