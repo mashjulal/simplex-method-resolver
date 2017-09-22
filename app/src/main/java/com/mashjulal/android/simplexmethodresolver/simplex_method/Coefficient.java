@@ -4,9 +4,6 @@ import android.support.annotation.NonNull;
 
 import lombok.ToString;
 
-/**
- * Created by master on 19.09.17.
- */
 
 @ToString
 class Coefficient implements Comparable<Coefficient> {

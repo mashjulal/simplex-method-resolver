@@ -2,8 +2,7 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import android.support.annotation.NonNull;
 
-
-class M  extends Coefficient implements Comparable<Coefficient>{
+class M extends Coefficient implements Comparable<Coefficient>{
 
     /**
      *  # Big number constant
@@ -32,73 +31,95 @@ class M  extends Coefficient implements Comparable<Coefficient>{
         this.constant = constant;
     }
 
-    M add(Fraction fraction) {
+    M(int multiplier, Fraction constant) {
         /**
-         *  def __add__(self, other):
-         if isinstance(other, Fraction) or isinstance(other, int):
-         return M(self.coefficient, self.value + other)
-         elif isinstance(other, M):
-         return M(self.coefficient + other.coefficient,
-         self.value + other.value)
-         else:
-         raise RuntimeError("Unsupported other type: " + type(other))
+         *  def __init__(self, c, v):
+         """
+         Constructor.
+         Creates big number of type cM + v.
+         :param c: coefficient before M.
+         :param v: value after M.
+         """
+         self.coefficient = Fraction(c)
+         self.value = Fraction(v)
          */
-        return new M(multiplier, constant.add(fraction));
+
+        this(new Fraction(multiplier), constant);
     }
 
-    M add(int number) {
-        return new M(multiplier, constant.add(number));
-    }
-
-    M add(M otherM) {
-        return new M(multiplier.add(otherM.multiplier), constant.add(otherM.constant));
-    }
-
-
-    M subtract(Fraction fraction) {
+    M(Fraction multiplier, int constant) {
         /**
-         *  def __sub__(self, other):
-         if isinstance(other, Fraction):
-         return M(self.coefficient, self.value - other)
-         elif isinstance(other, M):
-         return M(self.coefficient - other.coefficient,
-         self.value - other.value)
-         else:
-         raise RuntimeError("Unsupported other type: " + type(other))
+         *  def __init__(self, c, v):
+         """
+         Constructor.
+         Creates big number of type cM + v.
+         :param c: coefficient before M.
+         :param v: value after M.
+         """
+         self.coefficient = Fraction(c)
+         self.value = Fraction(v)
          */
-        return new M(multiplier, constant.subtract(fraction));
+
+        this(multiplier, new Fraction(constant));
     }
 
-    M subtract(int number) {
-        return new M(multiplier, constant.subtract(number));
-    }
-
-    M subtract(M otherM) {
-        return new M(multiplier.subtract(otherM.multiplier), constant.subtract(otherM.constant));
-    }
-
-    M multiply(Fraction fraction) {
+    M(int multiplier, int constant) {
         /**
-         *  def __mul__(self, other):
-         return M(self.coefficient * other, self.value * other)
+         *  def __init__(self, c, v):
+         """
+         Constructor.
+         Creates big number of type cM + v.
+         :param c: coefficient before M.
+         :param v: value after M.
+         """
+         self.coefficient = Fraction(c)
+         self.value = Fraction(v)
          */
-        return new M(multiplier.multiply(fraction), constant.multiply(fraction));
+
+        this(new Fraction(multiplier), new Fraction(constant));
     }
 
-    M multiply(int number) {
-        return new M(multiplier.multiply(number), constant.multiply(number));
-    }
-
-    M divide(Fraction fraction) {
+    M(Fraction multiplier) {
         /**
-         *  def __truediv__(self, other):
-         return M(self.coefficient / other, self.value / other)
+         *  def __init__(self, c, v):
+         """
+         Constructor.
+         Creates big number of type cM + v.
+         :param c: coefficient before M.
+         :param v: value after M.
+         """
+         self.coefficient = Fraction(c)
+         self.value = Fraction(v)
          */
-        return new M(multiplier.divide(fraction), constant.divide(fraction));
+        this(multiplier, new Fraction(0));
     }
 
-    M divide(int number) {
-        return new M(multiplier.divide(number), constant.divide(number));
+    M(int multiplier) {
+        /**
+         *  def __init__(self, c, v):
+         """
+         Constructor.
+         Creates big number of type cM + v.
+         :param c: coefficient before M.
+         :param v: value after M.
+         """
+         self.coefficient = Fraction(c)
+         self.value = Fraction(v)
+         */
+        this(new Fraction(multiplier), new Fraction(0));
+    }
+
+    @Override
+    Fraction getTotal() {
+        /**
+         *  def get_total(self):
+         """
+         Returns total value of cM + v.
+         :return: value of cM + v.
+         """
+         return M.__BIG_NUMBER * self.coefficient + self.value
+         */
+        return multiplier.multiply(BIG_NUMBER).add(constant);
     }
 
     @Override
@@ -106,40 +127,45 @@ class M  extends Coefficient implements Comparable<Coefficient>{
         /**
          *  def __str__(self):
          if self.coefficient != 0:
-            if self.value != 0:
-                if abs(self.coefficient) == 1:
-                    return "({}M {} {})".format(
-                        "" if self.coefficient > 0 else "-",
-                        ["-", "+"][self.value > 0],
-                        abs(self.value))
-                else:
-                    return "({}M {} {})".format(
-                        self.coefficient,
-                        ["-", "+"][self.value > 0],
-                        abs(self.value))
-            else:
-                return "{}M".format(
-                self.coefficient if self.coefficient != 1 else "")
+         if self.value != 0:
+         if abs(self.coefficient) == 1:
+         return "({}M {} {})".format(
+         "" if self.coefficient > 0 else "-",
+         ["-", "+"][self.value > 0],
+         abs(self.value))
          else:
-            return str(format(abs(self.value)))
+         return "({}M {} {})".format(
+         self.coefficient,
+         ["-", "+"][self.value > 0],
+         abs(self.value))
+         else:
+         return "{}M".format(
+         self.coefficient if self.coefficient != 1 else "")
+         else:
+         return str(format(abs(self.value)))
          */
         if (multiplier.compareTo(Fraction.ZERO) != 0) {
             if (constant.compareTo(Fraction.ZERO) != 0) {
                 if (multiplier.abs().compareTo(Fraction.ONE) == 0) {
                     return String.format(
                             "(%sM %s %s)",
-                            (multiplier.compareTo(Fraction.ZERO) == 0) ? "" : "-",
-                            (constant.compareTo(Fraction.ZERO) > 0) ? "-" : "+",
+                            (multiplier.compareTo(Fraction.ONE) == 0) ? "" : "-",
+                            (constant.compareTo(Fraction.ZERO) > 0) ? "+" : "-",
                             constant.abs().toString());
                 } else {
                     return String.format(
                             "(%sM %s %s)",
                             multiplier.toString(),
-                            (constant.compareTo(Fraction.ZERO) > 0) ? "-" : "+",
+                            (constant.compareTo(Fraction.ZERO) > 0) ? "+" : "-",
                             constant.abs().toString());
                 }
             } else {
-                return String.format("%sM", (multiplier.compareTo(Fraction.ONE) > 0) ? multiplier : "");
+                if (multiplier.abs().compareTo(Fraction.ONE) == 0) {
+                    return String.format("%sM", (multiplier.compareTo(Fraction.ONE) == 0) ? "" : "-");
+                } else {
+                    return String.format("%sM", multiplier);
+                }
+
             }
         } else {
             return constant.abs().toString();
@@ -185,6 +211,118 @@ class M  extends Coefficient implements Comparable<Coefficient>{
         return getTotal().compareTo(o.getTotal());
     }
 
+    M add(Fraction fraction) {
+        /**
+         *  def __add__(self, other):
+         if isinstance(other, Fraction) or isinstance(other, int):
+         return M(self.coefficient, self.value + other)
+         elif isinstance(other, M):
+         return M(self.coefficient + other.coefficient,
+         self.value + other.value)
+         else:
+         raise RuntimeError("Unsupported other type: " + type(other))
+         */
+        return new M(multiplier, constant.add(fraction));
+    }
+
+    M add(Coefficient c) {
+        /**
+         *  def __add__(self, other):
+         if isinstance(other, Fraction) or isinstance(other, int):
+         return M(self.coefficient, self.value + other)
+         elif isinstance(other, M):
+         return M(self.coefficient + other.coefficient,
+         self.value + other.value)
+         else:
+         raise RuntimeError("Unsupported other type: " + type(other))
+         */
+        return new M(multiplier, constant.add(c.getTotal()));
+    }
+
+    M add(int number) {
+        return new M(multiplier, constant.add(number));
+    }
+
+    M add(M otherM) {
+        return new M(multiplier.add(otherM.multiplier), constant.add(otherM.constant));
+    }
+
+    M subtract(Fraction fraction) {
+        /**
+         *  def __sub__(self, other):
+         if isinstance(other, Fraction):
+         return M(self.coefficient, self.value - other)
+         elif isinstance(other, M):
+         return M(self.coefficient - other.coefficient,
+         self.value - other.value)
+         else:
+         raise RuntimeError("Unsupported other type: " + type(other))
+         */
+        return new M(multiplier, constant.subtract(fraction));
+    }
+
+    M subtract(Coefficient c) {
+        /**
+         *  def __sub__(self, other):
+         if isinstance(other, Fraction):
+         return M(self.coefficient, self.value - other)
+         elif isinstance(other, M):
+         return M(self.coefficient - other.coefficient,
+         self.value - other.value)
+         else:
+         raise RuntimeError("Unsupported other type: " + type(other))
+         */
+        return new M(multiplier, constant.subtract(c.getTotal()));
+    }
+
+    M subtract(int number) {
+        return new M(multiplier, constant.subtract(number));
+    }
+
+    M subtract(M otherM) {
+        return new M(multiplier.subtract(otherM.multiplier), constant.subtract(otherM.constant));
+    }
+
+    M multiply(Fraction fraction) {
+        /**
+         *  def __mul__(self, other):
+         return M(self.coefficient * other, self.value * other)
+         */
+        return new M(multiplier.multiply(fraction), constant.multiply(fraction));
+    }
+
+    M multiply(Coefficient c) {
+        /**
+         *  def __mul__(self, other):
+         return M(self.coefficient * other, self.value * other)
+         */
+        return new M(multiplier.multiply(c.getTotal()), constant.multiply(c.getTotal()));
+    }
+
+    M multiply(int number) {
+        return new M(multiplier.multiply(number), constant.multiply(number));
+    }
+
+    M divide(Fraction fraction) {
+        /**
+         *  def __truediv__(self, other):
+         return M(self.coefficient / other, self.value / other)
+         */
+        return new M(multiplier.divide(fraction), constant.divide(fraction));
+    }
+
+    M divide(Coefficient c) {
+        /**
+         *  def __truediv__(self, other):
+         return M(self.coefficient / other, self.value / other)
+         */
+        return new M(multiplier.divide(c.getTotal()), constant.divide(c.getTotal()));
+    }
+
+    M divide(int number) {
+        return new M(multiplier.divide(number), constant.divide(number));
+    }
+
     M abs() {
         /**
          *  def __abs__(self):
@@ -199,18 +337,5 @@ class M  extends Coefficient implements Comparable<Coefficient>{
          return M(-self.coefficient, -self.value)
          */
         return new M(multiplier.negate(), constant.negate());
-    }
-
-    @Override
-    Fraction getTotal() {
-        /**
-         *  def get_total(self):
-         """
-         Returns total value of cM + v.
-         :return: value of cM + v.
-         """
-         return M.__BIG_NUMBER * self.coefficient + self.value
-         */
-        return multiplier.multiply(BIG_NUMBER).add(constant);
     }
 }

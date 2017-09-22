@@ -2,9 +2,7 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import org.junit.Test;
 
-/**
- * Created by master on 20.09.17.
- */
+
 public class EquationTest {
     @Test
     public void size_isCorrect() throws Exception {
@@ -17,17 +15,7 @@ public class EquationTest {
     }
 
     @Test
-    public void add1_isCorrect() throws Exception {
-
-    }
-
-    @Test
     public void subtract_isCorrect() throws Exception {
-
-    }
-
-    @Test
-    public void subtract1_isCorrect() throws Exception {
 
     }
 
