@@ -13,18 +13,18 @@ class EquationSystem implements Iterable<Equation> {
     /**
      *  # Static list for storing initial equation list
      INITIAL_EQUATIONS = []
-     # Static TargetFunctionEquation for storing initial target function
-     INITIAL_TARGET_FUNCTION = TargetFunctionEquation([])
+     # Static TargetFunction for storing initial target function
+     INITIAL_TARGET_FUNCTION = TargetFunction([])
      # Static list for storing initial list of fake variables states
      INITIAL_FAKE_VARIABLES = []
      */
 
     private static List<Equation> sInitialEquations;
-    private static TargetFunctionEquation sInitialTargetFunction;
+    private static TargetFunction sInitialTargetFunction;
     private static List<Boolean> sInitialFakeVariables;
 
     private List<Boolean> isFakeVariableList;
-    private TargetFunctionEquation targetFunction;
+    private TargetFunction targetFunction;
     @Getter private List<Equation> equationList;
 
     @Override
@@ -75,8 +75,8 @@ class EquationSystem implements Iterable<Equation> {
          */
         if (i < equationList.size())
             equationList.set(i, equation);
-        else if (equation instanceof TargetFunctionEquation)
-            targetFunction = (TargetFunctionEquation) equation;
+        else if (equation instanceof TargetFunction)
+            targetFunction = (TargetFunction) equation;
     }
 
     void add(Equation equation) {
@@ -100,7 +100,7 @@ class EquationSystem implements Iterable<Equation> {
          :param is_max: if is searching max value.
          :return: None.
          """
-         self.target_function = TargetFunctionEquation([])
+         self.target_function = TargetFunction([])
          for i in range(len(self.is_fake_values)-1):
          if not isinstance(EquationSystem.INITIAL_TARGET_FUNCTION[i], M) \
          and is_max:
@@ -183,7 +183,7 @@ class EquationSystem implements Iterable<Equation> {
         sInitialEquations = equations;
     }
 
-    static void setInitialTargetFunction(TargetFunctionEquation tfe) {
+    static void setInitialTargetFunction(TargetFunction tfe) {
         /**
          *  @staticmethod
         def set_initial_target_function(t_f):

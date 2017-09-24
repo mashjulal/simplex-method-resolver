@@ -11,7 +11,7 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
  from basis import Basis
  from equation import Equation
  from equation_system import EquationSystem
- from target_function_equation import TargetFunctionEquation
+ from target_function_equation import TargetFunction
 
 
  class SimplexMethod:
@@ -109,7 +109,7 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
  :param f_v: target function value.
  :return: None.
  """
- target_function = TargetFunctionEquation([])
+ target_function = TargetFunction([])
  for i in range(len(EquationSystem.INITIAL_FAKE_VARIABLES) - 1):
  if i < len(f_c):
  target_function.add_coefficient(-Fraction(f_c[i]))
@@ -153,7 +153,7 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
  if i < len(self.equation_system.equations):
  self.equation_system[i] = Equation(eeqq)
  else:
- self.equation_system[i] = TargetFunctionEquation(eeqq)
+ self.equation_system[i] = TargetFunction(eeqq)
 
  def show_solution(self, f_v=0, is_infinite=False, not_optimizable=False):
  """
@@ -201,7 +201,7 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
  .express(fake_index)
  eqq = [val * multiplier for val in eq]
  self.equation_system.target_function = \
- TargetFunctionEquation([eqq[j] +
+ TargetFunction([eqq[j] +
  self.equation_system.target_function[j]
  if j != fake_index else 0
  for j in range(len(eqq))])
