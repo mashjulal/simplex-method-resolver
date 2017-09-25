@@ -1,5 +1,9 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -113,9 +117,9 @@ class SimplexMethod {
             List<Integer> numbers = systemCoefficients.get(i);
             coefficients = new ArrayList<>();
             for (int j = 0; j < numbers.size(); j++) {
-                coefficients.add(new Coefficient(numbers.get(j)));
+                coefficients.add(new Number(numbers.get(j)));
             }
-            constant = new Coefficient(systemConstants.get(i));
+            constant = new Number(systemConstants.get(i));
             equations.add(new Equation(coefficients, constant));
         }
 
@@ -126,9 +130,9 @@ class SimplexMethod {
                 for (int j = 0; j < systemSize; j++) {
                     if (j == i) {
                         equations.get(j).addCoefficient(
-                                (sign.equals("<=")) ? Coefficient.ONE : Coefficient.ONE.negate());
+                                (sign.equals("<=")) ? CoefficientFactory.ONE : CoefficientFactory.ONE.negate());
                     } else {
-                        equations.get(j).addCoefficient(Coefficient.ZERO);
+                        equations.get(j).addCoefficient(CoefficientFactory.ZERO);
                     }
                 }
             }
@@ -138,7 +142,7 @@ class SimplexMethod {
             String sign = comparisonSigns.get(i);
             if (sign.equals(">=")) {
                 for (int j = 0; j < systemSize; j++) {
-                    equations.get(j).addCoefficient((j == i) ? Coefficient.ONE : Coefficient.ZERO);
+                    equations.get(j).addCoefficient((j == i) ? CoefficientFactory.ONE : CoefficientFactory.ZERO);
                 }
             }
         }
@@ -217,14 +221,14 @@ class SimplexMethod {
         List<Coefficient> coefficients = new ArrayList<>();
         for (int i = 0; i < EquationSystem.sInitialFakeVariables.size(); i++) {
             if (i < targetFunctionCoefficients.size()) {
-                coefficients.add(new Coefficient(targetFunctionCoefficients.get(i)).negate());
+                coefficients.add(new Number(targetFunctionCoefficients.get(i)).negate());
             } else {
                 coefficients.add((EquationSystem.sInitialFakeVariables.get(i)) ?
-                        M.ONE : Coefficient.ZERO);
+                        CoefficientFactory.M_ONE : CoefficientFactory.ZERO);
             }
         }
         TargetFunction tf = new TargetFunction(coefficients,
-                new Coefficient(targetFunctionConstant));
+                new Number(targetFunctionConstant));
         EquationSystem.setInitialTargetFunction(tf);
     }
 
@@ -254,10 +258,10 @@ class SimplexMethod {
         List<Coefficient> ea = new ArrayList<>();
         for (Equation e : mEquationSystem.getEquationList()) {
             Coefficient value = e.getValue(), elem = e.getCoefficient(equationIndex);
-            if (elem.compareTo(Coefficient.ZERO) <= 0 ||
-                    (value.compareTo(Coefficient.ZERO) < 0 && elem.compareTo(Coefficient.ZERO) > 0) ||
-                    (value.compareTo(Coefficient.ZERO) > 0 && elem.compareTo(Coefficient.ZERO) < 0)) {
-                ea.add(Coefficient.INFINITE);
+            if (elem.compareTo(CoefficientFactory.ZERO) <= 0 ||
+                    (value.compareTo(CoefficientFactory.ZERO) < 0 && elem.compareTo(CoefficientFactory.ZERO) > 0) ||
+                    (value.compareTo(CoefficientFactory.ZERO) > 0 && elem.compareTo(CoefficientFactory.ZERO) < 0)) {
+                ea.add(CoefficientFactory.INFINITY);
             } else {
                 ea.add(value.divide(elem));
             }
@@ -298,7 +302,7 @@ class SimplexMethod {
                 for (int j = 0; j < eqq.size(); j++) {
                     eeqq.add((j != elemIndex) ?
                             eqq.getCoefficient(j).add(row.getCoefficient(j)) :
-                            Coefficient.ZERO);
+                            CoefficientFactory.ZERO);
                 }
                 Coefficient v = row.getValue().add(eqq.getValue());
                 if (i < mEquationSystem.getEquationList().size()) {
@@ -399,7 +403,7 @@ class SimplexMethod {
         for (Integer fakeIndex : fakeIndexes) {
             Integer equationWithFakeIndex = -1;
             for (int i = 0; i < mEquationSystem.size(); i++) {
-                if (mEquationSystem.get(i).getCoefficient(fakeIndex).compareTo(Coefficient.ZERO) != 0) {
+                if (mEquationSystem.get(i).getCoefficient(fakeIndex).compareTo(CoefficientFactory.ZERO) != 0) {
                     equationWithFakeIndex = i;
                     break;
                 }
@@ -413,7 +417,7 @@ class SimplexMethod {
             for (int j = 0; j < eqq.size(); j++) {
                 tf.addCoefficient((j == fakeIndex) ?
                         eqq.getCoefficient(j).add(mEquationSystem.targetFunction.getCoefficient(j)):
-                        Coefficient.ZERO);
+                        CoefficientFactory.ZERO);
             }
 
             mEquationSystem.targetFunction = tf;
@@ -516,7 +520,7 @@ class SimplexMethod {
         }
 
         while (mEquationSystem.targetFunction.getCoefficients().stream()
-                .min(Coefficient::compareTo).get().compareTo(Coefficient.ZERO) > 0) {
+                .min(Coefficient::compareTo).get().compareTo(CoefficientFactory.ZERO) > 0) {
             Coefficient minElem = mEquationSystem.targetFunction.getCoefficients().stream()
                     .min(Coefficient::compareTo).get();
             int minElemIndex = mEquationSystem.targetFunction.index(minElem);
@@ -527,7 +531,7 @@ class SimplexMethod {
                     minElemIndex + 1, estAtt.toString()));
 
             if (estAtt.stream().min(Coefficient::compareTo)
-                    .get().compareTo(Coefficient.INFINITE) == 0) {
+                    .get().compareTo(CoefficientFactory.INFINITY) == 0) {
                 showSolution(null, true, null);
                 return;
             }
@@ -568,7 +572,7 @@ class SimplexMethod {
             }
 
             Coefficient targetFunctionConstant =
-                    (mEquationSystem.targetFunction.getValue().compareTo(Coefficient.ZERO) > 0) ?
+                    (mEquationSystem.targetFunction.getValue().compareTo(CoefficientFactory.ZERO) > 0) ?
                             mEquationSystem.targetFunction.getValue() :
                             mEquationSystem.targetFunction.getValue().negate();
             showSolution(targetFunctionConstant, false, false);

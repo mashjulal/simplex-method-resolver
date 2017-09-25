@@ -1,5 +1,7 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
+
 import org.junit.Test;
 
 import java.util.ArrayList;

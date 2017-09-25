@@ -1,42 +1,43 @@
-package com.mashjulal.android.simplexmethodresolver.simplex_method;
+package com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients;
 
 import android.support.annotation.NonNull;
 
-class M extends Coefficient implements Comparable<Coefficient>{
+import lombok.Getter;
+
+public class M extends Coefficient {
 
     private static final int BIG_NUMBER = 10000;
 
-    private Fraction multiplier;
-    private Fraction constant;
+    @Getter private Fraction multiplier;
+    @Getter private Fraction constant;
 
-    M(Fraction multiplier, Fraction constant) {
-        super(multiplier);
+    public M(Fraction multiplier, Fraction constant) {
         this.multiplier = multiplier;
         this.constant = constant;
     }
 
-    M(int multiplier, Fraction constant) {
+    public M(int multiplier, Fraction constant) {
         this(new Fraction(multiplier), constant);
     }
 
-    M(Fraction multiplier, int constant) {
+    public M(Fraction multiplier, int constant) {
         this(multiplier, new Fraction(constant));
     }
 
-    M(int multiplier, int constant) {
+    public M(int multiplier, int constant) {
         this(new Fraction(multiplier), new Fraction(constant));
     }
 
-    M(Fraction multiplier) {
+    public M(Fraction multiplier) {
         this(multiplier, new Fraction(0));
     }
 
-    M(int multiplier) {
+    public M(int multiplier) {
         this(new Fraction(multiplier), new Fraction(0));
     }
 
     @Override
-    Fraction getTotal() {
+    public Fraction getTotal() {
         return multiplier.multiply(BIG_NUMBER).add(constant);
     }
 
@@ -75,67 +76,67 @@ class M extends Coefficient implements Comparable<Coefficient>{
         return getTotal().compareTo(o.getTotal());
     }
 
-    M add(Fraction fraction) {
+    public M add(Fraction fraction) {
         return new M(multiplier, constant.add(fraction));
     }
 
-    M add(Coefficient c) {
+    public M add(Coefficient c) {
         return new M(multiplier, constant.add(c.getTotal()));
     }
 
-    M add(int number) {
+    public M add(int number) {
         return new M(multiplier, constant.add(number));
     }
 
-    M add(M otherM) {
+    public M add(M otherM) {
         return new M(multiplier.add(otherM.multiplier), constant.add(otherM.constant));
     }
 
-    M subtract(Fraction fraction) {
+    public M subtract(Fraction fraction) {
         return new M(multiplier, constant.subtract(fraction));
     }
 
-    M subtract(Coefficient c) {
+    public M subtract(Coefficient c) {
         return new M(multiplier, constant.subtract(c.getTotal()));
     }
 
-    M subtract(int number) {
+    public M subtract(int number) {
         return new M(multiplier, constant.subtract(number));
     }
 
-    M subtract(M otherM) {
+    public M subtract(M otherM) {
         return new M(multiplier.subtract(otherM.multiplier), constant.subtract(otherM.constant));
     }
 
-    M multiply(Fraction fraction) {
+    public M multiply(Fraction fraction) {
         return new M(multiplier.multiply(fraction), constant.multiply(fraction));
     }
 
-    M multiply(Coefficient c) {
+    public M multiply(Coefficient c) {
         return new M(multiplier.multiply(c.getTotal()), constant.multiply(c.getTotal()));
     }
 
-    M multiply(int number) {
+    public M multiply(int number) {
         return new M(multiplier.multiply(number), constant.multiply(number));
     }
 
-    M divide(Fraction fraction) {
+    public M divide(Fraction fraction) {
         return new M(multiplier.divide(fraction), constant.divide(fraction));
     }
 
-    M divide(Coefficient c) {
+    public M divide(Coefficient c) {
         return new M(multiplier.divide(c.getTotal()), constant.divide(c.getTotal()));
     }
 
-    M divide(int number) {
+    public M divide(int number) {
         return new M(multiplier.divide(number), constant.divide(number));
     }
 
-    M abs() {
+    public M abs() {
         return (multiplier.compareTo(Fraction.ZERO) >= 0) ? this : this.negate();
     }
 
-    M negate() {
+    public M negate() {
         return new M(multiplier.negate(), constant.negate());
     }
 }

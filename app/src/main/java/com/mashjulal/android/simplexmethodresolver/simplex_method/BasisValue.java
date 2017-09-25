@@ -2,6 +2,8 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import android.support.annotation.NonNull;
 
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

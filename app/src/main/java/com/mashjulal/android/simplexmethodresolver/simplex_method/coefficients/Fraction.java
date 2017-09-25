@@ -1,4 +1,4 @@
-package com.mashjulal.android.simplexmethodresolver.simplex_method;
+package com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients;
 
 import android.support.annotation.NonNull;
 

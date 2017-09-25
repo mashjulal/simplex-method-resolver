@@ -1,5 +1,8 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.M;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;

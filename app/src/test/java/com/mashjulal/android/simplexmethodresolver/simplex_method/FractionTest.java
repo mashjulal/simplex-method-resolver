@@ -1,5 +1,7 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Fraction;
+
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;

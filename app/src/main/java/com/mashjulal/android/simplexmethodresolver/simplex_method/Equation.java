@@ -2,6 +2,8 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import android.support.annotation.NonNull;
 
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
