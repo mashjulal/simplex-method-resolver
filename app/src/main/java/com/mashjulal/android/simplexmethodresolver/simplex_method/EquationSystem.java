@@ -19,12 +19,12 @@ class EquationSystem implements Iterable<Equation> {
      INITIAL_FAKE_VARIABLES = []
      */
 
-    private static List<Equation> sInitialEquations;
-    private static TargetFunction sInitialTargetFunction;
-    private static List<Boolean> sInitialFakeVariables;
+    static List<Equation> sInitialEquations;
+    static TargetFunction sInitialTargetFunction;
+    static List<Boolean> sInitialFakeVariables;
 
-    private List<Boolean> isFakeVariableList;
-    private TargetFunction targetFunction;
+    List<Boolean> isFakeVariableList;
+    TargetFunction targetFunction;
     @Getter private List<Equation> equationList;
 
     @Override
@@ -43,6 +43,14 @@ class EquationSystem implements Iterable<Equation> {
         sb.append(targetFunction.toString()).append("\n");
         return sb.toString();
 
+    }
+
+    @Override
+    public Iterator<Equation> iterator() {
+        List<Equation> newEquationList = new ArrayList<>();
+        Collections.copy(newEquationList, equationList);
+        newEquationList.add(targetFunction);
+        return newEquationList.iterator();
     }
 
     int size() {
@@ -195,13 +203,5 @@ class EquationSystem implements Iterable<Equation> {
         EquationSystem.INITIAL_TARGET_FUNCTION = t_f
          */
         sInitialTargetFunction = tfe;
-    }
-
-    @Override
-    public Iterator<Equation> iterator() {
-        List<Equation> newEquationList = new ArrayList<>();
-        Collections.copy(newEquationList, equationList);
-        newEquationList.add(targetFunction);
-        return newEquationList.iterator();
     }
 }

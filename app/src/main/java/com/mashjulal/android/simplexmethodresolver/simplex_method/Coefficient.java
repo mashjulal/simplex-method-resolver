@@ -10,6 +10,7 @@ class Coefficient implements Comparable<Coefficient> {
 
     static final Coefficient ZERO = new Coefficient(0);
     static final Coefficient ONE = new Coefficient(1);
+    static final Coefficient INFINITE = new Coefficient(new Fraction(1000000000));
 
     private Fraction multiplier;
 
