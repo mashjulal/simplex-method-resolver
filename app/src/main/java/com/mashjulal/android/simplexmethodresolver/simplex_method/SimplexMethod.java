@@ -52,6 +52,11 @@ class SimplexMethod {
          self.get_solution_for_function()
          print("_"*60)
          */
+        mEquationSystem.reloadFakeValues();
+        mEquationSystem.reloadTargetFunction(true);
+        mEquationSystem.reloadEquations();
+
+        showInitialEquationSystem();
         for (String title : Arrays.asList("Максимум:", "Минимум:")) {
             System.out.println(title);
             mEquationSystem.reloadFakeValues();
@@ -221,6 +226,12 @@ class SimplexMethod {
         TargetFunction tf = new TargetFunction(coefficients,
                 new Coefficient(targetFunctionConstant));
         EquationSystem.setInitialTargetFunction(tf);
+    }
+
+    private void showInitialEquationSystem() {
+        System.out.println("Изначальная система:");
+        System.out.println(mEquationSystem);
+        System.out.println("_______________________");
     }
 
     private List<Coefficient> getEstimatedAttitude(int equationIndex) {
