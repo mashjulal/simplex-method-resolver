@@ -122,7 +122,7 @@ class EquationSystem implements Iterable<Equation> {
          EquationSystem.INITIAL_TARGET_FUNCTION.get_value())
          */
 
-        List<Coefficient> cofs = new ArrayList<>();
+        targetFunction = new TargetFunction(new ArrayList<>(), Coefficient.ZERO);
         Coefficient initialCof;
         for (int i = 0; i < sInitialFakeVariables.size() - 1; i++) {
             initialCof = sInitialTargetFunction.getCoefficient(i);
@@ -146,7 +146,10 @@ class EquationSystem implements Iterable<Equation> {
          self.is_fake_values = \
          [is_fake for is_fake in EquationSystem.INITIAL_FAKE_VARIABLES]
          */
-        Collections.copy(isFakeVariableList, sInitialFakeVariables);
+        isFakeVariableList = new ArrayList<>();
+        for (boolean isFake : sInitialFakeVariables) {
+            isFakeVariableList.add(Boolean.valueOf(isFake));
+        }
     }
 
     void reloadEquations() {
@@ -160,7 +163,10 @@ class EquationSystem implements Iterable<Equation> {
          [Equation([value for value in row])
          for row in EquationSystem.INITIAL_EQUATIONS]
          */
-        Collections.copy(equationList, sInitialEquations);
+        equationList = new ArrayList<>();
+        for (Equation equation : sInitialEquations) {
+            equationList.add(equation);
+        }
     }
 
     static void setInitialFakeValues(List<Boolean> isFakeVariableList) {
