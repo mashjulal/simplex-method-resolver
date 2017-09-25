@@ -1,14 +1,12 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.M;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 
 
 class EquationSystem implements Iterable<Equation> {
@@ -22,13 +20,15 @@ class EquationSystem implements Iterable<Equation> {
      INITIAL_FAKE_VARIABLES = []
      */
 
-    static List<Equation> sInitialEquations;
-    static TargetFunction sInitialTargetFunction;
-    static List<Boolean> sInitialFakeVariables;
-
-    List<Boolean> isFakeVariableList;
-    TargetFunction targetFunction;
+    @Getter private List<Boolean> isFakeVariableList;
+    @Getter @Setter private TargetFunction targetFunction;
     @Getter private List<Equation> equationList;
+
+    public EquationSystem(List<Equation> equations, List<Boolean> fakeVariables, TargetFunction targetFunction) {
+        equationList = equations;
+        isFakeVariableList = fakeVariables;
+        this.targetFunction = targetFunction;
+    }
 
     @Override
     public String toString() {
@@ -56,7 +56,7 @@ class EquationSystem implements Iterable<Equation> {
         return newEquationList.iterator();
     }
 
-    int size() {
+    public int size() {
         /**
          *  def __len__(self):
          return len(self.equations) + 1
@@ -64,7 +64,7 @@ class EquationSystem implements Iterable<Equation> {
         return equationList.size() + 1;
     }
 
-    Equation get(int i) {
+    public Equation get(int i) {
         /**
          *  def __getitem__(self, item):
          if item < len(self.equations):
@@ -76,7 +76,7 @@ class EquationSystem implements Iterable<Equation> {
         return targetFunction;
     }
 
-    void set(int i, Equation equation) {
+    public void set(int i, Equation equation) {
         /**
          *  def __setitem__(self, key, value):
          if key < len(self.equations):
@@ -90,7 +90,7 @@ class EquationSystem implements Iterable<Equation> {
             targetFunction = (TargetFunction) equation;
     }
 
-    void add(Equation equation) {
+    public void add(Equation equation) {
         /**
          *  def add(self, equation):
          """
@@ -103,114 +103,5 @@ class EquationSystem implements Iterable<Equation> {
         equationList.add(equation);
     }
 
-    void reloadTargetFunction(boolean isMax) {
-        /**
-         *  def reload_target_function(self, is_max):
-         """
-         Reloads target function from initial.
-         :param is_max: if is searching max value.
-         :return: None.
-         """
-         self.target_function = TargetFunction([])
-         for i in range(len(self.is_fake_values)-1):
-         if not isinstance(EquationSystem.INITIAL_TARGET_FUNCTION[i], M) \
-         and is_max:
-            self.target_function.add_coefficient(
-            -EquationSystem.INITIAL_TARGET_FUNCTION[i])
-         else:
-            self.target_function.add_coefficient(
-            EquationSystem.INITIAL_TARGET_FUNCTION[i])
-         self.target_function.add_coefficient(
-         (-1 if is_max else 1) *
-         EquationSystem.INITIAL_TARGET_FUNCTION.get_value())
-         */
 
-        targetFunction = new TargetFunction(new ArrayList<>(), Coefficient.ZERO);
-        Coefficient initialCof;
-        for (int i = 0; i < sInitialFakeVariables.size() - 1; i++) {
-            initialCof = sInitialTargetFunction.getCoefficient(i);
-            if (initialCof instanceof M && isMax) {
-                targetFunction.addCoefficient(initialCof.negate());
-            } else {
-                targetFunction.addCoefficient(initialCof);
-            }
-        }
-        targetFunction.setValue(sInitialTargetFunction.getValue()
-                .multiply(new Coefficient((isMax) ? -1 : 1)));
-    }
-
-    void reloadFakeValues() {
-        /**
-         *  def reload_fake_values(self):
-         """
-         Reloads fake values from initial.
-         :return: None.
-         """
-         self.is_fake_values = \
-         [is_fake for is_fake in EquationSystem.INITIAL_FAKE_VARIABLES]
-         */
-        isFakeVariableList = new ArrayList<>();
-        for (boolean isFake : sInitialFakeVariables) {
-            isFakeVariableList.add(Boolean.valueOf(isFake));
-        }
-    }
-
-    void reloadEquations() {
-        /**
-         *  def reload_equations(self):
-         """
-         Reloads equation list from initial.
-         :return: None
-         """
-         self.equations = \
-         [Equation([value for value in row])
-         for row in EquationSystem.INITIAL_EQUATIONS]
-         */
-        equationList = new ArrayList<>();
-        for (Equation equation : sInitialEquations) {
-            equationList.add(equation);
-        }
-    }
-
-    static void setInitialFakeValues(List<Boolean> isFakeVariableList) {
-        /**
-         *  @staticmethod
-        def set_initial_fake_values(f_v):
-        """
-        Sets initial fake values state list.
-        :param f_v: fake values state list.
-        :return: None.
-        """
-        EquationSystem.INITIAL_FAKE_VARIABLES = f_v
-         */
-        sInitialFakeVariables = isFakeVariableList;
-    }
-
-    static void setInitialEquations(List<Equation> equations) {
-        /**
-         *  @staticmethod
-        def set_initial_equations(eq_lst):
-        """
-        Sets initial equation list.
-        :param eq_lst: equation list.
-        :return: None.
-        """
-        EquationSystem.INITIAL_EQUATIONS = eq_lst
-         */
-        sInitialEquations = equations;
-    }
-
-    static void setInitialTargetFunction(TargetFunction tfe) {
-        /**
-         *  @staticmethod
-        def set_initial_target_function(t_f):
-        """
-        Sets initial target function.
-        :param t_f: target function.
-        :return: None.
-        """
-        EquationSystem.INITIAL_TARGET_FUNCTION = t_f
-         */
-        sInitialTargetFunction = tfe;
-    }
 }

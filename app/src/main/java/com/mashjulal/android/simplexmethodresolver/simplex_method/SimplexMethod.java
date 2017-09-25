@@ -2,7 +2,6 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +9,7 @@ import java.util.List;
 
 class SimplexMethod {
 
+    private InputData mInputData;
     private EquationSystem mEquationSystem;
     private Basis mBasis;
 
@@ -32,10 +32,8 @@ class SimplexMethod {
          SimplexMethod.create_target_function(f_coeffs, f_value)
          self.basis = None
          */
-        mEquationSystem = new EquationSystem();
-        createFakeVariables(systemCoefficients, comparisonSigns);
-        createEquationSystem(systemCoefficients, comparisonSigns, systemConstants);
-        createTargetFunction(targetFunctionCoefficients, targetFunctionConstant);
+        mInputData = InputData.createInstance(systemCoefficients, comparisonSigns,
+                systemConstants, targetFunctionCoefficients, targetFunctionConstant);
     }
 
     void start() {
@@ -56,180 +54,15 @@ class SimplexMethod {
          self.get_solution_for_function()
          print("_"*60)
          */
-        mEquationSystem.reloadFakeValues();
-        mEquationSystem.reloadTargetFunction(true);
-        mEquationSystem.reloadEquations();
-
+        mEquationSystem = mInputData.createEquationSystem(true);
         showInitialEquationSystem();
         for (String title : Arrays.asList("Максимум:", "Минимум:")) {
             System.out.println(title);
-            mEquationSystem.reloadFakeValues();
-            mEquationSystem.reloadTargetFunction(title.equals("Максимум:"));
-            mEquationSystem.reloadEquations();
+            mEquationSystem = mInputData.createEquationSystem(title.equals("Максимум:"));
             getSolution();
             System.out.println("__________________________");
         }
 
-    }
-
-    private static void createEquationSystem(List<List<Integer>> systemCoefficients,
-                                     List<String> comparisonSigns, List<Integer> systemConstants) {
-        /**
-         * @staticmethod
-        def create_equation_system(c_s, s_c, s_v):
-        """
-        Create equation list from parameters.
-        :param s_c: equation system variable coefficients.
-        :param c_s: equation system comparison signs.
-        :param s_v: equation system right values.
-        :return: None.
-        """
-        equation_system = []
-        for i, row in enumerate(s_c):
-            equation_system.append(Equation(
-                [Fraction(elem) for elem in row]))
-
-        system_size = len(equation_system)
-        for i, sign in enumerate(c_s):
-            if sign != "=":
-                for j in range(system_size):
-                    if j == i:
-                        equation_system[j].add_coefficient(
-                            Fraction([-1, 1][sign == "<="]))
-                    else:
-                        equation_system[j].add_coefficient(Fraction(0))
-
-        for i, sign in enumerate(c_s):
-            if sign == ">=":
-                for j in range(system_size):
-                    equation_system[j].add_coefficient(Fraction([0, 1][i == j]))
-
-        for i, v in enumerate(s_v):
-            equation_system[i].add_coefficient(v)
-
-        EquationSystem.INITIAL_EQUATIONS = equation_system
-         */
-
-        List<Equation> equations = new ArrayList<>();
-        List<Coefficient> coefficients;
-        Coefficient constant;
-        for (int i = 0; i < systemCoefficients.size(); i++) {
-            List<Integer> numbers = systemCoefficients.get(i);
-            coefficients = new ArrayList<>();
-            for (int j = 0; j < numbers.size(); j++) {
-                coefficients.add(new Number(numbers.get(j)));
-            }
-            constant = new Number(systemConstants.get(i));
-            equations.add(new Equation(coefficients, constant));
-        }
-
-        int systemSize = equations.size();
-        for (int i = 0; i < comparisonSigns.size(); i++) {
-            String sign = comparisonSigns.get(i);
-            if (!sign.equals("=")) {
-                for (int j = 0; j < systemSize; j++) {
-                    if (j == i) {
-                        equations.get(j).addCoefficient(
-                                (sign.equals("<=")) ? CoefficientFactory.ONE : CoefficientFactory.ONE.negate());
-                    } else {
-                        equations.get(j).addCoefficient(CoefficientFactory.ZERO);
-                    }
-                }
-            }
-        }
-
-        for (int i = 0; i < comparisonSigns.size(); i++) {
-            String sign = comparisonSigns.get(i);
-            if (sign.equals(">=")) {
-                for (int j = 0; j < systemSize; j++) {
-                    equations.get(j).addCoefficient((j == i) ? CoefficientFactory.ONE : CoefficientFactory.ZERO);
-                }
-            }
-        }
-
-        EquationSystem.setInitialEquations(equations);
-    }
-
-    private static void createFakeVariables(List<List<Integer>> systemCoefficients,
-                                    List<String> comparisonSigns) {
-        /**
-         *  @staticmethod
-        def create_fake_variables(s_c, c_s):
-        """
-        Creates fake variable list from parameters.
-        :param s_c: equation system variable coefficients.
-        :param c_s: equation system comparison signs.
-        :return: None.
-        """
-        EquationSystem.INITIAL_FAKE_VARIABLES = [False for _ in s_c[0]] + \
-        [False for sign in c_s if
-        sign != "="] + \
-        [True for sign in c_s if
-        sign == ">="] + \
-        [False]
-         */
-        List<Boolean> fv1 = new ArrayList<>();
-        for (int i = 0; i < systemCoefficients.get(0).size(); i++) {
-            fv1.add(Boolean.FALSE);
-        }
-
-        List<Boolean> fv2 = new ArrayList<>();
-        for (String sign : comparisonSigns) {
-            if (!sign.equals("="))
-                fv2.add(Boolean.FALSE);
-        }
-        List<Boolean> fv3 = new ArrayList<>();
-        for (String sign : comparisonSigns) {
-            if (sign.equals(">=")) {
-                fv3.add(Boolean.TRUE);
-            }
-        }
-        Boolean fv4 = Boolean.FALSE;
-
-        List<Boolean> fakeVariables = new ArrayList<>();
-        fakeVariables.addAll(fv1);
-        fakeVariables.addAll(fv2);
-        fakeVariables.addAll(fv3);
-        fakeVariables.add(fv4);
-
-        EquationSystem.setInitialFakeValues(fakeVariables);
-    }
-
-    private static void createTargetFunction(List<Integer> targetFunctionCoefficients,
-                                             Integer targetFunctionConstant) {
-        /**
-         *  @staticmethod
-        def create_target_function(f_c, f_v):
-        """
-        Creates target function from parameters.
-        :param f_c: target function variable coefficients.
-        :param f_v: target function value.
-        :return: None.
-        """
-        target_function = TargetFunction([])
-        for i in range(len(EquationSystem.INITIAL_FAKE_VARIABLES) - 1):
-        if i < len(f_c):
-        target_function.add_coefficient(-Fraction(f_c[i]))
-        else:
-        target_function.add_coefficient(
-        [Fraction(0), M(1, 0)]
-        [EquationSystem.INITIAL_FAKE_VARIABLES[i]])
-        target_function.add_coefficient(f_v)
-        EquationSystem.INITIAL_TARGET_FUNCTION = target_function
-         */
-
-        List<Coefficient> coefficients = new ArrayList<>();
-        for (int i = 0; i < EquationSystem.sInitialFakeVariables.size(); i++) {
-            if (i < targetFunctionCoefficients.size()) {
-                coefficients.add(new Number(targetFunctionCoefficients.get(i)).negate());
-            } else {
-                coefficients.add((EquationSystem.sInitialFakeVariables.get(i)) ?
-                        CoefficientFactory.M_ONE : CoefficientFactory.ZERO);
-            }
-        }
-        TargetFunction tf = new TargetFunction(coefficients,
-                new Number(targetFunctionConstant));
-        EquationSystem.setInitialTargetFunction(tf);
     }
 
     private void showInitialEquationSystem() {
@@ -363,10 +196,10 @@ class SimplexMethod {
                 del self.equation_system[i][first_fake_index]
                 del self.equation_system.is_fake_values[first_fake_index]
          */
-        while (EquationSystem.sInitialFakeVariables.contains(Boolean.TRUE)) {
+        while (mEquationSystem.getIsFakeVariableList().contains(Boolean.TRUE)) {
             for (int i = 0; i < mEquationSystem.size(); i++) {
                 mEquationSystem.get(i).remove(firstFakeIndex);
-                mEquationSystem.isFakeVariableList.remove(firstFakeIndex);
+                mEquationSystem.getIsFakeVariableList().remove(firstFakeIndex);
             }
         }
     }
@@ -395,8 +228,8 @@ class SimplexMethod {
          for j in range(len(eqq))])
          */
         List<Integer> fakeIndexes = new ArrayList<>();
-        for (int i = 0; i < mEquationSystem.isFakeVariableList.size(); i++) {
-            if (mEquationSystem.isFakeVariableList.get(i)) {
+        for (int i = 0; i < mEquationSystem.getIsFakeVariableList().size(); i++) {
+            if (mEquationSystem.getIsFakeVariableList().get(i)) {
                 fakeIndexes.add(i);
             }
         }
@@ -408,19 +241,19 @@ class SimplexMethod {
                     break;
                 }
             }
-            Coefficient multiplier = mEquationSystem.targetFunction.getCoefficient(fakeIndex);
+            Coefficient multiplier = mEquationSystem.getTargetFunction().getCoefficient(fakeIndex);
             Equation eq = mEquationSystem.get(equationWithFakeIndex).express(fakeIndex);
             Equation eqq = eq.multiply(multiplier);
             TargetFunction tf = new TargetFunction(
                     new ArrayList<>(),
-                    eqq.getValue().add(mEquationSystem.targetFunction.getValue()));
+                    eqq.getValue().add(mEquationSystem.getTargetFunction().getValue()));
             for (int j = 0; j < eqq.size(); j++) {
                 tf.addCoefficient((j == fakeIndex) ?
-                        eqq.getCoefficient(j).add(mEquationSystem.targetFunction.getCoefficient(j)):
+                        eqq.getCoefficient(j).add(mEquationSystem.getTargetFunction().getCoefficient(j)):
                         CoefficientFactory.ZERO);
             }
 
-            mEquationSystem.targetFunction = tf;
+            mEquationSystem.setTargetFunction(tf);
         }
 
 
@@ -502,7 +335,7 @@ class SimplexMethod {
          [self.equation_system.target_function[-1] > 0] *
          self.equation_system.target_function[-1])
          */
-        List<Boolean> fakeVariables = mEquationSystem.isFakeVariableList;
+        List<Boolean> fakeVariables = mEquationSystem.getIsFakeVariableList();
         mBasis = new Basis(mEquationSystem.getEquationList());
 
         if (fakeVariables.stream().anyMatch((isFake) -> isFake)) {
@@ -515,15 +348,15 @@ class SimplexMethod {
             System.out.println(String.format("Базис - %s", mBasis.toString()));
 
             System.out.println(String.format("Значение целевой функции: %s",
-                    mEquationSystem.targetFunction.getValue()));
+                    mEquationSystem.getTargetFunction().getValue()));
             System.out.println("__________________");
         }
 
-        while (mEquationSystem.targetFunction.getCoefficients().stream()
+        while (mEquationSystem.getTargetFunction().getCoefficients().stream()
                 .min(Coefficient::compareTo).get().compareTo(CoefficientFactory.ZERO) > 0) {
-            Coefficient minElem = mEquationSystem.targetFunction.getCoefficients().stream()
+            Coefficient minElem = mEquationSystem.getTargetFunction().getCoefficients().stream()
                     .min(Coefficient::compareTo).get();
-            int minElemIndex = mEquationSystem.targetFunction.index(minElem);
+            int minElemIndex = mEquationSystem.getTargetFunction().index(minElem);
 
             List<Coefficient> estAtt = getEstimatedAttitude(minElemIndex);
             int eqIndex = estAtt.indexOf(estAtt.stream().min(Coefficient::compareTo).get());
@@ -551,14 +384,14 @@ class SimplexMethod {
             System.out.println(String.format("Базис - %s", mBasis.toString()));
 
             System.out.println(String.format("Значение целевой функции: %s",
-                    mEquationSystem.targetFunction.getValue()));
+                    mEquationSystem.getTargetFunction().getValue()));
             System.out.println("__________________");
 
-            Boolean anyFake = mEquationSystem.isFakeVariableList.contains(Boolean.TRUE);
+            Boolean anyFake = fakeVariables.contains(Boolean.TRUE);
 
             List<Boolean> fakes = new ArrayList<>();
-            for (int i = 0; i < mEquationSystem.isFakeVariableList.size(); i++) {
-                Boolean isFake = mEquationSystem.isFakeVariableList.get(i);
+            for (int i = 0; i < fakeVariables.size(); i++) {
+                Boolean isFake = fakeVariables.get(i);
                 fakes.add(!(isFake && mBasis.getIndexes().contains(i)));
             }
             Boolean fakeNotInBasis = fakes.stream().allMatch((isFake) -> isFake);
@@ -566,15 +399,15 @@ class SimplexMethod {
                 removeFakeVariables(fakeVariables.indexOf(Boolean.TRUE));
             }
 
-            if (mEquationSystem.isFakeVariableList.contains(Boolean.TRUE)) {
+            if (fakeVariables.contains(Boolean.TRUE)) {
                 showSolution(null, false, true);
                 return;
             }
 
             Coefficient targetFunctionConstant =
-                    (mEquationSystem.targetFunction.getValue().compareTo(CoefficientFactory.ZERO) > 0) ?
-                            mEquationSystem.targetFunction.getValue() :
-                            mEquationSystem.targetFunction.getValue().negate();
+                    (mEquationSystem.getTargetFunction().getValue().compareTo(CoefficientFactory.ZERO) > 0) ?
+                            mEquationSystem.getTargetFunction().getValue() :
+                            mEquationSystem.getTargetFunction().getValue().negate();
             showSolution(targetFunctionConstant, false, false);
         }
     }
