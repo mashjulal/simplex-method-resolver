@@ -5,10 +5,10 @@ import android.support.annotation.NonNull;
 import java.math.BigInteger;
 import java.util.Locale;
 
-class Fraction implements Comparable<Fraction> {
+public class Fraction implements Comparable<Fraction> {
 
-    static final Fraction ZERO = new Fraction(0);
-    static final Fraction ONE = new Fraction(1);
+    public static final Fraction ZERO = new Fraction(0);
+    public static final Fraction ONE = new Fraction(1);
 
     private BigInteger numerator;
     private BigInteger denominator;
@@ -19,15 +19,15 @@ class Fraction implements Comparable<Fraction> {
         this.__reduce();
     }
 
-    Fraction(int numerator, int denominator) {
+    public Fraction(int numerator, int denominator) {
         this(BigInteger.valueOf(numerator), BigInteger.valueOf(denominator));
     }
 
-    Fraction(int numerator) {
+    public Fraction(int numerator) {
         this(BigInteger.valueOf(numerator), BigInteger.ONE);
     }
 
-    Fraction(BigInteger numerator) {
+    public Fraction(BigInteger numerator) {
         this(numerator, BigInteger.ONE);
     }
 
@@ -37,7 +37,7 @@ class Fraction implements Comparable<Fraction> {
         this.denominator = this.denominator.divide(gcd);
     }
 
-    Fraction add(Fraction fractionOther) {
+    public Fraction add(Fraction fractionOther) {
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
         if (fractionNew.denominator.equals(fractionOther.denominator)) {
             fractionNew.numerator = fractionNew.numerator.add(fractionOther.numerator);
@@ -55,11 +55,11 @@ class Fraction implements Comparable<Fraction> {
         return fractionNew.reduce();
     }
 
-    Fraction add(int number) {
+    public Fraction add(int number) {
         return add(new Fraction(number));
     }
 
-    Fraction subtract(Fraction fractionOther) {
+    public Fraction subtract(Fraction fractionOther) {
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
         if (fractionNew.denominator.equals(fractionOther.denominator)) {
             fractionNew.numerator = fractionNew.numerator.subtract(fractionOther.numerator);
@@ -77,11 +77,11 @@ class Fraction implements Comparable<Fraction> {
         return fractionNew.reduce();
     }
 
-    Fraction subtract(int number) {
+    public Fraction subtract(int number) {
         return subtract(new Fraction(number));
     }
 
-    Fraction multiply(Fraction fractionOther) {
+    public Fraction multiply(Fraction fractionOther) {
         Fraction fractionNew = new Fraction(this.numerator, this.denominator);
         fractionNew.numerator = fractionNew.numerator.multiply(fractionOther.numerator);
         fractionNew.denominator = fractionNew.denominator.multiply(fractionOther.denominator);
@@ -89,11 +89,11 @@ class Fraction implements Comparable<Fraction> {
         return fractionNew.reduce();
     }
 
-    Fraction multiply(int number) {
+    public Fraction multiply(int number) {
         return multiply(new Fraction(number));
     }
 
-    Fraction divide(Fraction fractionOther) {
+    public Fraction divide(Fraction fractionOther) {
         if (fractionOther.numerator.equals(BigInteger.ZERO))
             throw new IllegalArgumentException("Division by zero!");
 
@@ -108,11 +108,11 @@ class Fraction implements Comparable<Fraction> {
         return fractionNew.reduce();
     }
 
-    Fraction divide(int number) {
+    public Fraction divide(int number) {
         return divide(new Fraction(number));
     }
 
-    Fraction reduce() {
+    public Fraction reduce() {
         Fraction fraction = new Fraction(this.numerator, this.denominator);
         fraction.__reduce();
         return fraction;
@@ -122,7 +122,7 @@ class Fraction implements Comparable<Fraction> {
         return numerator.intValue() * 1.0 / denominator.intValue();
     }
 
-    Fraction negate() {
+    public Fraction negate() {
         return new Fraction(this.numerator.negate(), this.denominator);
     }
 
@@ -148,7 +148,7 @@ class Fraction implements Comparable<Fraction> {
         return nt.compareTo(no);
     }
 
-    Fraction abs() {
+    public Fraction abs() {
         return new Fraction(numerator.abs(), denominator);
     }
 }
