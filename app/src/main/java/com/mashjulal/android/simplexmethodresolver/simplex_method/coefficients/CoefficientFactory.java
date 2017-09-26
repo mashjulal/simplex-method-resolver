@@ -1,15 +1,29 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients;
 
-/**
- * Created by master on 25.09.17.
- */
 
 public class CoefficientFactory {
 
-    public static final Coefficient ZERO = new Number(0);
-    public static final Coefficient ONE = new Number(1);
-    public static final Coefficient INFINITY = new Infinity();
-    public static final Coefficient M_ONE = new M(1, 0);
+    public static Coefficient getZero() {
+        return new Number(0);
+    }
 
+    public static Coefficient getOne() {
+        return new Number(1);
+    }
 
+    public static Coefficient getMinusOne() {
+        return new Number(-1);
+    }
+
+    public static Coefficient getInfinity() {
+        return new Infinity();
+    }
+
+    public static Coefficient getOneM() {
+        return new M(1);
+    }
+
+    public static Coefficient getMinusOneM() {
+        return new M(-1);
+    }
 }

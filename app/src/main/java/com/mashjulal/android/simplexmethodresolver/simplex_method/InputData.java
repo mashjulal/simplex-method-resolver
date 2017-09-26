@@ -60,9 +60,12 @@ class InputData {
                 for (int j = 0; j < systemSize; j++) {
                     if (j == i) {
                         equations.get(j).addCoefficient(
-                                (sign.equals("<=")) ? CoefficientFactory.ONE : CoefficientFactory.ONE.negate());
+                                (sign.equals("<=")) ?
+                                        CoefficientFactory.getOne() :
+                                        CoefficientFactory.getMinusOne());
                     } else {
-                        equations.get(j).addCoefficient(CoefficientFactory.ZERO);
+                        equations.get(j).addCoefficient(
+                                CoefficientFactory.getZero());
                     }
                 }
             }
@@ -72,7 +75,9 @@ class InputData {
             String sign = sComparisonSigns.get(i);
             if (sign.equals(">=")) {
                 for (int j = 0; j < systemSize; j++) {
-                    equations.get(j).addCoefficient((j == i) ? CoefficientFactory.ONE : CoefficientFactory.ZERO);
+                    equations.get(j).addCoefficient((j == i) ?
+                            CoefficientFactory.getOne() :
+                            CoefficientFactory.getZero());
                 }
             }
         }
@@ -151,14 +156,13 @@ class InputData {
                 coefficients.add(new Number(sTargetFunctionCoefficients.get(i)).negate());
             } else {
                 coefficients.add((fakeVariables.get(i)) ? (isMax) ?
-                        CoefficientFactory.M_ONE.negate() :
-                        CoefficientFactory.M_ONE :
-                        CoefficientFactory.ZERO);
+                        CoefficientFactory.getMinusOneM() :
+                        CoefficientFactory.getOneM() :
+                        CoefficientFactory.getZero());
             }
         }
-        TargetFunction tf = new TargetFunction(coefficients,
+        return new TargetFunction(coefficients,
                 new Number(sTargetFunctionConstant));
-        return tf;
     }
 
     public EquationSystem createEquationSystem(boolean isMax) {

@@ -91,10 +91,10 @@ class SimplexMethod {
         List<Coefficient> ea = new ArrayList<>();
         for (Equation e : mEquationSystem.getEquationList()) {
             Coefficient value = e.getValue(), elem = e.getCoefficient(equationIndex);
-            if (elem.compareTo(CoefficientFactory.ZERO) <= 0 ||
-                    (value.compareTo(CoefficientFactory.ZERO) < 0 && elem.compareTo(CoefficientFactory.ZERO) > 0) ||
-                    (value.compareTo(CoefficientFactory.ZERO) > 0 && elem.compareTo(CoefficientFactory.ZERO) < 0)) {
-                ea.add(CoefficientFactory.INFINITY);
+            if (elem.compareTo(CoefficientFactory.getZero()) <= 0 ||
+                    (value.compareTo(CoefficientFactory.getZero()) < 0 && elem.compareTo(CoefficientFactory.getZero()) > 0) ||
+                    (value.compareTo(CoefficientFactory.getZero()) > 0 && elem.compareTo(CoefficientFactory.getZero()) < 0)) {
+                ea.add(CoefficientFactory.getInfinity());
             } else {
                 ea.add(value.divide(elem));
             }
@@ -135,7 +135,7 @@ class SimplexMethod {
                 for (int j = 0; j < eqq.size(); j++) {
                     eeqq.add((j != elemIndex) ?
                             eqq.getCoefficient(j).add(row.getCoefficient(j)) :
-                            CoefficientFactory.ZERO);
+                            CoefficientFactory.getZero());
                 }
                 Coefficient v = row.getValue().add(eqq.getValue());
                 if (i < mEquationSystem.getEquationList().size()) {
@@ -236,7 +236,7 @@ class SimplexMethod {
         for (Integer fakeIndex : fakeIndexes) {
             Integer equationWithFakeIndex = -1;
             for (int i = 0; i < mEquationSystem.size(); i++) {
-                if (mEquationSystem.get(i).getCoefficient(fakeIndex).compareTo(CoefficientFactory.ZERO) != 0) {
+                if (mEquationSystem.get(i).getCoefficient(fakeIndex).compareTo(CoefficientFactory.getZero()) != 0) {
                     equationWithFakeIndex = i;
                     break;
                 }
@@ -250,7 +250,7 @@ class SimplexMethod {
             for (int j = 0; j < eqq.size(); j++) {
                 tf.addCoefficient((j == fakeIndex) ?
                         eqq.getCoefficient(j).add(mEquationSystem.getTargetFunction().getCoefficient(j)):
-                        CoefficientFactory.ZERO);
+                        CoefficientFactory.getZero());
             }
 
             mEquationSystem.setTargetFunction(tf);
@@ -353,7 +353,7 @@ class SimplexMethod {
         }
 
         while (mEquationSystem.getTargetFunction().getCoefficients().stream()
-                .min(Coefficient::compareTo).get().compareTo(CoefficientFactory.ZERO) > 0) {
+                .min(Coefficient::compareTo).get().compareTo(CoefficientFactory.getZero()) > 0) {
             Coefficient minElem = mEquationSystem.getTargetFunction().getCoefficients().stream()
                     .min(Coefficient::compareTo).get();
             int minElemIndex = mEquationSystem.getTargetFunction().index(minElem);
@@ -364,7 +364,7 @@ class SimplexMethod {
                     minElemIndex + 1, estAtt.toString()));
 
             if (estAtt.stream().min(Coefficient::compareTo)
-                    .get().compareTo(CoefficientFactory.INFINITY) == 0) {
+                    .get().compareTo(CoefficientFactory.getInfinity()) == 0) {
                 showSolution(null, true, null);
                 return;
             }
@@ -405,7 +405,7 @@ class SimplexMethod {
             }
 
             Coefficient targetFunctionConstant =
-                    (mEquationSystem.getTargetFunction().getValue().compareTo(CoefficientFactory.ZERO) > 0) ?
+                    (mEquationSystem.getTargetFunction().getValue().compareTo(CoefficientFactory.getZero()) > 0) ?
                             mEquationSystem.getTargetFunction().getValue() :
                             mEquationSystem.getTargetFunction().getValue().negate();
             showSolution(targetFunctionConstant, false, false);
