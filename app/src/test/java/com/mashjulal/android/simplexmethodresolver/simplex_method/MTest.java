@@ -3,6 +3,7 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Fraction;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.M;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 
 import org.junit.Test;
 
@@ -15,13 +16,8 @@ public class MTest {
         M m = new M(1);
         M result;
 
-        // Fraction
-        Fraction fr = new Fraction(1, 2);
-        result = m.add(fr);
-        assertEquals(new M(1, new Fraction(1, 2)), result);
-
-        // Coefficient
-        Coefficient c = new Coefficient(new Fraction(3, 4));
+        // Number
+        Coefficient c = new Number(new Fraction(3, 4));
         result = m.add(c);
         assertEquals(new M(1, new Fraction(3, 4)), result);
 
@@ -29,11 +25,6 @@ public class MTest {
         M m2 = new M(5, 6);
         result = m.add(m2);
         assertEquals(new M(6, 6), result);
-
-        // Integer
-        int n = 7;
-        result = m.add(n);
-        assertEquals(new M(1, 7), result);
     }
 
     @Test
@@ -41,13 +32,8 @@ public class MTest {
         M m = new M(1);
         M result;
 
-        // Fraction
-        Fraction fr = new Fraction(1, 2);
-        result = m.subtract(fr);
-        assertEquals(new M(1, new Fraction(-1, 2)), result);
-
-        // Coefficient
-        Coefficient c = new Coefficient(new Fraction(3, 4));
+        // Number
+        Coefficient c = new Number(new Fraction(3, 4));
         result = m.subtract(c);
         assertEquals(new M(1, new Fraction(-3, 4)), result);
 
@@ -55,11 +41,6 @@ public class MTest {
         M m2 = new M(5, 6);
         result = m.subtract(m2);
         assertEquals(new M(-4, -6), result);
-
-        // Integer
-        int n = 7;
-        result = m.subtract(n);
-        assertEquals(new M(1, -7), result);
     }
 
     @Test
@@ -67,20 +48,10 @@ public class MTest {
         M m = new M(1);
         M result;
 
-        // Fraction
-        Fraction fr = new Fraction(1, 2);
-        result = m.multiply(fr);
-        assertEquals(new M(new Fraction(1, 2), 0), result);
-
-        // Coefficient
-        Coefficient c = new Coefficient(new Fraction(3, 4));
+        // Number
+        Coefficient c = new Number(new Fraction(3, 4));
         result = m.multiply(c);
         assertEquals(new M(new Fraction(3, 4), 0), result);
-
-        // Integer
-        int n = 7;
-        result = m.multiply(n);
-        assertEquals(new M(7, 0), result);
     }
 
     @Test
@@ -88,20 +59,10 @@ public class MTest {
         M m = new M(1);
         M result;
 
-        // Fraction
-        Fraction fr = new Fraction(1, 2);
-        result = m.divide(fr);
-        assertEquals(new M(2), result);
-
-        // Coefficient
-        Coefficient c = new Coefficient(new Fraction(3, 4));
+        // Number
+        Coefficient c = new Number(new Fraction(3, 4));
         result = m.divide(c);
         assertEquals(new M(new Fraction(4, 3)), result);
-
-        // Integer
-        int n = 7;
-        result = m.divide(n);
-        assertEquals(new M(new Fraction(1, 7)), result);
     }
 
     @Test

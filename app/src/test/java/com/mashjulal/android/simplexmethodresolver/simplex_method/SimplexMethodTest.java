@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by Master on 25.09.2017.
- */
 public class SimplexMethodTest {
 
     private List<List<Integer>> getEquationCoefficients() {

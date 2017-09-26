@@ -240,24 +240,6 @@ public class FractionTest {
     }
 
     @Test
-    public void toDouble_isCorrect() throws Exception {
-        Fraction fraction = new Fraction(1, 2);
-        assertEquals(0.5, fraction.toDouble());
-
-        fraction = new Fraction(1);
-        assertEquals(1.0, fraction.toDouble());
-
-        fraction = new Fraction(0);
-        assertEquals(0.0, fraction.toDouble());
-
-        fraction = new Fraction(-1);
-        assertEquals(-1.0, fraction.toDouble());
-
-        fraction = new Fraction(-1, 2);
-        assertEquals(-0.5, fraction.toDouble());
-    }
-
-    @Test
     public void toString_isCorrect() throws Exception {
         Fraction fraction = new Fraction(1, 2);
         assertEquals("1/2", fraction.toString());

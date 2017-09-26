@@ -1,6 +1,6 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 
 import org.junit.Test;
 
@@ -19,31 +19,31 @@ public class BasisTest {
 
         equations.add(new Equation(
                 Arrays.asList(
-                        new Coefficient(5),
-                        new Coefficient(-3),
-                        new Coefficient(1),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(42)));
+                        new Number(5),
+                        new Number(-3),
+                        new Number(1),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(42)));
         equations.add(new Equation(
                 Arrays.asList(
-                        new Coefficient(0),
-                        new Coefficient(1),
-                        new Coefficient(0),
-                        new Coefficient(1),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(1)));
+                        new Number(0),
+                        new Number(1),
+                        new Number(0),
+                        new Number(1),
+                        new Number(0),
+                        new Number(0)),
+                new Number(1)));
         equations.add(new Equation(
                 Arrays.asList(
-                        new Coefficient(10),
-                        new Coefficient(4),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(-1),
-                        new Coefficient(1)),
-                new Coefficient(60)));
+                        new Number(10),
+                        new Number(4),
+                        new Number(0),
+                        new Number(0),
+                        new Number(-1),
+                        new Number(1)),
+                new Number(60)));
 
         return equations;
     }
@@ -51,11 +51,11 @@ public class BasisTest {
     @Test
     public void replaceValue_isCorrect() throws Exception {
         Basis basis = new Basis(getEquationList());
-        basis.setBasisValue(0, new BasisValue(1, new Coefficient(10)));
-        assertEquals(new BasisValue(1, new Coefficient(10)), basis.getBasisValues().get(0));
+        basis.setBasisValue(0, new BasisValue(1, new Number(10)));
+        assertEquals(new BasisValue(1, new Number(10)), basis.getBasisValues().get(0));
 
         BasisValue oldBasisValue = basis.getBasisValues().get(0);
-        basis.setBasisValue(0, new BasisValue(2, new Coefficient(10)));
+        basis.setBasisValue(0, new BasisValue(2, new Number(10)));
         assertNotSame(oldBasisValue, basis.getBasisValues().get(0));
     }
 
