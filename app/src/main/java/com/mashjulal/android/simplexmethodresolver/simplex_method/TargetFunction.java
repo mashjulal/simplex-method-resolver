@@ -1,6 +1,7 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
 
 import java.util.List;
 
@@ -28,14 +29,14 @@ class TargetFunction extends Equation {
         Coefficient c;
         for (int i = 0; i < coefficients.size(); i++) {
             c = coefficients.get(i);
-            if (c.compareTo(Coefficient.ZERO) != 0) {
+            if (!c.equals(CoefficientFactory.getZero())) {
                 sb.append(" ");
-                if (c.abs().compareTo(Coefficient.ONE) == 0) {
+                if (c.abs().equals(CoefficientFactory.getOne())) {
                     sb.append(String.format("%s x%s",
-                            (c.compareTo(Coefficient.ZERO) > 0) ? "+" : "-", i + 1));
+                            (c.bigger(CoefficientFactory.getZero())) ? "+" : "-", i + 1));
                 } else {
                     sb.append(String.format("%s %sx%s",
-                            (c.compareTo(Coefficient.ZERO) > 0) ? "+" : "-", c.abs(), i + 1));
+                            (c.bigger(CoefficientFactory.getZero())) ? "+" : "-", c.abs(), i + 1));
                 }
             }
         }

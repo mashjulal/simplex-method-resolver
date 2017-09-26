@@ -44,11 +44,8 @@ class InputData {
         List<Coefficient> coefficients;
         Coefficient constant;
         for (int i = 0; i < sEquationSystemCoefficients.size(); i++) {
-            List<Integer> numbers = sEquationSystemCoefficients.get(i);
             coefficients = new ArrayList<>();
-            for (int j = 0; j < numbers.size(); j++) {
-                coefficients.add(new Number(numbers.get(j)));
-            }
+            sEquationSystemCoefficients.get(i).forEach((n) -> coefficients.add(new Number(n)));
             constant = new Number(sEquationSystemConstants.get(i));
             equations.add(new Equation(coefficients, constant));
         }
@@ -69,10 +66,6 @@ class InputData {
                     }
                 }
             }
-        }
-
-        for (int i = 0; i < sComparisonSigns.size(); i++) {
-            String sign = sComparisonSigns.get(i);
             if (sign.equals(">=")) {
                 for (int j = 0; j < systemSize; j++) {
                     equations.get(j).addCoefficient((j == i) ?

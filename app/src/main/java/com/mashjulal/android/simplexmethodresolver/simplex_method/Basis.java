@@ -1,6 +1,7 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +27,7 @@ class Basis implements Iterable<BasisValue> {
     private static List<BasisValue> getFirstBasis(List<Equation> equationList) {
         List<BasisValue> bv = new ArrayList<>();
         List<BasisValue> coefs;
-        final Coefficient ZERO = new Coefficient(0);
+        final Coefficient ZERO = CoefficientFactory.getZero();
         for (Equation equation : equationList) {
             coefs = new ArrayList<>();
             for (int coefficientIndex = 0; coefficientIndex < equation.size(); coefficientIndex++) {

@@ -24,7 +24,8 @@ class EquationSystem implements Iterable<Equation> {
     @Getter @Setter private TargetFunction targetFunction;
     @Getter private List<Equation> equationList;
 
-    public EquationSystem(List<Equation> equations, List<Boolean> fakeVariables, TargetFunction targetFunction) {
+    public EquationSystem(List<Equation> equations, List<Boolean> fakeVariables,
+                          TargetFunction targetFunction) {
         equationList = equations;
         isFakeVariableList = fakeVariables;
         this.targetFunction = targetFunction;

@@ -3,6 +3,7 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
 import android.support.annotation.NonNull;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,8 +39,12 @@ class Equation implements Iterable<Coefficient>, Comparable<Equation> {
         List<Coefficient> cofTotalList = new ArrayList<>();
         Coefficient cofThis, cofOther;
         for (int i = 0; i < Math.max(size(), equationOther.size()); i++) {
-            cofThis = (i < size()) ? coefficients.get(i) : new Coefficient(0);
-            cofOther = (i < equationOther.size()) ? equationOther.getCoefficient(i) : new Coefficient(0);
+            cofThis = (i < size()) ?
+                    coefficients.get(i) :
+                    CoefficientFactory.getZero();
+            cofOther = (i < equationOther.size()) ?
+                    equationOther.getCoefficient(i) :
+                    CoefficientFactory.getZero();
             cofTotalList.add(cofThis.add(cofOther));
         }
         Coefficient valueTotal = value.add(equationOther.getValue());
@@ -54,8 +59,12 @@ class Equation implements Iterable<Coefficient>, Comparable<Equation> {
         List<Coefficient> cofTotalList = new ArrayList<>();
         Coefficient cofThis, cofOther;
         for (int i = 0; i < Math.max(size(), equationOther.size()); i++) {
-            cofThis = (i < size()) ? coefficients.get(i) : new Coefficient(0);
-            cofOther = (i < equationOther.size()) ? equationOther.getCoefficient(i) : new Coefficient(0);
+            cofThis = (i < size()) ?
+                    coefficients.get(i) :
+                    CoefficientFactory.getZero();
+            cofOther = (i < equationOther.size()) ?
+                    equationOther.getCoefficient(i) :
+                    CoefficientFactory.getZero();
             cofTotalList.add(cofThis.subtract(cofOther));
         }
         Coefficient valueTotal = value.subtract(equationOther.getValue());
@@ -72,7 +81,7 @@ class Equation implements Iterable<Coefficient>, Comparable<Equation> {
     }
 
     Equation divide(Coefficient coefficient) {
-        if (coefficient.equals(Coefficient.ZERO))
+        if (coefficient.equals(CoefficientFactory.getZero()))
             throw new IllegalArgumentException("Division by zero!");
 
         List<Coefficient> cofTotalList = new ArrayList<>();
@@ -117,19 +126,19 @@ class Equation implements Iterable<Coefficient>, Comparable<Equation> {
 
     Equation express(int cofIndex) {
         Coefficient cof = coefficients.get(cofIndex);
-        if (cof.equals(Coefficient.ZERO))
+        if (cof.equals(CoefficientFactory.getZero()))
             throw new IllegalArgumentException("Division by zero!");
 
         List<Coefficient> cofTotalList = new ArrayList<>();
         for (int i = 0; i < coefficients.size(); i++) {
             if (i == cofIndex) {
-                cofTotalList.add(Coefficient.ZERO);
+                cofTotalList.add(CoefficientFactory.getZero());
             } else {
                 cofTotalList.add(coefficients.get(i).negate().divide(cof));
             }
         }
-        Coefficient valueTotal = (!cof.equals(Coefficient.ZERO)) ? value.negate().divide(cof) :
-                Coefficient.ZERO;
+        Coefficient valueTotal = (!cof.equals(CoefficientFactory.getZero())) ? value.negate().divide(cof) :
+                CoefficientFactory.getZero();
         return new Equation(cofTotalList, valueTotal);
     }
 
@@ -139,9 +148,9 @@ class Equation implements Iterable<Coefficient>, Comparable<Equation> {
         Coefficient cof;
         for (int i = 0; i < coefficients.size(); i++) {
             cof = coefficients.get(i);
-            if (!cof.equals(new Coefficient(0))) {
-                sb.append((cof.compareTo(Coefficient.ZERO) > 0) ? "+" : "-");
-                if (cof.abs().compareTo(Coefficient.ONE) != 0)
+            if (!cof.equals(CoefficientFactory.getZero())) {
+                sb.append((cof.bigger(CoefficientFactory.getZero())) ? "+" : "-");
+                if (!cof.abs().equals(CoefficientFactory.getOne()))
                     sb.append(cof.abs().toString());
                 sb.append(String.format(Locale.getDefault(), "x%d", i + 1));
             }
