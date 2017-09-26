@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 abstract public class Coefficient implements Comparable<Coefficient> {
 
     @Override
-    abstract public int compareTo(@NonNull Coefficient o);
+    public int compareTo(@NonNull Coefficient o) {
+        return getTotal().compareTo(o.getTotal());
+    }
 
     @Override
     abstract public String toString();

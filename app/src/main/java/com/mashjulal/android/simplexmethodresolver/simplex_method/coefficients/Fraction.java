@@ -27,6 +27,10 @@ class Fraction implements Comparable<Fraction> {
         this(BigInteger.valueOf(numerator), BigInteger.ONE);
     }
 
+    Fraction(BigInteger numerator) {
+        this(numerator, BigInteger.ONE);
+    }
+
     private void __reduce() {
         BigInteger gcd = this.numerator.gcd(this.denominator);
         this.numerator = this.numerator.divide(gcd);

@@ -1,14 +1,11 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients;
 
-import android.support.annotation.NonNull;
+import java.math.BigInteger;
 
 
 public class Infinity extends Coefficient {
 
-    @Override
-    public int compareTo(@NonNull Coefficient o) {
-        return 1;
-    }
+    private static final Fraction BIG_NUMBER = new Fraction(BigInteger.valueOf(10000000000L));
 
     @Override
     public String toString() {
@@ -17,7 +14,7 @@ public class Infinity extends Coefficient {
 
     @Override
     public Fraction getTotal() {
-        return null;
+        return BIG_NUMBER;
     }
 
     @Override

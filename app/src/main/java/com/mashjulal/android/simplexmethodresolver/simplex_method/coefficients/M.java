@@ -1,12 +1,10 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients;
 
-import android.support.annotation.NonNull;
-
 import lombok.Getter;
 
 public class M extends Coefficient {
 
-    private static final int BIG_NUMBER = 10000;
+    private static final int BIG_NUMBER = 1000000;
 
     @Getter private Fraction multiplier;
     @Getter private Fraction constant;
@@ -34,11 +32,6 @@ public class M extends Coefficient {
 
     public M(int multiplier) {
         this(new Fraction(multiplier), new Fraction(0));
-    }
-
-    @Override
-    public Fraction getTotal() {
-        return multiplier.multiply(BIG_NUMBER).add(constant);
     }
 
     @Override
@@ -72,64 +65,68 @@ public class M extends Coefficient {
     }
 
     @Override
-    public int compareTo(@NonNull Coefficient o) {
-        return getTotal().compareTo(o.getTotal());
+    public Fraction getTotal() {
+        return multiplier.multiply(BIG_NUMBER).add(constant);
     }
 
-    public M add(Fraction fraction) {
-        return new M(multiplier, constant.add(fraction));
+    @Override
+    public M add(Coefficient o) {
+        if (o instanceof Number)
+            return add((Number) o);
+        else if (o instanceof M)
+            return add((M) o);
+        throw new UnsupportedOperationException();
     }
 
-    public M add(Coefficient c) {
-        return new M(multiplier, constant.add(c.getTotal()));
+    private M add(Number o) {
+        return new M(multiplier, constant.add(o.getMultiplier()));
     }
 
-    public M add(int number) {
-        return new M(multiplier, constant.add(number));
-    }
-
-    public M add(M otherM) {
-        return new M(multiplier.add(otherM.multiplier), constant.add(otherM.constant));
+    private M add(M o) {
+        return new M(multiplier.add(o.multiplier), constant.add(o.constant));
     }
 
     public M subtract(Fraction fraction) {
         return new M(multiplier, constant.subtract(fraction));
     }
 
-    public M subtract(Coefficient c) {
-        return new M(multiplier, constant.subtract(c.getTotal()));
+    @Override
+    public M subtract(Coefficient o) {
+        if (o instanceof Number)
+            return subtract((Number) o);
+        else if (o instanceof M)
+            return subtract((M) o);
+        throw new UnsupportedOperationException();
     }
 
-    public M subtract(int number) {
-        return new M(multiplier, constant.subtract(number));
+    public M subtract(Number o) {
+        return new M(multiplier, constant.subtract(o.getMultiplier()));
     }
 
-    public M subtract(M otherM) {
-        return new M(multiplier.subtract(otherM.multiplier), constant.subtract(otherM.constant));
+    public M subtract(M o) {
+        return new M(multiplier.subtract(o.multiplier), constant.subtract(o.constant));
     }
 
-    public M multiply(Fraction fraction) {
-        return new M(multiplier.multiply(fraction), constant.multiply(fraction));
+    @Override
+    public M multiply(Coefficient o) {
+        if (o instanceof Number)
+            return multiply((Number) o);
+        throw new UnsupportedOperationException();
     }
 
-    public M multiply(Coefficient c) {
-        return new M(multiplier.multiply(c.getTotal()), constant.multiply(c.getTotal()));
+    public M multiply(Number o) {
+        return new M(multiplier.multiply(o.getMultiplier()), constant.multiply(o.getMultiplier()));
     }
 
-    public M multiply(int number) {
-        return new M(multiplier.multiply(number), constant.multiply(number));
+    @Override
+    public M divide(Coefficient o) {
+        if (o instanceof Number)
+            return multiply((Number) o);
+        throw new UnsupportedOperationException();
     }
 
-    public M divide(Fraction fraction) {
-        return new M(multiplier.divide(fraction), constant.divide(fraction));
-    }
-
-    public M divide(Coefficient c) {
-        return new M(multiplier.divide(c.getTotal()), constant.divide(c.getTotal()));
-    }
-
-    public M divide(int number) {
-        return new M(multiplier.divide(number), constant.divide(number));
+    public M divide(Number o) {
+        return new M(multiplier.divide(o.getMultiplier()), constant.divide(o.getMultiplier()));
     }
 
     public M abs() {
