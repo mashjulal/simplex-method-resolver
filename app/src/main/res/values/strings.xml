@@ -1,6 +1,3 @@
 <resources>
     <string name="app_name">Simplex Method Resolver</string>
-
-    <string name="title_number_of_equations">Number of equations: </string>
-    <string name="title_variable_number">Number of variables: </string>
 </resources>
