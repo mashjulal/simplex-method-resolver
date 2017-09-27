@@ -10,19 +10,18 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by master on 14.09.17.
  */
 
-public class EquationItemRecyclerViewAdapter
-        extends RecyclerView.Adapter<EquationItemRecyclerViewAdapter.ViewHolder> {
+public class InputRowItemRecyclerViewAdapter
+        extends RecyclerView.Adapter<InputRowItemRecyclerViewAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Equation> mEquations;
+    private List<InputRow> mEquations;
 
-    EquationItemRecyclerViewAdapter(Context context, List<Equation> equationList) {
+    InputRowItemRecyclerViewAdapter(Context context, List<InputRow> equationList) {
         mContext = context;
         mEquations = equationList;
     }
@@ -30,7 +29,7 @@ public class EquationItemRecyclerViewAdapter
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.item_equation, null);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.item_input_row, null);
         return new ViewHolder(v);
     }
 
@@ -53,9 +52,9 @@ public class EquationItemRecyclerViewAdapter
         public ViewHolder(View itemView) {
             super(itemView);
 
-            llVariables = (LinearLayout) itemView.findViewById(R.id.ll_iEquation_variables);
-            spnrSigns = (Spinner) itemView.findViewById(R.id.spnr_iEquation_signs);
-            etValue = (EditText) itemView.findViewById(R.id.)
+            llVariables = (LinearLayout) itemView.findViewById(R.id.ll_iInputRow_variables);
+            spnrSigns = (Spinner) itemView.findViewById(R.id.spnr_iInputRow_signs);
+            etValue = (EditText) itemView.findViewById(R.id.et_iInputRow_value);
         }
     }
 }

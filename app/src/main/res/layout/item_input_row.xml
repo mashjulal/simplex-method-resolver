@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/ll_iEquation_variables"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_iInputRow_variables"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="horizontal"></LinearLayout>
+        android:orientation="horizontal"
+        tools:listitem="@layout/item_variable" />
 
     <Spinner
-        android:id="@+id/spnr_iEquation_signs"
+        android:id="@+id/spnr_iInputRow_signs"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:entries="@array/spinner_comparison_signs"
         android:gravity="center" />
 
     <EditText
-        android:id="@+id/et_iEquation_value"
-        android:layout_width="73dp"
+        android:id="@+id/et_iInputRow_constant"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="3"
         android:gravity="center"
         android:hint="0"
         android:inputType="numberDecimal" />
