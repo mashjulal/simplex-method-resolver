@@ -80,35 +80,7 @@ class InputData {
         return equations;
     }
 
-    private static List<Boolean> createFakeVariables() {
-        List<Boolean> fv1 = new ArrayList<>();
-        for (int i = 0; i < sEquationSystemCoefficients.get(0).size(); i++) {
-            fv1.add(Boolean.FALSE);
-        }
-
-        List<Boolean> fv2 = new ArrayList<>();
-        for (String sign : sComparisonSigns) {
-            if (!sign.equals("="))
-                fv2.add(Boolean.FALSE);
-        }
-        List<Boolean> fv3 = new ArrayList<>();
-        for (String sign : sComparisonSigns) {
-            if (sign.equals(">=")) {
-                fv3.add(Boolean.TRUE);
-            }
-        }
-        Boolean fv4 = Boolean.FALSE;
-
-        List<Boolean> fakeVariables = new ArrayList<>();
-        fakeVariables.addAll(fv1);
-        fakeVariables.addAll(fv2);
-        fakeVariables.addAll(fv3);
-        fakeVariables.add(fv4);
-
-        return fakeVariables;
-    }
-
-    private static TargetFunction createTargetFunction(List<Boolean> fakeVariables, boolean isMax) {
+    private static TargetFunction createTargetFunction(IsFakeVariablesList fakeVariables, boolean isMax) {
         List<Coefficient> coefficients = new ArrayList<>();
         for (int i = 0; i < fakeVariables.size(); i++) {
             if (i < sTargetFunctionCoefficients.size()) {
@@ -135,7 +107,8 @@ class InputData {
 
     public EquationSystem createEquationSystem(boolean isMax) {
         List<Equation> equations = createEquationList();
-        List<Boolean> fakeVariables = createFakeVariables();
+        IsFakeVariablesList fakeVariables = new IsFakeVariablesList(
+                sEquationSystemCoefficients.get(0).size(), sComparisonSigns);
         TargetFunction targetFunction = createTargetFunction(fakeVariables, isMax);
 
         return new EquationSystem(equations, fakeVariables, targetFunction);

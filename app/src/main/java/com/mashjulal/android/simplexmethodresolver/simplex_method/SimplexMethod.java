@@ -10,6 +10,12 @@ import java.util.Locale;
 
 class SimplexMethod {
 
+    public static final String SIGN_BIGGER = ">";
+    public static final String SIGN_BIGGER_EQUALS = ">=";
+    public static final String SIGN_EQUALS = "=";
+    public static final String SIGN_LESS_EQUALS = "<=";
+    public static final String SIGN_LESS = "<";
+
     private InputData mInputData;
     private EquationSystem mEquationSystem;
     private Basis mBasis;
@@ -141,10 +147,10 @@ class SimplexMethod {
     }
 
     private void getSolution() {
-        List<Boolean> fakeVariables = mEquationSystem.getIsFakeVariableList();
+        IsFakeVariablesList fakeVariables = mEquationSystem.getIsFakeVariableList();
         mBasis = new Basis(mEquationSystem.getEquationList());
 
-        if (fakeVariables.stream().anyMatch((isFake) -> isFake)) {
+        if (fakeVariables.contains(Boolean.TRUE)) {
             System.out.println("Первое решение:");
             getFirstSolution();
             System.out.println("Новая симплекс-таблица");

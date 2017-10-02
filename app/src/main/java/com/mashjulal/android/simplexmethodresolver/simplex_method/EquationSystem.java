@@ -11,11 +11,11 @@ import lombok.Setter;
 
 class EquationSystem implements Iterable<Equation> {
 
-    @Getter private List<Boolean> isFakeVariableList;
+    @Getter private IsFakeVariablesList isFakeVariableList;
     @Getter @Setter private TargetFunction targetFunction;
     @Getter private List<Equation> equationList;
 
-    public EquationSystem(List<Equation> equations, List<Boolean> fakeVariables,
+    public EquationSystem(List<Equation> equations, IsFakeVariablesList fakeVariables,
                           TargetFunction targetFunction) {
         equationList = equations;
         isFakeVariableList = fakeVariables;
