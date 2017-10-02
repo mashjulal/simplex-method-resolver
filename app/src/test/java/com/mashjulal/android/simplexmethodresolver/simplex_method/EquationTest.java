@@ -1,7 +1,6 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Fraction;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 
@@ -323,12 +322,12 @@ public class EquationTest {
         for (int i = 0; i < e.size(); i++) {
             Collections.copy(cofs, e.getCoefficients());
             c = e.getCoefficient(i);
-            if (c.equals(CoefficientFactory.ZERO))
+            if (c.equals(Constants.Coefficients.ZERO))
                 continue;
 
             for (int j = 0; j < cofs.size(); j++) {
                 if (j == i) {
-                    cofs.set(j, CoefficientFactory.ZERO);
+                    cofs.set(j, Constants.Coefficients.ZERO);
                 } else {
                     cofs.set(j, cofs.get(j).negate().divide(c));
                 }

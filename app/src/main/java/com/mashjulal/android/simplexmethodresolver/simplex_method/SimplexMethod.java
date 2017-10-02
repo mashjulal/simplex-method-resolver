@@ -1,7 +1,6 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,11 +9,7 @@ import java.util.Locale;
 
 class SimplexMethod {
 
-    public static final String SIGN_BIGGER = ">";
-    public static final String SIGN_BIGGER_EQUALS = ">=";
-    public static final String SIGN_EQUALS = "=";
-    public static final String SIGN_LESS_EQUALS = "<=";
-    public static final String SIGN_LESS = "<";
+
 
     private InputData mInputData;
     private EquationSystem mEquationSystem;
@@ -48,10 +43,10 @@ class SimplexMethod {
         List<Coefficient> ea = new ArrayList<>();
         for (Equation e : mEquationSystem.getEquationList()) {
             Coefficient value = e.getValue(), elem = e.getCoefficient(equationIndex);
-            if (elem.lessEquals(CoefficientFactory.ZERO) ||
-                    (value.less(CoefficientFactory.ZERO) && elem.bigger(CoefficientFactory.ZERO)) ||
-                    (value.bigger(CoefficientFactory.ZERO) && elem.less(CoefficientFactory.ZERO))) {
-                ea.add(CoefficientFactory.INFINITY);
+            if (elem.lessEquals(Constants.Coefficients.ZERO) ||
+                    (value.less(Constants.Coefficients.ZERO) && elem.bigger(Constants.Coefficients.ZERO)) ||
+                    (value.bigger(Constants.Coefficients.ZERO) && elem.less(Constants.Coefficients.ZERO))) {
+                ea.add(Constants.Coefficients.INFINITY);
             } else {
                 ea.add(value.divide(elem));
             }
@@ -72,7 +67,7 @@ class SimplexMethod {
                 for (int j = 0; j < eqq.size(); j++) {
                     eeqq.add((j != elemIndex) ?
                             eqq.getCoefficient(j).add(row.getCoefficient(j)) :
-                            CoefficientFactory.ZERO);
+                            Constants.Coefficients.ZERO);
                 }
                 Coefficient v = row.getValue().add(eqq.getValue());
                 if (i < mEquationSystem.getEquationList().size()) {
@@ -120,7 +115,7 @@ class SimplexMethod {
             Integer equationWithFakeIndex = -1;
             for (int i = 0; i < mEquationSystem.size(); i++) {
                 if (!mEquationSystem.get(i).getCoefficient(fakeIndex)
-                        .equals(CoefficientFactory.ZERO)) {
+                        .equals(Constants.Coefficients.ZERO)) {
                     equationWithFakeIndex = i;
                     break;
                 }
@@ -133,7 +128,7 @@ class SimplexMethod {
             for (int j = 0; j < eqq.size(); j++) {
                 tfCof.add((j != fakeIndex) ?
                         eqq.getCoefficient(j).add(mEquationSystem.getTargetFunction().getCoefficient(j)):
-                        CoefficientFactory.ZERO);
+                        Constants.Coefficients.ZERO);
             }
             TargetFunction tf = TargetFunction.createTargetFunction(
                     tfCof,
@@ -164,7 +159,7 @@ class SimplexMethod {
 
         Coefficient minElem = mEquationSystem.getTargetFunction().getCoefficients().stream()
                 .min(Coefficient::compareTo).get();
-        while (minElem.less(CoefficientFactory.ZERO)) {
+        while (minElem.less(Constants.Coefficients.ZERO)) {
             int minElemIndex = mEquationSystem.getTargetFunction().index(minElem);
 
             List<Coefficient> estAtt = getEstimatedAttitude(minElemIndex);
@@ -173,7 +168,7 @@ class SimplexMethod {
                     minElemIndex + 1, estAtt.toString()));
 
             if (estAtt.stream().min(Coefficient::compareTo)
-                    .get().equals(CoefficientFactory.INFINITY)) {
+                    .get().equals(Constants.Coefficients.INFINITY)) {
                 showSolution(null, true, null);
                 return;
             }
@@ -220,7 +215,7 @@ class SimplexMethod {
 
         Coefficient targetFunctionConstant =
                 (mEquationSystem.getTargetFunction().getValue()
-                        .bigger(CoefficientFactory.ZERO)) ?
+                        .bigger(Constants.Coefficients.ZERO)) ?
                         mEquationSystem.getTargetFunction().getValue() :
                         mEquationSystem.getTargetFunction().getValue().negate();
         showSolution(targetFunctionConstant, false, false);

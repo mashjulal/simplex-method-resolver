@@ -1,7 +1,6 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.M;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 
@@ -56,24 +55,24 @@ class InputData {
         int systemSize = equations.size();
         for (int i = 0; i < sComparisonSigns.size(); i++) {
             String sign = sComparisonSigns.get(i);
-            if (!sign.equals("=")) {
+            if (!sign.equals(Constants.ComparisonSigns.SIGN_EQUALS)) {
                 for (int j = 0; j < systemSize; j++) {
                     if (j == i) {
                         equations.get(j).addCoefficient(
-                                (sign.equals("<=")) ?
-                                        CoefficientFactory.ONE :
-                                        CoefficientFactory.MINUS_ONE);
+                                (sign.equals(Constants.ComparisonSigns.SIGN_LESS_EQUALS)) ?
+                                        Constants.Coefficients.ONE :
+                                        Constants.Coefficients.MINUS_ONE);
                     } else {
                         equations.get(j).addCoefficient(
-                                CoefficientFactory.ZERO);
+                                Constants.Coefficients.ZERO);
                     }
                 }
             }
-            if (sign.equals(">=")) {
+            if (sign.equals(Constants.ComparisonSigns.SIGN_BIGGER_EQUALS)) {
                 for (int j = 0; j < systemSize; j++) {
                     equations.get(j).addCoefficient((j == i) ?
-                            CoefficientFactory.ONE :
-                            CoefficientFactory.ZERO);
+                            Constants.Coefficients.ONE :
+                            Constants.Coefficients.ZERO);
                 }
             }
         }
@@ -87,8 +86,8 @@ class InputData {
                 coefficients.add(new Number(sTargetFunctionCoefficients.get(i)).negate());
             } else {
                 coefficients.add((fakeVariables.get(i)) ?
-                        CoefficientFactory.M :
-                        CoefficientFactory.ZERO);
+                        Constants.Coefficients.M :
+                        Constants.Coefficients.ZERO);
             }
         }
         TargetFunction tf = TargetFunction.createTargetFunction(coefficients,

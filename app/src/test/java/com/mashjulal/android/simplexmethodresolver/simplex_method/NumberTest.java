@@ -1,9 +1,8 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Fraction;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 
 import org.junit.Test;
 
@@ -33,19 +32,19 @@ public class NumberTest {
         Coefficient c2 = new Number(new Fraction(1, 2));
 
         Coefficient result = c1.add(c2);
-        assertEquals(CoefficientFactory.ONE, result);
+        assertEquals(Constants.Coefficients.ONE, result);
 
         c2 = new Number(new Fraction(1, 3));
         result = c1.add(c2);
         assertEquals(new Number(new Fraction(5, 6)), result);
 
-        c2 = CoefficientFactory.ZERO;
+        c2 = Constants.Coefficients.ZERO;
         result = c1.add(c2);
         assertEquals(c1, result);
 
         c2 = new Number(new Fraction(-1, 2));
         result = c1.add(c2);
-        assertEquals(CoefficientFactory.ZERO, result);
+        assertEquals(Constants.Coefficients.ZERO, result);
 
         c1 = new Number(new Fraction(-1, 2));
         result = c1.add(c2);
@@ -62,7 +61,7 @@ public class NumberTest {
         Coefficient c2 = new Number(new Fraction(1, 2));
 
         Coefficient result = c1.subtract(c2);
-        assertEquals(CoefficientFactory.ZERO, result);
+        assertEquals(Constants.Coefficients.ZERO, result);
     }
 
     @Test
@@ -80,7 +79,7 @@ public class NumberTest {
         Coefficient c2 = new Number(new Fraction(1, 2));
 
         Coefficient result = c1.divide(c2);
-        assertEquals(CoefficientFactory.ONE, result);
+        assertEquals(Constants.Coefficients.ONE, result);
     }
 
     @Test
@@ -111,14 +110,14 @@ public class NumberTest {
         Coefficient c2 = new Number(new Fraction(1, 3));
         assertEquals(0, c1.compareTo(c2));
 
-        c2 = CoefficientFactory.ONE;
+        c2 = Constants.Coefficients.ONE;
         assertEquals(-1, c1.compareTo(c2));
 
-        c2 = CoefficientFactory.ZERO;
+        c2 = Constants.Coefficients.ZERO;
         assertEquals(1, c1.compareTo(c2));
 
-        c1 = CoefficientFactory.ONE;
-        c2 = CoefficientFactory.ONE;
+        c1 = Constants.Coefficients.ONE;
+        c2 = Constants.Coefficients.ONE;
         assertEquals(0, c1.compareTo(c2));
     }
 

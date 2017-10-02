@@ -1,7 +1,6 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.M;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 
@@ -32,14 +31,14 @@ class TargetFunction extends Equation {
         Coefficient c;
         for (int i = 0; i < coefficients.size(); i++) {
             c = coefficients.get(i);
-            if (!c.equals(CoefficientFactory.ZERO)) {
+            if (!c.equals(Constants.Coefficients.ZERO)) {
                 sb.append(" ");
-                if (c.abs().equals(CoefficientFactory.ONE)) {
+                if (c.abs().equals(Constants.Coefficients.ONE)) {
                     sb.append(String.format("%s x%s",
-                            (c.bigger(CoefficientFactory.ZERO)) ? "+" : "-", i + 1));
+                            (c.bigger(Constants.Coefficients.ZERO)) ? "+" : "-", i + 1));
                 } else {
                     sb.append(String.format("%s %sx%s",
-                            (c.bigger(CoefficientFactory.ZERO)) ? "+" : "-", c.abs(), i + 1));
+                            (c.bigger(Constants.Coefficients.ZERO)) ? "+" : "-", c.abs(), i + 1));
                 }
             }
         }
@@ -61,8 +60,8 @@ class TargetFunction extends Equation {
                 coefficients.add(new Number(sTargetFunctionCoefficients.get(i)).negate());
             } else {
                 coefficients.add((fakeVariables.get(i)) ?
-                        CoefficientFactory.M :
-                        CoefficientFactory.ZERO);
+                        Constants.Coefficients.M :
+                        Constants.Coefficients.ZERO);
             }
         }
         TargetFunction tf = new TargetFunction(coefficients,

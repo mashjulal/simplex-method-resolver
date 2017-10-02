@@ -1,6 +1,5 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 
 import org.junit.Test;
@@ -45,9 +44,9 @@ public class EquationSystemTest {
 
     private static List<String> getComparisonSigns() {
         List<String> signs = new ArrayList<>();
-        signs.add("<=");
-        signs.add("<=");
-        signs.add(">=");
+        signs.add(Constants.ComparisonSigns.SIGN_LESS_EQUALS);
+        signs.add(Constants.ComparisonSigns.SIGN_LESS_EQUALS);
+        signs.add(Constants.ComparisonSigns.SIGN_BIGGER_EQUALS);
         return signs;
     }
 
@@ -91,9 +90,9 @@ public class EquationSystemTest {
                 getTargetFunctionConstant()).createEquationSystem(true);
 
         assertEquals(new Equation(Arrays.asList(
-                new Number(5), new Number(-3), CoefficientFactory.ONE,
-                CoefficientFactory.ZERO, CoefficientFactory.ZERO,
-                CoefficientFactory.ZERO), new Number(42)), equationSystem.get(0));
+                new Number(5), new Number(-3), Constants.Coefficients.ONE,
+                Constants.Coefficients.ZERO, Constants.Coefficients.ZERO,
+                Constants.Coefficients.ZERO), new Number(42)), equationSystem.get(0));
     }
 
     @Test
@@ -106,14 +105,14 @@ public class EquationSystemTest {
                 getTargetFunctionConstant()).createEquationSystem(true);
 
         equationSystem.set(0, new Equation(Arrays.asList(
-                new Number(4), new Number(3), CoefficientFactory.ZERO,
-                CoefficientFactory.ZERO, CoefficientFactory.ZERO,
-                CoefficientFactory.ONE), new Number(52)));
+                new Number(4), new Number(3), Constants.Coefficients.ZERO,
+                Constants.Coefficients.ZERO, Constants.Coefficients.ZERO,
+                Constants.Coefficients.ONE), new Number(52)));
 
         assertEquals(new Equation(Arrays.asList(
-                new Number(4), new Number(3), CoefficientFactory.ZERO,
-                CoefficientFactory.ZERO, CoefficientFactory.ZERO,
-                CoefficientFactory.ONE), new Number(52)), equationSystem.get(0));
+                new Number(4), new Number(3), Constants.Coefficients.ZERO,
+                Constants.Coefficients.ZERO, Constants.Coefficients.ZERO,
+                Constants.Coefficients.ONE), new Number(52)), equationSystem.get(0));
     }
 
     @Test
@@ -126,14 +125,14 @@ public class EquationSystemTest {
                 getTargetFunctionConstant()).createEquationSystem(true);
 
         equationSystem.add(new Equation(Arrays.asList(
-                new Number(5), new Number(-3), CoefficientFactory.ZERO,
-                CoefficientFactory.ZERO, CoefficientFactory.ZERO,
-                CoefficientFactory.ZERO), new Number(42)));
+                new Number(5), new Number(-3), Constants.Coefficients.ZERO,
+                Constants.Coefficients.ZERO, Constants.Coefficients.ZERO,
+                Constants.Coefficients.ZERO), new Number(42)));
 
         assertEquals(new Equation(Arrays.asList(
-                new Number(5), new Number(-3), CoefficientFactory.ZERO,
-                CoefficientFactory.ZERO, CoefficientFactory.ZERO,
-                CoefficientFactory.ZERO), new Number(42)), equationSystem.get(3));
+                new Number(5), new Number(-3), Constants.Coefficients.ZERO,
+                Constants.Coefficients.ZERO, Constants.Coefficients.ZERO,
+                Constants.Coefficients.ZERO), new Number(42)), equationSystem.get(3));
     }
 
 }

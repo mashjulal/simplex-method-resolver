@@ -20,12 +20,12 @@ public class IsFakeVariablesList {
 
         List<Boolean> fv2 = new ArrayList<>();
         for (String sign : comparisonSigns) {
-            if (!sign.equals(SimplexMethod.SIGN_EQUALS))
+            if (!sign.equals(Constants.ComparisonSigns.SIGN_EQUALS))
                 fv2.add(Boolean.FALSE);
         }
         List<Boolean> fv3 = new ArrayList<>();
         for (String sign : comparisonSigns) {
-            if (sign.equals(SimplexMethod.SIGN_BIGGER_EQUALS)) {
+            if (sign.equals(Constants.ComparisonSigns.SIGN_BIGGER_EQUALS)) {
                 fv3.add(Boolean.TRUE);
             }
         }

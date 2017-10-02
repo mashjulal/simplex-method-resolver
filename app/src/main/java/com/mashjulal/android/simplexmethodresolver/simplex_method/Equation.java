@@ -3,7 +3,6 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
 import android.support.annotation.NonNull;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
-import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,10 +39,10 @@ class Equation implements Iterable<Coefficient>, Comparable<Equation> {
         for (int i = 0; i < Math.max(size(), equationOther.size()); i++) {
             cofThis = (i < size()) ?
                     coefficients.get(i) :
-                    CoefficientFactory.ZERO;
+                    Constants.Coefficients.ZERO;
             cofOther = (i < equationOther.size()) ?
                     equationOther.getCoefficient(i) :
-                    CoefficientFactory.ZERO;
+                    Constants.Coefficients.ZERO;
             cofTotalList.add(cofThis.add(cofOther));
         }
         Coefficient valueTotal = value.add(equationOther.getValue());
@@ -60,10 +59,10 @@ class Equation implements Iterable<Coefficient>, Comparable<Equation> {
         for (int i = 0; i < Math.max(size(), equationOther.size()); i++) {
             cofThis = (i < size()) ?
                     coefficients.get(i) :
-                    CoefficientFactory.ZERO;
+                    Constants.Coefficients.ZERO;
             cofOther = (i < equationOther.size()) ?
                     equationOther.getCoefficient(i) :
-                    CoefficientFactory.ZERO;
+                    Constants.Coefficients.ZERO;
             cofTotalList.add(cofThis.subtract(cofOther));
         }
         Coefficient valueTotal = value.subtract(equationOther.getValue());
@@ -80,7 +79,7 @@ class Equation implements Iterable<Coefficient>, Comparable<Equation> {
     }
 
     Equation divide(Coefficient coefficient) {
-        if (coefficient.equals(CoefficientFactory.ZERO))
+        if (coefficient.equals(Constants.Coefficients.ZERO))
             throw new IllegalArgumentException("Division by zero!");
 
         List<Coefficient> cofTotalList = new ArrayList<>();
@@ -125,19 +124,19 @@ class Equation implements Iterable<Coefficient>, Comparable<Equation> {
 
     Equation express(int cofIndex) {
         Coefficient cof = coefficients.get(cofIndex);
-        if (cof.equals(CoefficientFactory.ZERO))
+        if (cof.equals(Constants.Coefficients.ZERO))
             throw new IllegalArgumentException("Division by zero!");
 
         List<Coefficient> cofTotalList = new ArrayList<>();
         for (int i = 0; i < coefficients.size(); i++) {
             if (i == cofIndex) {
-                cofTotalList.add(CoefficientFactory.ZERO);
+                cofTotalList.add(Constants.Coefficients.ZERO);
             } else {
                 cofTotalList.add(coefficients.get(i).negate().divide(cof));
             }
         }
-        Coefficient valueTotal = (!cof.equals(CoefficientFactory.ZERO)) ? value.negate().divide(cof) :
-                CoefficientFactory.ZERO;
+        Coefficient valueTotal = (!cof.equals(Constants.Coefficients.ZERO)) ? value.negate().divide(cof) :
+                Constants.Coefficients.ZERO;
         return new Equation(cofTotalList, valueTotal);
     }
 
@@ -147,9 +146,9 @@ class Equation implements Iterable<Coefficient>, Comparable<Equation> {
         Coefficient cof;
         for (int i = 0; i < coefficients.size(); i++) {
             cof = coefficients.get(i);
-            if (!cof.equals(CoefficientFactory.ZERO)) {
-                sb.append((cof.bigger(CoefficientFactory.ZERO)) ? "+" : "-");
-                if (!cof.abs().equals(CoefficientFactory.ONE))
+            if (!cof.equals(Constants.Coefficients.ZERO)) {
+                sb.append((cof.bigger(Constants.Coefficients.ZERO)) ? "+" : "-");
+                if (!cof.abs().equals(Constants.Coefficients.ONE))
                     sb.append(cof.abs().toString());
                 sb.append(String.format(Locale.getDefault(), "x%d", i + 1));
             }

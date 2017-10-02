@@ -39,9 +39,9 @@ public class SimplexMethodTest {
 
     private static List<String> getComparisonSigns() {
         List<String> signs = new ArrayList<>();
-        signs.add("<=");
-        signs.add("<=");
-        signs.add(">=");
+        signs.add(Constants.ComparisonSigns.SIGN_LESS_EQUALS);
+        signs.add(Constants.ComparisonSigns.SIGN_LESS_EQUALS);
+        signs.add(Constants.ComparisonSigns.SIGN_BIGGER_EQUALS);
         return signs;
     }
 
