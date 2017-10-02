@@ -1,7 +1,9 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Fraction;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 
 import org.junit.Test;
 
@@ -20,13 +22,13 @@ public class EquationTest {
     private Equation getEquation() {
         return new Equation(
                 Arrays.asList(
-                        new Coefficient(5),
-                        new Coefficient(-3),
-                        new Coefficient(1),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(42));
+                        new Number(5),
+                        new Number(-3),
+                        new Number(1),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(42));
     }
 
     @Test
@@ -34,7 +36,7 @@ public class EquationTest {
         Equation equation = getEquation();
         assertEquals(6, equation.size());
 
-        equation = new Equation(new ArrayList<>(), new Coefficient(0));
+        equation = new Equation(new ArrayList<>(), new Number(0));
         assertEquals(0, equation.size());
     }
 
@@ -47,61 +49,61 @@ public class EquationTest {
         result = e.add(getEquation());
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(10),
-                        new Coefficient(-6),
-                        new Coefficient(2),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(84)), result);
+                        new Number(10),
+                        new Number(-6),
+                        new Number(2),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(84)), result);
 
-        result = e.add(new Equation(new ArrayList<>(), new Coefficient(0)));
+        result = e.add(new Equation(new ArrayList<>(), new Number(0)));
         assertEquals(e, result);
 
         result = e.add(getEquation().negate());
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(0)), result);
+                        new Number(0),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(0)), result);
 
         // Constant
-        result = e.add(new Coefficient(10));
+        result = e.add(new Number(10));
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(5),
-                        new Coefficient(-3),
-                        new Coefficient(1),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(52)), result);
+                        new Number(5),
+                        new Number(-3),
+                        new Number(1),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(52)), result);
 
-        result = e.add(new Coefficient(0));
+        result = e.add(new Number(0));
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(5),
-                        new Coefficient(-3),
-                        new Coefficient(1),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(42)), result);
+                        new Number(5),
+                        new Number(-3),
+                        new Number(1),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(42)), result);
 
-        result = e.add(new Coefficient(-10));
+        result = e.add(new Number(-10));
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(5),
-                        new Coefficient(-3),
-                        new Coefficient(1),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(32)), result);
+                        new Number(5),
+                        new Number(-3),
+                        new Number(1),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(32)), result);
     }
 
     @Test
@@ -113,63 +115,63 @@ public class EquationTest {
         result = e.subtract(getEquation());
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(0)), result);
+                        new Number(0),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(0)), result);
 
 
-        result = e.subtract(new Equation(new ArrayList<>(), new Coefficient(0)));
+        result = e.subtract(new Equation(new ArrayList<>(), new Number(0)));
         assertEquals(e, result);
 
         result = e.subtract(getEquation().negate());
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(10),
-                        new Coefficient(-6),
-                        new Coefficient(2),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(84)), result);
+                        new Number(10),
+                        new Number(-6),
+                        new Number(2),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(84)), result);
 
         // Constant
-        result = e.subtract(new Coefficient(10));
+        result = e.subtract(new Number(10));
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(5),
-                        new Coefficient(-3),
-                        new Coefficient(1),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(32)), result);
+                        new Number(5),
+                        new Number(-3),
+                        new Number(1),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(32)), result);
 
 
-        result = e.subtract(new Coefficient(0));
+        result = e.subtract(new Number(0));
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(5),
-                        new Coefficient(-3),
-                        new Coefficient(1),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(42)), result);
+                        new Number(5),
+                        new Number(-3),
+                        new Number(1),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(42)), result);
 
-        result = e.subtract(new Coefficient(-10));
+        result = e.subtract(new Number(-10));
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(5),
-                        new Coefficient(-3),
-                        new Coefficient(1),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(52)), result);
+                        new Number(5),
+                        new Number(-3),
+                        new Number(1),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(52)), result);
     }
 
     @Test
@@ -178,38 +180,38 @@ public class EquationTest {
         Equation result;
 
         // Constant
-        result = e.multiply(new Coefficient(10));
+        result = e.multiply(new Number(10));
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(50),
-                        new Coefficient(-30),
-                        new Coefficient(10),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(420)), result);
+                        new Number(50),
+                        new Number(-30),
+                        new Number(10),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(420)), result);
 
-        result = e.multiply(new Coefficient(0));
+        result = e.multiply(new Number(0));
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(0)), result);
+                        new Number(0),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(0)), result);
 
-        result = e.multiply(new Coefficient(-10));
+        result = e.multiply(new Number(-10));
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(-50),
-                        new Coefficient(30),
-                        new Coefficient(-10),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(-420)), result);
+                        new Number(-50),
+                        new Number(30),
+                        new Number(-10),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(-420)), result);
     }
 
     @Test
@@ -218,33 +220,33 @@ public class EquationTest {
         Equation result;
 
         // Constant
-        result = e.divide(new Coefficient(10));
+        result = e.divide(new Number(10));
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(new Fraction(5, 10)),
-                        new Coefficient(new Fraction(-3, 10)),
-                        new Coefficient(new Fraction(1, 10)),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(new Fraction(42, 10))), result);
+                        new Number(new Fraction(5, 10)),
+                        new Number(new Fraction(-3, 10)),
+                        new Number(new Fraction(1, 10)),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(new Fraction(42, 10))), result);
 
         try {
-            result = e.divide(new Coefficient(0));
+            result = e.divide(new Number(0));
         } catch (IllegalArgumentException ex) {
             assertTrue(true);
         }
 
-        result = e.divide(new Coefficient(-10));
+        result = e.divide(new Number(-10));
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(new Fraction(-5, 10)),
-                        new Coefficient(new Fraction(3, 10)),
-                        new Coefficient(new Fraction(-1, 10)),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(new Fraction(-42, 10))), result);
+                        new Number(new Fraction(-5, 10)),
+                        new Number(new Fraction(3, 10)),
+                        new Number(new Fraction(-1, 10)),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(new Fraction(-42, 10))), result);
     }
 
     @Test
@@ -255,23 +257,23 @@ public class EquationTest {
         result = e.negate();
         assertEquals(new Equation(
                 Arrays.asList(
-                        new Coefficient(-5),
-                        new Coefficient(3),
-                        new Coefficient(-1),
-                        new Coefficient(0),
-                        new Coefficient(0),
-                        new Coefficient(0)),
-                new Coefficient(-42)), result);
+                        new Number(-5),
+                        new Number(3),
+                        new Number(-1),
+                        new Number(0),
+                        new Number(0),
+                        new Number(0)),
+                new Number(-42)), result);
 
         result = result.negate();
         assertEquals(e, result);
 
-        e = new Equation(new ArrayList<>(), new Coefficient(0));
+        e = new Equation(new ArrayList<>(), new Number(0));
         assertEquals(e, e.negate());
     }
 
     @Test
-    public void getCoefficient_isCorrect() throws Exception {
+    public void getNumber_isCorrect() throws Exception {
         Equation e = getEquation();
         for (int i = 0; i < e.size(); i++) {
             assertEquals(e.getCoefficients().get(i), e.getCoefficient(i));
@@ -292,9 +294,9 @@ public class EquationTest {
     }
 
     @Test
-    public void setCoefficient_isCorrect() throws Exception {
+    public void setNumber_isCorrect() throws Exception {
         Equation e = getEquation();
-        Coefficient c = new Coefficient(32523);
+        Number c = new Number(32523);
         for (int i = 0; i < e.size(); i++) {
             Coefficient cc = e.getCoefficient(i);
             e.getCoefficients().set(i, c);
@@ -321,12 +323,12 @@ public class EquationTest {
         for (int i = 0; i < e.size(); i++) {
             Collections.copy(cofs, e.getCoefficients());
             c = e.getCoefficient(i);
-            if (c.equals(Coefficient.ZERO))
+            if (c.equals(CoefficientFactory.ZERO))
                 continue;
 
             for (int j = 0; j < cofs.size(); j++) {
                 if (j == i) {
-                    cofs.set(j, Coefficient.ZERO);
+                    cofs.set(j, CoefficientFactory.ZERO);
                 } else {
                     cofs.set(j, cofs.get(j).negate().divide(c));
                 }

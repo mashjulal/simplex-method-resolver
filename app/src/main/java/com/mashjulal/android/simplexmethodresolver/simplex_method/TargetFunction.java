@@ -29,14 +29,14 @@ class TargetFunction extends Equation {
         Coefficient c;
         for (int i = 0; i < coefficients.size(); i++) {
             c = coefficients.get(i);
-            if (!c.equals(CoefficientFactory.getZero())) {
+            if (!c.equals(CoefficientFactory.ZERO)) {
                 sb.append(" ");
-                if (c.abs().equals(CoefficientFactory.getOne())) {
+                if (c.abs().equals(CoefficientFactory.ONE)) {
                     sb.append(String.format("%s x%s",
-                            (c.bigger(CoefficientFactory.getZero())) ? "+" : "-", i + 1));
+                            (c.bigger(CoefficientFactory.ZERO)) ? "+" : "-", i + 1));
                 } else {
                     sb.append(String.format("%s %sx%s",
-                            (c.bigger(CoefficientFactory.getZero())) ? "+" : "-", c.abs(), i + 1));
+                            (c.bigger(CoefficientFactory.ZERO)) ? "+" : "-", c.abs(), i + 1));
                 }
             }
         }

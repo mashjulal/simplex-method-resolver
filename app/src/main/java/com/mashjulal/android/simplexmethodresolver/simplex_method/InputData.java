@@ -2,6 +2,7 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.CoefficientFactory;
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.M;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ class InputData {
                                     List<Integer> equationSystemConstants,
                                     List<Integer> targetFunctionCoefficients,
                                     Integer targetFunctionConstant) {
-        if (ourInstance != null) {
+        if (ourInstance == null) {
             sEquationSystemCoefficients = equationSystemCoefficients;
             sComparisonSigns = comparisonSigns;
             sEquationSystemConstants = equationSystemConstants;
@@ -45,7 +46,9 @@ class InputData {
         Coefficient constant;
         for (int i = 0; i < sEquationSystemCoefficients.size(); i++) {
             coefficients = new ArrayList<>();
-            sEquationSystemCoefficients.get(i).forEach((n) -> coefficients.add(new Number(n)));
+            for (Integer number : sEquationSystemCoefficients.get(i)) {
+                coefficients.add(new Number(number));
+            }
             constant = new Number(sEquationSystemConstants.get(i));
             equations.add(new Equation(coefficients, constant));
         }
@@ -58,19 +61,19 @@ class InputData {
                     if (j == i) {
                         equations.get(j).addCoefficient(
                                 (sign.equals("<=")) ?
-                                        CoefficientFactory.getOne() :
-                                        CoefficientFactory.getMinusOne());
+                                        CoefficientFactory.ONE :
+                                        CoefficientFactory.MINUS_ONE);
                     } else {
                         equations.get(j).addCoefficient(
-                                CoefficientFactory.getZero());
+                                CoefficientFactory.ZERO);
                     }
                 }
             }
             if (sign.equals(">=")) {
                 for (int j = 0; j < systemSize; j++) {
                     equations.get(j).addCoefficient((j == i) ?
-                            CoefficientFactory.getOne() :
-                            CoefficientFactory.getZero());
+                            CoefficientFactory.ONE :
+                            CoefficientFactory.ZERO);
                 }
             }
         }
@@ -78,22 +81,6 @@ class InputData {
     }
 
     private static List<Boolean> createFakeVariables() {
-        /**
-         *  @staticmethod
-        def create_fake_variables(s_c, c_s):
-        """
-        Creates fake variable list from parameters.
-        :param s_c: equation system variable coefficients.
-        :param c_s: equation system comparison signs.
-        :return: None.
-        """
-        EquationSystem.INITIAL_FAKE_VARIABLES = [False for _ in s_c[0]] + \
-        [False for sign in c_s if
-        sign != "="] + \
-        [True for sign in c_s if
-        sign == ">="] + \
-        [False]
-         */
         List<Boolean> fv1 = new ArrayList<>();
         for (int i = 0; i < sEquationSystemCoefficients.get(0).size(); i++) {
             fv1.add(Boolean.FALSE);
@@ -122,40 +109,28 @@ class InputData {
     }
 
     private static TargetFunction createTargetFunction(List<Boolean> fakeVariables, boolean isMax) {
-        /**
-         *  @staticmethod
-        def create_target_function(f_c, f_v):
-        """
-        Creates target function from parameters.
-        :param f_c: target function variable coefficients.
-        :param f_v: target function value.
-        :return: None.
-        """
-        target_function = TargetFunction([])
-        for i in range(len(EquationSystem.INITIAL_FAKE_VARIABLES) - 1):
-        if i < len(f_c):
-        target_function.add_coefficient(-Fraction(f_c[i]))
-        else:
-        target_function.add_coefficient(
-        [Fraction(0), M(1, 0)]
-        [EquationSystem.INITIAL_FAKE_VARIABLES[i]])
-        target_function.add_coefficient(f_v)
-        EquationSystem.INITIAL_TARGET_FUNCTION = target_function
-         */
-
         List<Coefficient> coefficients = new ArrayList<>();
         for (int i = 0; i < fakeVariables.size(); i++) {
             if (i < sTargetFunctionCoefficients.size()) {
                 coefficients.add(new Number(sTargetFunctionCoefficients.get(i)).negate());
             } else {
-                coefficients.add((fakeVariables.get(i)) ? (isMax) ?
-                        CoefficientFactory.getMinusOneM() :
-                        CoefficientFactory.getOneM() :
-                        CoefficientFactory.getZero());
+                coefficients.add((fakeVariables.get(i)) ?
+                        CoefficientFactory.M :
+                        CoefficientFactory.ZERO);
             }
         }
-        return new TargetFunction(coefficients,
+        TargetFunction tf = new TargetFunction(coefficients,
                 new Number(sTargetFunctionConstant));
+
+        for (int i = 0; i < tf.size(); i++) {
+            if (!(tf.getCoefficient(i) instanceof M) && isMax) {
+                tf.setCoefficient(i , tf.getCoefficient(i).negate());
+            }
+        }
+        if (isMax)
+            tf.setValue(tf.getValue().negate());
+
+        return tf;
     }
 
     public EquationSystem createEquationSystem(boolean isMax) {

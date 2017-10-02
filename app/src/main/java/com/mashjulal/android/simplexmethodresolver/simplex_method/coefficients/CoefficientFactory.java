@@ -3,27 +3,10 @@ package com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients;
 
 public class CoefficientFactory {
 
-    public static Coefficient getZero() {
-        return new Number(0);
-    }
-
-    public static Coefficient getOne() {
-        return new Number(1);
-    }
-
-    public static Coefficient getMinusOne() {
-        return new Number(-1);
-    }
-
-    public static Coefficient getInfinity() {
-        return new Infinity();
-    }
-
-    public static Coefficient getOneM() {
-        return new M(1);
-    }
-
-    public static Coefficient getMinusOneM() {
-        return new M(-1);
-    }
+    public static final Coefficient ZERO = new Number(0);
+    public static final Coefficient ONE = new Number(1);
+    public static final Coefficient MINUS_ONE = new Number(-1);
+    public static final Coefficient INFINITY = new Infinity();
+    public static final Coefficient M = new M(1);
+    public static final Coefficient MINUS_M = new M(-1);
 }

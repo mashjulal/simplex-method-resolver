@@ -11,9 +11,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
-/**
- * Created by master on 26.09.17.
- */
+
 public class EquationSystemTest {
 
     private List<List<Integer>> getEquationCoefficients() {
@@ -89,9 +87,9 @@ public class EquationSystemTest {
                 getTargetFunctionConstant()).createEquationSystem(true);
 
         assertEquals(new Equation(Arrays.asList(
-                new Number(5), new Number(-3), CoefficientFactory.getZero(),
-                CoefficientFactory.getZero(), CoefficientFactory.getZero(),
-                CoefficientFactory.getZero()), new Number(42)), equationSystem.get(0));
+                new Number(5), new Number(-3), CoefficientFactory.ZERO,
+                CoefficientFactory.ZERO, CoefficientFactory.ZERO,
+                CoefficientFactory.ZERO), new Number(42)), equationSystem.get(0));
     }
 
     @Test
@@ -104,14 +102,14 @@ public class EquationSystemTest {
                 getTargetFunctionConstant()).createEquationSystem(true);
 
         equationSystem.set(0, new Equation(Arrays.asList(
-                new Number(4), new Number(3), CoefficientFactory.getZero(),
-                CoefficientFactory.getZero(), CoefficientFactory.getZero(),
-                CoefficientFactory.getOne()), new Number(52)));
+                new Number(4), new Number(3), CoefficientFactory.ZERO,
+                CoefficientFactory.ZERO, CoefficientFactory.ZERO,
+                CoefficientFactory.ONE), new Number(52)));
 
         assertEquals(new Equation(Arrays.asList(
-                new Number(4), new Number(3), CoefficientFactory.getZero(),
-                CoefficientFactory.getZero(), CoefficientFactory.getZero(),
-                CoefficientFactory.getOne()), new Number(52)), equationSystem.get(0));
+                new Number(4), new Number(3), CoefficientFactory.ZERO,
+                CoefficientFactory.ZERO, CoefficientFactory.ZERO,
+                CoefficientFactory.ONE), new Number(52)), equationSystem.get(0));
     }
 
     @Test
@@ -124,14 +122,14 @@ public class EquationSystemTest {
                 getTargetFunctionConstant()).createEquationSystem(true);
 
         equationSystem.add(new Equation(Arrays.asList(
-                new Number(5), new Number(-3), CoefficientFactory.getZero(),
-                CoefficientFactory.getZero(), CoefficientFactory.getZero(),
-                CoefficientFactory.getZero()), new Number(42)));
+                new Number(5), new Number(-3), CoefficientFactory.ZERO,
+                CoefficientFactory.ZERO, CoefficientFactory.ZERO,
+                CoefficientFactory.ZERO), new Number(42)));
 
         assertEquals(new Equation(Arrays.asList(
-                new Number(5), new Number(-3), CoefficientFactory.getZero(),
-                CoefficientFactory.getZero(), CoefficientFactory.getZero(),
-                CoefficientFactory.getZero()), new Number(42)), equationSystem.get(3));
+                new Number(5), new Number(-3), CoefficientFactory.ZERO,
+                CoefficientFactory.ZERO, CoefficientFactory.ZERO,
+                CoefficientFactory.ZERO), new Number(42)), equationSystem.get(3));
     }
 
 }

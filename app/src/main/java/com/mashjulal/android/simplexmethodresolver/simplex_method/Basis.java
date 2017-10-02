@@ -27,7 +27,7 @@ class Basis implements Iterable<BasisValue> {
     private static List<BasisValue> getFirstBasis(List<Equation> equationList) {
         List<BasisValue> bv = new ArrayList<>();
         List<BasisValue> coefs;
-        final Coefficient ZERO = CoefficientFactory.getZero();
+        final Coefficient ZERO = CoefficientFactory.ZERO;
         for (Equation equation : equationList) {
             coefs = new ArrayList<>();
             for (int coefficientIndex = 0; coefficientIndex < equation.size(); coefficientIndex++) {
@@ -46,20 +46,24 @@ class Basis implements Iterable<BasisValue> {
 
     void setBasisValue(int index, BasisValue basisValue) {
         basisValues.set(index, basisValue);
-        sort();
+//        sort();
     }
 
     void recalculate(List<Equation> equationList) {
         List<BasisValue> basisValues = new ArrayList<>();
+        Coefficient c;
+        Coefficient value;
+
         for (int i = 0; i < this.basisValues.size(); i++) {
             BasisValue bv = this.basisValues.get(i);
+            c = equationList.get(i).getCoefficients().get(bv.getIndex());
+            value = equationList.get(i).getValue();
             basisValues.add(new BasisValue(
                     bv.getIndex(),
-                    equationList.get(i).getValue().divide(
-                            equationList.get(i).getCoefficients().get(bv.getIndex()))));
+                    value.divide(c)));
         }
         this.basisValues = basisValues;
-        sort();
+//        sort();
     }
 
     List<Integer> getIndexes() {
