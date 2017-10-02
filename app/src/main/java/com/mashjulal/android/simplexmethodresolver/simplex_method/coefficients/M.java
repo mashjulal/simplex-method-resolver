@@ -121,7 +121,7 @@ public class M extends Coefficient {
     @Override
     public M divide(Coefficient o) {
         if (o instanceof Number)
-            return multiply((Number) o);
+            return divide((Number) o);
         throw new UnsupportedOperationException();
     }
 

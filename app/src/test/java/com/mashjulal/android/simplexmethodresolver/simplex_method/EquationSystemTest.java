@@ -60,7 +60,11 @@ public class EquationSystemTest {
                 getTargetFunctionCoefficients(),
                 getTargetFunctionConstant()).createEquationSystem(true);
 
-        String rep = "";
+        String rep =
+                "5x1-3x2+x3=42\n" +
+                "x2+x4=1\n" +
+                "10x1+4x2-x5+x6=60\n" +
+                "F - 8x1 + 6x2 + Mx6 = 0\n";
 
         assertEquals(rep, equationSystem.toString());
     }
@@ -87,7 +91,7 @@ public class EquationSystemTest {
                 getTargetFunctionConstant()).createEquationSystem(true);
 
         assertEquals(new Equation(Arrays.asList(
-                new Number(5), new Number(-3), CoefficientFactory.ZERO,
+                new Number(5), new Number(-3), CoefficientFactory.ONE,
                 CoefficientFactory.ZERO, CoefficientFactory.ZERO,
                 CoefficientFactory.ZERO), new Number(42)), equationSystem.get(0));
     }

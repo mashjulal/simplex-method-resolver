@@ -149,15 +149,15 @@ public class MTest {
         M m = new M(1);
 
         Fraction result = m.getTotal();
-        assertEquals(new Fraction(1000000000), result);
+        assertEquals(new Fraction(1000000), result);
 
         m = new M(1, 2);
         result = m.getTotal();
-        assertEquals(new Fraction(1000000002), result);
+        assertEquals(new Fraction(1000002), result);
 
         m = new M(new Fraction(1, 2), 2);
         result = m.getTotal();
-        assertEquals(new Fraction(500000002), result);
+        assertEquals(new Fraction(500002), result);
 
         m = new M(0, 2);
         result = m.getTotal();
@@ -165,7 +165,7 @@ public class MTest {
 
         m = new M(1, new Fraction(1, 2));
         result = m.getTotal();
-        assertEquals(new Fraction(2000000001, 2), result);
+        assertEquals(new Fraction(2000001, 2), result);
 
         m = new M(0);
         result = m.getTotal();
