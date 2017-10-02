@@ -91,7 +91,7 @@ class InputData {
                         CoefficientFactory.ZERO);
             }
         }
-        TargetFunction tf = new TargetFunction(coefficients,
+        TargetFunction tf = TargetFunction.createTargetFunction(coefficients,
                 new Number(sTargetFunctionConstant));
 
         for (int i = 0; i < tf.size(); i++) {
@@ -109,7 +109,8 @@ class InputData {
         List<Equation> equations = createEquationList();
         IsFakeVariablesList fakeVariables = new IsFakeVariablesList(
                 sEquationSystemCoefficients.get(0).size(), sComparisonSigns);
-        TargetFunction targetFunction = createTargetFunction(fakeVariables, isMax);
+        TargetFunction targetFunction = TargetFunction.createTargetFunction(
+                sTargetFunctionCoefficients, sTargetFunctionConstant, fakeVariables, isMax);
 
         return new EquationSystem(equations, fakeVariables, targetFunction);
     }

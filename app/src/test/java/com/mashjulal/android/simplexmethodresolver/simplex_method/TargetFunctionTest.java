@@ -17,7 +17,7 @@ public class TargetFunctionTest {
         ArrayList<Coefficient> coefficientList = new ArrayList<>();
         coefficientList.add(new Number(-8));
         coefficientList.add(new Number(6));
-        return new TargetFunction(coefficientList, new Number(0));
+        return TargetFunction.createTargetFunction(coefficientList, new Number(0));
     }
 
     @Test

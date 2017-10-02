@@ -78,7 +78,7 @@ class SimplexMethod {
                 if (i < mEquationSystem.getEquationList().size()) {
                     mEquationSystem.set(i, new Equation(eeqq, v));
                 } else {
-                    mEquationSystem.set(i, new TargetFunction(eeqq, v));
+                    mEquationSystem.set(i, TargetFunction.createTargetFunction(eeqq, v));
                 }
             }
         }
@@ -135,11 +135,9 @@ class SimplexMethod {
                         eqq.getCoefficient(j).add(mEquationSystem.getTargetFunction().getCoefficient(j)):
                         CoefficientFactory.ZERO);
             }
-            System.out.println(tfCof);
-            TargetFunction tf = new TargetFunction(
+            TargetFunction tf = TargetFunction.createTargetFunction(
                     tfCof,
                     eqq.getValue().add(mEquationSystem.getTargetFunction().getValue()));
-            System.out.println("!!!" + tf.toString());
             mEquationSystem.setTargetFunction(tf);
         }
 
