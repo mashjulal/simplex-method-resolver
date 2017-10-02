@@ -5,10 +5,6 @@ import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.I
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.M;
 
-/**
- * Created by Master on 02.10.2017.
- */
-
 public class Constants {
 
     public static class Coefficients {

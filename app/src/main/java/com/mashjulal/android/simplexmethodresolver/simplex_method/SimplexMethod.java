@@ -9,8 +9,6 @@ import java.util.Locale;
 
 class SimplexMethod {
 
-
-
     private InputData mInputData;
     private EquationSystem mEquationSystem;
     private Basis mBasis;
@@ -93,15 +91,6 @@ class SimplexMethod {
                     targetFunctionConstant.toString()));
         }
 
-    }
-
-    private void removeFakeVariables(int firstFakeIndex) {
-        while (mEquationSystem.getIsFakeVariableList().contains(Boolean.TRUE)) {
-            for (int i = 0; i < mEquationSystem.size(); i++) {
-                mEquationSystem.get(i).remove(firstFakeIndex);
-            }
-            mEquationSystem.getIsFakeVariableList().remove(firstFakeIndex);
-        }
     }
 
     private void getFirstSolution() {
@@ -201,7 +190,7 @@ class SimplexMethod {
             }
             Boolean fakeNotInBasis = fakes.stream().allMatch((isFake) -> isFake);
             if (anyFake && fakeNotInBasis) {
-                removeFakeVariables(fakeVariables.indexOf(Boolean.TRUE));
+                mEquationSystem.removeFakeVariables(fakeVariables.indexOf(Boolean.TRUE));
             }
 
             minElem = mEquationSystem.getTargetFunction().getCoefficients().stream()

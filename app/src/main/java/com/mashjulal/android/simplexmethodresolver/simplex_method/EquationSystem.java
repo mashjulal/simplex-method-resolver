@@ -61,5 +61,12 @@ class EquationSystem implements Iterable<Equation> {
         equationList.add(equation);
     }
 
-
+    public void removeFakeVariables(int firstFakeIndex) {
+        while (isFakeVariableList.contains(Boolean.TRUE)) {
+            for (int i = 0; i < size(); i++) {
+                get(i).remove(firstFakeIndex);
+            }
+            isFakeVariableList.remove(firstFakeIndex);
+        }
+    }
 }
