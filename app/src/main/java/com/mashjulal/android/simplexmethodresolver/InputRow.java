@@ -3,20 +3,21 @@ package com.mashjulal.android.simplexmethodresolver;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by master on 26.09.17.
- */
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
-public class InputRow {
+@Accessors(prefix = "m")
+@Getter
+class InputRow {
 
     private List<Variable> mVariables;
     private String mSign;
     private Variable mValue;
 
-    public InputRow() {
-        this.mVariables = new ArrayList<>();
-        this.mSign = "";
-        this.mValue = new Variable();
+    InputRow() {
+        mVariables = new ArrayList<>();
+        mSign = "";
+        mValue = new Variable();
     }
 
     public InputRow(List<Variable> variables, String sign, Variable value) {
@@ -25,7 +26,15 @@ public class InputRow {
         mValue = value;
     }
 
-    public void addVariable(Variable variable) {
+    void addVariable(Variable variable) {
         mVariables.add(variable);
+    }
+
+    int size() {
+        return mVariables.size();
+    }
+
+    void removeLastVariable() {
+        mVariables.remove(size()-1);
     }
 }

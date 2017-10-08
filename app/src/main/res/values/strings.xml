@@ -4,4 +4,6 @@
     <string name="title_number_of_equations">Number of equations: </string>
     <string name="title_variable_number">Number of variables: </string>
     <string name="title_variable_template">x%d</string>
+    <string name="hint_zero">0</string>
+    <string name="plus">+</string>
 </resources>

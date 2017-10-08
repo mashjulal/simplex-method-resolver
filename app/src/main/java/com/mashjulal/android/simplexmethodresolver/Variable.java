@@ -2,20 +2,22 @@ package com.mashjulal.android.simplexmethodresolver;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
-/**
- * Created by master on 26.09.17.
- */
 
-public class Variable extends Element {
+@Getter
+@Setter
+@Accessors(prefix = "m")
+class Variable{
 
-    @Getter @Setter private Integer value;
+    private Integer mValue;
 
-    public Variable() {
-        this.value = 0;
+    Variable() {
+        mValue = 0;
     }
 
-    public Variable(Integer value) {
-        this.value = value;
+    @Override
+    public String toString() {
+        return mValue.toString();
     }
 }

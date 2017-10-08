@@ -1,8 +1,6 @@
 package com.mashjulal.android.simplexmethodresolver;
 
 import android.content.Context;
-import android.support.annotation.IntegerRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,59 +10,57 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
-public class ElementItemRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class VariableItemRecyclerViewAdapter extends
+        RecyclerView.Adapter<VariableItemRecyclerViewAdapter.VariableViewHolder> {
 
-    public static final int VIEW_HOLDER_VARIABLE = 0;
-    public static final int VIEW_HOLDER_PLUS = 1;
+    private static final int VIEW_VARIABLE = 0;
+    private static final int VIEW_LAST_VARIABLE = 1;
 
     private Context mContext;
-    private List<Element> mElementList = new ArrayList<>();
+    private List<Variable> mVariableList;
 
-    public ElementItemRecyclerViewAdapter(Context context) {
+    VariableItemRecyclerViewAdapter(Context context, List<Variable> variables) {
         mContext = context;
+        mVariableList = variables;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VariableViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(mContext);
         View v;
         switch (viewType) {
-            case VIEW_HOLDER_VARIABLE:
+            case VIEW_VARIABLE:
                 v = li.inflate(R.layout.item_variable, null);
-                return new VariableViewHolder(v);
-            case VIEW_HOLDER_PLUS:
-                v = li.inflate(R.layout.item_plus, null);
-                return new PlusViewHolder(v);
+                break;
+            case VIEW_LAST_VARIABLE:
+                v = li.inflate(R.layout.item_last_variable, null);
+                break;
             default:
                 v = li.inflate(R.layout.item_variable, null);
-                return new VariableViewHolder(v);
+                break;
         }
+        return new VariableViewHolder(v);
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position % 2 == 0)
-            return VIEW_HOLDER_VARIABLE;
-        return VIEW_HOLDER_PLUS;
+        if (position == mVariableList.size() - 1)
+            return VIEW_LAST_VARIABLE;
+        return VIEW_VARIABLE;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof PlusViewHolder)
-            return;
-
-        VariableViewHolder h = (VariableViewHolder) holder;
-        Variable variable = (Variable) mElementList.get(position);
-        int index = (position / 2) + 1;
+    public void onBindViewHolder(VariableViewHolder h, int position) {
+        final Variable variable = mVariableList.get(position);
 
         if (variable.getValue() == 0)
             h.etValue.setText("");
         else
-            h.etValue.setText(variable.getValue());
+            h.etValue.setText(String.format(Locale.getDefault(), "%d", variable.getValue()));
         h.etValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -84,13 +80,12 @@ public class ElementItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
                     variable.setValue(Integer.valueOf(s.toString()));
             }
         });
-
-        h.tvIndex.setText(mContext.getString(R.string.title_variable_template, index));
+        h.tvIndex.setText(mContext.getString(R.string.title_variable_template, position + 1));
     }
 
     @Override
     public int getItemCount() {
-        return mElementList.size();
+        return mVariableList.size();
     }
 
     static class VariableViewHolder extends RecyclerView.ViewHolder {
@@ -98,17 +93,10 @@ public class ElementItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         EditText etValue;
         TextView tvIndex;
 
-        public VariableViewHolder(View itemView) {
+        VariableViewHolder(View itemView) {
             super(itemView);
             etValue = (EditText) itemView.findViewById(R.id.et_iVariable_value);
-            tvIndex = (TextView) itemView.findViewById(R.id.tv_iVarable_index);
-        }
-    }
-
-    static class PlusViewHolder extends RecyclerView.ViewHolder {
-
-        public PlusViewHolder(View itemView) {
-            super(itemView);
+            tvIndex = (TextView) itemView.findViewById(R.id.tv_iVariable_index);
         }
     }
 }

@@ -4,6 +4,7 @@ import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.C
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -40,7 +41,12 @@ class Basis implements Iterable<BasisValue> {
 
     private void sort() {
         Collections.sort(basisValues,
-                (bv1, bv2) -> Integer.compare(bv1.getIndex(), bv2.getIndex()));
+                new Comparator<BasisValue>() {
+                    @Override
+                    public int compare(BasisValue o1, BasisValue o2) {
+                        return Integer.compare(o1.getIndex(), o2.getIndex());
+                    }
+                });
     }
 
     void setBasisValue(int index, BasisValue basisValue) {

@@ -1,5 +1,6 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
+import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Number;
 
 import org.junit.Test;
@@ -17,33 +18,32 @@ public class BasisTest {
     private List<Equation> getEquationList() {
         List<Equation> equations = new ArrayList<>();
 
-        equations.add(new Equation(
-                Arrays.asList(
-                        new Number(5),
-                        new Number(-3),
-                        new Number(1),
-                        new Number(0),
-                        new Number(0),
-                        new Number(0)),
-                new Number(42)));
-        equations.add(new Equation(
-                Arrays.asList(
-                        new Number(0),
-                        new Number(1),
-                        new Number(0),
-                        new Number(1),
-                        new Number(0),
-                        new Number(0)),
-                new Number(1)));
-        equations.add(new Equation(
-                Arrays.asList(
-                        new Number(10),
-                        new Number(4),
-                        new Number(0),
-                        new Number(0),
-                        new Number(-1),
-                        new Number(1)),
-                new Number(60)));
+        List<Coefficient> coefficientList = new ArrayList<>();
+        coefficientList.add(new Number(5));
+        coefficientList.add(new Number(-3));
+        coefficientList.add(new Number(1));
+        coefficientList.add(new Number(0));
+        coefficientList.add(new Number(0));
+        coefficientList.add(new Number(0));
+        equations.add(new Equation(coefficientList, new Number(42)));
+
+        coefficientList = new ArrayList<>();
+        coefficientList.add(new Number(0));
+        coefficientList.add(new Number(1));
+        coefficientList.add(new Number(0));
+        coefficientList.add(new Number(1));
+        coefficientList.add(new Number(0));
+        coefficientList.add(new Number(0));
+        equations.add(new Equation(coefficientList, new Number(1)));
+
+        coefficientList = new ArrayList<>();
+        coefficientList.add(new Number(10));
+        coefficientList.add(new Number(4));
+        coefficientList.add(new Number(0));
+        coefficientList.add(new Number(0));
+        coefficientList.add(new Number(-1));
+        coefficientList.add(new Number(0));
+        equations.add(new Equation(coefficientList, new Number(60)));
 
         return equations;
     }
