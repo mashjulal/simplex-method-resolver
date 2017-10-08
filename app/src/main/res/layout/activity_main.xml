@@ -1,18 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.mashjulal.android.simplexmethodresolver.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="16dp"
+        android:orientation="horizontal">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/title_number_of_equations" />
+
+        <Spinner
+<<<<<<< HEAD
+            android:id="@+id/spnr_aMain_numberOfEquations"
+=======
+            android:id="@+id/spnr_aMain_numEquations"
+>>>>>>> 952f6aee82f71cd5d31bb186688b150cc6241579
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/spinner_number_of_equations" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll"
+        android:layout_margin="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/title_variable_number" />
+
+        <Spinner
+<<<<<<< HEAD
+            android:id="@+id/spnr_aMain_numberOfVariables"
+=======
+            android:id="@+id/spnr_aMain_numVaiables"
+>>>>>>> 952f6aee82f71cd5d31bb186688b150cc6241579
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/spinner_number_of_equations" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+<<<<<<< HEAD
+        android:id="@+id/rv_aMain_inputRows"
+=======
+        android:id="@+id/rv_aMain_equations"
+>>>>>>> 952f6aee82f71cd5d31bb186688b150cc6241579
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll2"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="16dp"
+<<<<<<< HEAD
+        tools:listitem="@layout/item_input_row" />
+=======
+        tools:listitem="@layout/item_equation" />
+>>>>>>> 952f6aee82f71cd5d31bb186688b150cc6241579
+</LinearLayout>
