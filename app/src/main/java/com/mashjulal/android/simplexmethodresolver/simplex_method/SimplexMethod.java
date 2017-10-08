@@ -57,7 +57,7 @@ class SimplexMethod {
             if (i != valueIndex) {
                 Equation row = mEquationSystem.get(i);
                 Coefficient multiplier = row.getCoefficient(elemIndex);
-                Equation eqq = new Equation(new ArrayList<>(), eq.getValue().multiply(multiplier));
+                Equation eqq = new Equation(new ArrayList<Coefficient>(), eq.getValue().multiply(multiplier));
                 for (Coefficient c : eq) {
                     eqq.addCoefficient(c.multiply(multiplier));
                 }
@@ -146,18 +146,25 @@ class SimplexMethod {
             System.out.println("__________________");
         }
 
-        Coefficient minElem = mEquationSystem.getTargetFunction().getCoefficients().stream()
-                .min(Coefficient::compareTo).get();
+        Coefficient minElem = mEquationSystem.getTargetFunction().getCoefficients().get(0);
+
+        for (Coefficient c : mEquationSystem.getTargetFunction().getCoefficients())
+            if (minElem.bigger(c))
+                minElem = c;
         while (minElem.less(Constants.Coefficients.ZERO)) {
             int minElemIndex = mEquationSystem.getTargetFunction().index(minElem);
 
             List<Coefficient> estAtt = getEstimatedAttitude(minElemIndex);
-            int eqIndex = estAtt.indexOf(estAtt.stream().min(Coefficient::compareTo).get());
+
+            Coefficient minEstAtt = estAtt.get(0);
+            for (Coefficient c : estAtt)
+                if (minEstAtt.bigger(c))
+                    minEstAtt = c;
+            int eqIndex = estAtt.indexOf(minEstAtt);
             System.out.println(String.format(Locale.getDefault(), "Оценочное отношение x%d: %s",
                     minElemIndex + 1, estAtt.toString()));
 
-            if (estAtt.stream().min(Coefficient::compareTo)
-                    .get().equals(Constants.Coefficients.INFINITY)) {
+            if (minEstAtt.equals(Constants.Coefficients.INFINITY)) {
                 showSolution(null, true, null);
                 return;
             }
@@ -188,13 +195,19 @@ class SimplexMethod {
                 Boolean isFake = fakeVariables.get(i);
                 fakes.add(!(isFake && mBasis.getIndexes().contains(i)));
             }
-            Boolean fakeNotInBasis = fakes.stream().allMatch((isFake) -> isFake);
+            Boolean fakeNotInBasis = Boolean.TRUE;
+            for (Boolean isFake : fakes)
+                if (!isFake) {
+                    fakeNotInBasis = Boolean.FALSE;
+                    break;
+                }
             if (anyFake && fakeNotInBasis) {
                 mEquationSystem.removeFakeVariables(fakeVariables.indexOf(Boolean.TRUE));
             }
 
-            minElem = mEquationSystem.getTargetFunction().getCoefficients().stream()
-                    .min(Coefficient::compareTo).get();
+            for (Coefficient c : mEquationSystem.getTargetFunction().getCoefficients())
+                if (minElem.bigger(c))
+                    minElem = c;
         }
 
         if (fakeVariables.contains(Boolean.TRUE)) {
