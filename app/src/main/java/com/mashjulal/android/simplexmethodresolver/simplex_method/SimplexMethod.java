@@ -7,20 +7,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-class SimplexMethod {
+public class SimplexMethod {
 
     private InputData mInputData;
     private EquationSystem mEquationSystem;
     private Basis mBasis;
 
-    SimplexMethod(List<List<Integer>> systemCoefficients, List<String> comparisonSigns,
+    public SimplexMethod(List<List<Integer>> systemCoefficients, List<String> comparisonSigns,
                   List<Integer> systemConstants, List<Integer> targetFunctionCoefficients,
                   Integer targetFunctionConstant) {
         mInputData = InputData.createInstance(systemCoefficients, comparisonSigns,
                 systemConstants, targetFunctionCoefficients, targetFunctionConstant);
     }
 
-    void start() {
+    public void start() {
         mEquationSystem = mInputData.createEquationSystem(false);
         showInitialEquationSystem();
         for (String title : Arrays.asList("Минимум:", "Максимум:")) {

@@ -3,7 +3,11 @@ package com.mashjulal.android.simplexmethodresolver;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.SubscriptSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +84,11 @@ class VariableItemRecyclerViewAdapter extends
                     variable.setValue(Integer.valueOf(s.toString()));
             }
         });
-        h.tvIndex.setText(mContext.getString(R.string.title_variable_template, position + 1));
+        SpannableStringBuilder cs = new SpannableStringBuilder(
+                mContext.getString(R.string.title_variable_template, position + 1));
+        cs.setSpan(new SubscriptSpan(), 1, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        cs.setSpan(new RelativeSizeSpan(0.75f), 1, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        h.tvIndex.setText(cs);
     }
 
     @Override

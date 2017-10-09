@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.mashjulal.android.simplexmethodresolver.MainActivity">
 
@@ -52,4 +53,14 @@
         android:layout_margin="16dp"
         android:overScrollMode="never"
         tools:listitem="@layout/item_input_row" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_aMain_target"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
+        app:reverseLayout="true"
+        tools:listitem="@layout/item_variable" />
 </LinearLayout>

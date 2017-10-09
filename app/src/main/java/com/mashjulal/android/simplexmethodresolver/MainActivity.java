@@ -11,13 +11,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import com.mashjulal.android.simplexmethodresolver.simplex_method.SimplexMethod;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<InputRow> mInput = new ArrayList<>();
-    private InputRowItemRecyclerViewAdapter mRecyclerViewAdapter;
+    private List<InputRow> mSystemInput = new ArrayList<>();
+    private InputRow mTargetInput = new InputRow();
+    private InputRowItemRecyclerViewAdapter mSystemRecyclerViewAdapter;
+    private InputRowItemRecyclerViewAdapter mTargetRecyclerViewAdapter;
     private int equationCount = 2;
     private int variableCount = 2;
     private static String[] sEquationSpinnerEntries;
@@ -29,11 +34,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Setup recycler view and it's adapter
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_aMain_inputRows);
-        recyclerView.setLayoutManager(
+        RecyclerView rv = (RecyclerView) findViewById(R.id.rv_aMain_inputRows);
+        rv.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mRecyclerViewAdapter= new InputRowItemRecyclerViewAdapter(this, mInput);
-        recyclerView.setAdapter(mRecyclerViewAdapter);
+        mSystemRecyclerViewAdapter = new InputRowItemRecyclerViewAdapter(this, mSystemInput);
+        rv.setAdapter(mSystemRecyclerViewAdapter);
+
+        rv = (RecyclerView) findViewById(R.id.rv_aMain_target);
+        rv.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        InputRowItemRecyclerViewAdapter mTargetRecyclerViewAdapter =
+                new InputRowItemRecyclerViewAdapter(this, Arrays.asList(mTargetInput));
+        rv.setAdapter(mTargetRecyclerViewAdapter);
 
 //         Load from resources content for arrays
         sEquationSpinnerEntries = getResources().getStringArray(R.array.spinner_number_of_equations);
@@ -52,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case (R.id.menu_done):
+                simplexMethod();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
         return true;
     }
 
@@ -62,12 +81,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 equationCount = Integer.valueOf(sEquationSpinnerEntries[position]);
-                if (equationCount> mInput.size()) {
+                if (equationCount> mSystemInput.size()) {
                     addRows();
                 } else {
                     removeRows();
                 }
-                mRecyclerViewAdapter.notifyDataSetChanged();
+                mSystemRecyclerViewAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -80,13 +99,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 variableCount = Integer.valueOf(sVariableSpinnerEntries[position]);
-                if (variableCount > mInput.get(0).getVariables().size()) {
+                if (variableCount > mSystemInput.get(0).getVariables().size()) {
                     addVariables();
                 } else {
                     removeVariables();
                 }
                 // refresh recycler view
-                mRecyclerViewAdapter.notifyDataSetChanged();
+                mSystemRecyclerViewAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -95,31 +114,52 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addRows() {
-        while (mInput.size() < equationCount) {
+        while (mSystemInput.size() < equationCount) {
             InputRow inputRow = new InputRow();
             for (int j = 0; j < variableCount; j++)
                 inputRow.addVariable(new Variable());
-            mInput.add(inputRow);
+            mSystemInput.add(inputRow);
         }
     }
 
     private void removeRows() {
-        while (equationCount > mInput.size()) {
-            mInput.remove(mInput.size() - 1);
+        while (equationCount > mSystemInput.size()) {
+            mSystemInput.remove(mSystemInput.size() - 1);
         }
     }
 
     private void addVariables() {
-        for (InputRow inputRow : mInput) {
+        for (InputRow inputRow : mSystemInput) {
             while (inputRow.size() < variableCount)
                 inputRow.addVariable(new Variable());
         }
     }
 
     private void removeVariables() {
-        while (mInput.get(0).getVariables().size() > variableCount) {
-            for (InputRow inputRow : mInput)
+        while (mSystemInput.get(0).getVariables().size() > variableCount) {
+            for (InputRow inputRow : mSystemInput)
                 inputRow.removeLastVariable();
         }
+    }
+
+    private void simplexMethod() {
+        List<List<Integer>> equationsCoefficients = new ArrayList<>();
+        List<String> comparisonSings = new ArrayList<>();
+        List<Integer> equationsConstants = new ArrayList<>();
+        List<Integer> targetCoefficients = new ArrayList<>();
+        Integer targetConstant = 0;
+
+        for (InputRow inputRow : mSystemInput) {
+            List<Integer> cofs = new ArrayList<>();
+            for (Variable v : inputRow.getVariables())
+                cofs.add(v.getValue());
+            equationsCoefficients.add(cofs);
+            comparisonSings.add(inputRow.getSign());
+            equationsConstants.add(inputRow.getValue().getValue());
+        }
+
+        SimplexMethod si = new SimplexMethod(equationsCoefficients, comparisonSings,
+                equationsConstants, targetCoefficients, targetConstant);
+//        si.start();
     }
 }
