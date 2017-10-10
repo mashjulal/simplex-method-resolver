@@ -1,5 +1,6 @@
 package com.mashjulal.android.simplexmethodresolver;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +15,6 @@ import android.widget.Spinner;
 import com.mashjulal.android.simplexmethodresolver.simplex_method.SimplexMethod;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -147,6 +147,14 @@ public class MainActivity extends AppCompatActivity {
 
         SimplexMethod si = new SimplexMethod(equationsCoefficients, comparisonSings,
                 equationsConstants, targetCoefficients, targetConstant);
+        si.setOnResultListener(new SimplexMethod.OnResultListener() {
+            @Override
+            public void onResultReceived(String solution) {
+                Intent i = new Intent();
+                i.putExtra("", solution);
+                startActivity(i);
+            }
+        });
 //        si.start();
     }
 }

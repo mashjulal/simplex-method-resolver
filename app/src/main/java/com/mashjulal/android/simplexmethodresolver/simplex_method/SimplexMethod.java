@@ -7,11 +7,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+import static java.lang.String.format;
+
 public class SimplexMethod {
 
     private InputData mInputData;
     private EquationSystem mEquationSystem;
     private Basis mBasis;
+    @Setter
+    @Accessors(prefix = "m")
+    private OnResultListener mOnResultListener;
+    private String mSolution;
 
     public SimplexMethod(List<List<Integer>> systemCoefficients, List<String> comparisonSigns,
                   List<Integer> systemConstants, List<Integer> targetFunctionCoefficients,
@@ -24,17 +33,16 @@ public class SimplexMethod {
         mEquationSystem = mInputData.createEquationSystem(false);
         showInitialEquationSystem();
         for (String title : Arrays.asList("Минимум:", "Максимум:")) {
-            System.out.println(title);
+            mSolution = title +"\n";
             mEquationSystem = mInputData.createEquationSystem(title.equals("Максимум:"));
             getSolution();
-            System.out.println("__________________________");
         }
     }
 
     private void showInitialEquationSystem() {
-        System.out.println("Изначальная система:");
-        System.out.println(mEquationSystem);
-        System.out.println("_______________________");
+        mSolution += "Изначальная система:";;
+        mSolution += mEquationSystem;;
+        mSolution += "_______________________";;
     }
 
     private List<Coefficient> getEstimatedAttitude(int equationIndex) {
@@ -78,19 +86,19 @@ public class SimplexMethod {
     }
 
     private void showSolution(Coefficient targetFunctionConstant, Boolean isInfinite, Boolean notOptimizable) {
-        System.out.println("Ответ:");
+        mSolution += "Ответ:";;
 
         if (isInfinite) {
-            System.out.println("Решение не может быть получено.");
+            mSolution += "Решение не может быть получено.";;
         } else if (notOptimizable) {
-            System.out.println("Оптимизированного решения не существует.");
+            mSolution += "Оптимизированного решения не существует.";;
         } else {
-            System.out.println(String.format("\tБазис - %s",
-                    mBasis.toString()));
-            System.out.println(String.format("\tЗначение целевой функции: %s",
-                    targetFunctionConstant.toString()));
+            mSolution += format("\tБазис - %s",
+                    mBasis.toString());
+            mSolution += format("\tЗначение целевой функции: %s",
+                    targetFunctionConstant.toString());
         }
-
+        mOnResultListener.onResultReceived(mSolution);
     }
 
     private void getFirstSolution() {
@@ -133,17 +141,17 @@ public class SimplexMethod {
         mBasis = new Basis(mEquationSystem.getEquationList());
 
         if (fakeVariables.contains(Boolean.TRUE)) {
-            System.out.println("Первое решение:");
+            mSolution += "Первое решение:";
             getFirstSolution();
-            System.out.println("Новая симплекс-таблица");
-            System.out.println(mEquationSystem.toString());
+            mSolution += "Новая симплекс-таблица";
+            mSolution += mEquationSystem.toString();
 
             mBasis.recalculate(mEquationSystem.getEquationList());
-            System.out.println(String.format("Базис - %s", mBasis.toString()));
+            mSolution += format("Базис - %s", mBasis.toString());
 
-            System.out.println(String.format("Значение целевой функции: %s",
-                    mEquationSystem.getTargetFunction().getValue()));
-            System.out.println("__________________");
+            mSolution += format("Значение целевой функции: %s",
+                    mEquationSystem.getTargetFunction().getValue());
+            mSolution += "__________________";
         }
 
         Coefficient minElem = mEquationSystem.getTargetFunction().getCoefficients().get(0);
@@ -161,32 +169,32 @@ public class SimplexMethod {
                 if (minEstAtt.bigger(c))
                     minEstAtt = c;
             int eqIndex = estAtt.indexOf(minEstAtt);
-            System.out.println(String.format(Locale.getDefault(), "Оценочное отношение x%d: %s",
-                    minElemIndex + 1, estAtt.toString()));
+            mSolution += String.format(Locale.getDefault(), "Оценочное отношение x%d: %s",
+                    minElemIndex + 1, estAtt.toString());
 
             if (minEstAtt.equals(Constants.Coefficients.INFINITY)) {
                 showSolution(null, true, null);
                 return;
             }
             Equation eq = mEquationSystem.getEquationList().get(eqIndex).express(minElemIndex);
-            System.out.println(String.format(Locale.getDefault(),
+            mSolution += String.format(Locale.getDefault(),
                     "Коэффициенты выраженного %d уравнения - %s",
-                    eqIndex + 1, estAtt.toString()));
+                    eqIndex + 1, estAtt.toString());
 
             getNewSystem(eq, eqIndex, minElemIndex);
-            System.out.println("Новая симплекс-таблица");
-            System.out.println(mEquationSystem.toString());
+            mSolution += "Новая симплекс-таблица";
+            mSolution += mEquationSystem.toString();
 
             mBasis.setBasisValue(eqIndex, new BasisValue(minElemIndex,
                     mEquationSystem.getEquationList().get(eqIndex).getValue()
                             .divide(mEquationSystem.getEquationList().get(eqIndex)
                                     .getCoefficient(minElemIndex))));
             mBasis.recalculate(mEquationSystem.getEquationList());
-            System.out.println(String.format("Базис - %s", mBasis.toString()));
+            mSolution += String.format("Базис - %s", mBasis.toString());
 
-            System.out.println(String.format("Значение целевой функции: %s",
-                    mEquationSystem.getTargetFunction().getValue()));
-            System.out.println("__________________");
+            mSolution += String.format("Значение целевой функции: %s",
+                    mEquationSystem.getTargetFunction().getValue());
+            mSolution += "__________________";
 
             Boolean anyFake = fakeVariables.contains(Boolean.TRUE);
 
@@ -221,5 +229,9 @@ public class SimplexMethod {
                         mEquationSystem.getTargetFunction().getValue() :
                         mEquationSystem.getTargetFunction().getValue().negate();
         showSolution(targetFunctionConstant, false, false);
+    }
+
+    public interface OnResultListener {
+        void onResultReceived(String solution);
     }
 }
