@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResultReceived(String solution) {
                 Intent i = new Intent();
-                i.putExtra("", solution);
+                i.putExtra(SolutionActivity.PARAM_SOLUTION, solution);
                 startActivity(i);
             }
         });
