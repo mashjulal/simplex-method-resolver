@@ -19,12 +19,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<InputRow> mSystemInput = new ArrayList<>();
-    private InputRow mTargetInput = new InputRow();
-    private InputRowItemRecyclerViewAdapter mSystemRecyclerViewAdapter;
-    private InputRowItemRecyclerViewAdapter mTargetRecyclerViewAdapter;
     private int equationCount = 2;
     private int variableCount = 2;
+    private InputTable mSystemInput = new InputTable(equationCount, variableCount);
+    private InputRow mTargetInput = new InputRow();
+    private InputRowItemRecyclerViewAdapter mSystemRecyclerViewAdapter;
     private static String[] sEquationSpinnerEntries;
     private static String[] sVariableSpinnerEntries;
 
@@ -40,12 +39,8 @@ public class MainActivity extends AppCompatActivity {
         mSystemRecyclerViewAdapter = new InputRowItemRecyclerViewAdapter(this, mSystemInput);
         rv.setAdapter(mSystemRecyclerViewAdapter);
 
-        rv = (RecyclerView) findViewById(R.id.rv_aMain_target);
-        rv.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        InputRowItemRecyclerViewAdapter mTargetRecyclerViewAdapter =
-                new InputRowItemRecyclerViewAdapter(this, Arrays.asList(mTargetInput));
-        rv.setAdapter(mTargetRecyclerViewAdapter);
+        TargetFunctionView tfv = (TargetFunctionView) findViewById(R.id.tfv_aMain_target);
+        tfv.setInputRow(mTargetInput);
 
 //         Load from resources content for arrays
         sEquationSpinnerEntries = getResources().getStringArray(R.array.spinner_number_of_equations);
@@ -114,32 +109,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addRows() {
-        while (mSystemInput.size() < equationCount) {
-            InputRow inputRow = new InputRow();
-            for (int j = 0; j < variableCount; j++)
-                inputRow.addVariable(new Variable());
-            mSystemInput.add(inputRow);
-        }
+        mSystemInput.setSize(equationCount);
     }
 
     private void removeRows() {
-        while (equationCount > mSystemInput.size()) {
-            mSystemInput.remove(mSystemInput.size() - 1);
-        }
+        mSystemInput.setSize(equationCount);
     }
 
     private void addVariables() {
-        for (InputRow inputRow : mSystemInput) {
-            while (inputRow.size() < variableCount)
-                inputRow.addVariable(new Variable());
-        }
+        mSystemInput.setVariableCount(variableCount);
     }
 
     private void removeVariables() {
-        while (mSystemInput.get(0).getVariables().size() > variableCount) {
-            for (InputRow inputRow : mSystemInput)
-                inputRow.removeLastVariable();
-        }
+        mSystemInput.setVariableCount(variableCount);
     }
 
     private void simplexMethod() {
@@ -157,6 +139,11 @@ public class MainActivity extends AppCompatActivity {
             comparisonSings.add(inputRow.getSign());
             equationsConstants.add(inputRow.getValue().getValue());
         }
+
+        for (Variable v : mTargetInput) {
+            targetCoefficients.add(v.getValue());
+        }
+
 
         SimplexMethod si = new SimplexMethod(equationsCoefficients, comparisonSings,
                 equationsConstants, targetCoefficients, targetConstant);

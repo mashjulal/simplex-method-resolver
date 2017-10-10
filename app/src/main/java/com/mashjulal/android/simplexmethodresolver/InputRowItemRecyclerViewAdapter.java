@@ -18,11 +18,11 @@ class InputRowItemRecyclerViewAdapter
         extends RecyclerView.Adapter<InputRowItemRecyclerViewAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<InputRow> mEquations;
+    private InputTable mInputTable;
 
-    InputRowItemRecyclerViewAdapter(Context context, List<InputRow> equationList) {
+    InputRowItemRecyclerViewAdapter(Context context, InputTable inputTable) {
         mContext = context;
-        mEquations = equationList;
+        mInputTable = inputTable;
     }
 
 
@@ -34,7 +34,7 @@ class InputRowItemRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final InputRow inputRow = mEquations.get(position);
+        final InputRow inputRow = mInputTable.get(position);
         holder.rvVariables.setLayoutManager(
                 new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         VariableItemRecyclerViewAdapter recyclerViewAdapter =
@@ -62,7 +62,7 @@ class InputRowItemRecyclerViewAdapter
 
     @Override
     public int getItemCount() {
-        return mEquations.size();
+        return mInputTable.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

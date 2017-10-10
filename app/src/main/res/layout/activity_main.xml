@@ -54,13 +54,10 @@
         android:overScrollMode="never"
         tools:listitem="@layout/item_input_row" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_aMain_target"
+    <com.mashjulal.android.simplexmethodresolver.TargetFunctionView
+        android:id="@+id/tfv_aMain_target"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:overScrollMode="never"
-        app:reverseLayout="true"
-        tools:listitem="@layout/item_variable" />
+        android:layout_margin="10dp"
+        app:variablesCount="2"/>
 </LinearLayout>

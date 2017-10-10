@@ -6,4 +6,5 @@
     <string name="title_variable_template">x%d</string>
     <string name="hint_zero">0</string>
     <string name="plus">+</string>
+    <string name="arrow_right">\u2192</string>
 </resources>

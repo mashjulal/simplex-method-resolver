@@ -1,6 +1,7 @@
 package com.mashjulal.android.simplexmethodresolver;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(prefix = "m")
 @Getter
 @Setter
-class InputRow {
+class InputRow implements Iterable<Variable> {
 
     private List<Variable> mVariables;
     private String mSign;
@@ -22,21 +23,39 @@ class InputRow {
         mValue = new Variable();
     }
 
-    public InputRow(List<Variable> variables, String sign, Variable value) {
-        mVariables = variables;
-        mSign = sign;
-        mValue = value;
-    }
-
     void addVariable(Variable variable) {
         mVariables.add(variable);
     }
 
-    int size() {
+    private int size() {
         return mVariables.size();
     }
 
-    void removeLastVariable() {
+    private void removeLastVariable() {
         mVariables.remove(size()-1);
+    }
+
+    void setSize(int finalSize) {
+        int size = mVariables.size();
+        if (finalSize > size)
+            addVariables(finalSize);
+        else if (finalSize < size)
+            removeVariables(finalSize);
+    }
+
+    private void addVariables(int finalSize) {
+        while (mVariables.size() < finalSize)
+                addVariable(new Variable());
+    }
+
+    private void removeVariables(int finalSize) {
+        while (mVariables.size() > finalSize) {
+            removeLastVariable();
+        }
+    }
+
+    @Override
+    public Iterator<Variable> iterator() {
+        return mVariables.iterator();
     }
 }
