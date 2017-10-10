@@ -184,4 +184,13 @@ class Equation implements Iterable<Coefficient>, Comparable<Equation> {
     public boolean equals(Object o) {
         return o instanceof Equation && compareTo((Equation) o) == 0;
     }
+
+    public Coefficient min() {
+        Coefficient minElem = mEquationSystem.getTargetFunction().getCoefficients().get(0);
+
+        for (Coefficient c : mEquationSystem.getTargetFunction().getCoefficients())
+            if (minElem.bigger(c))
+                minElem = c;
+        return minElem;
+    }
 }
