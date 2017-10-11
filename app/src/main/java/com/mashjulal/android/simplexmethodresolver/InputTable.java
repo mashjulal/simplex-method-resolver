@@ -57,8 +57,8 @@ class InputTable implements Iterable<InputRow> {
         return mInput.size();
     }
 
-        @Override
-        public Iterator<InputRow> iterator() {
+    @Override
+    public Iterator<InputRow> iterator() {
             return mInput.iterator();
         }
 }

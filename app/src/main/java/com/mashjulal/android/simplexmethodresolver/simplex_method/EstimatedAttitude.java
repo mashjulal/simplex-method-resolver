@@ -1,7 +1,5 @@
 package com.mashjulal.android.simplexmethodresolver.simplex_method;
 
-import android.support.annotation.NonNull;
-
 import com.mashjulal.android.simplexmethodresolver.simplex_method.coefficients.Coefficient;
 
 import java.util.ArrayList;
@@ -51,5 +49,13 @@ class EstimatedAttitude implements Iterable<Coefficient> {
 
     int indexOf(Coefficient c) {
         return coefficients.indexOf(c);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Coefficient c : coefficients)
+            sb.append(c.toString());
+        return sb.toString();
     }
 }
